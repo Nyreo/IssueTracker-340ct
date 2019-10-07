@@ -1,40 +1,33 @@
 #!/usr/bin/env node
 
-//Routes File
-
 'use strict'
 
-/* MODULE IMPORTS */
-const bcrypt = require('bcrypt-promise')
+/* STANDARD MODULE IMPORTS */
+//const bcrypt = require('bcrypt-promise')
 const Koa = require('koa')
 const Router = require('koa-router')
-const views = require('koa-views')
-const staticDir = require('koa-static')
 const bodyParser = require('koa-bodyparser')
 const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
 const session = require('koa-session')
-const sqlite = require('sqlite-async')
-const fs = require('fs-extra')
-const mime = require('mime-types')
-//const jimp = require('jimp')
+// const fs = require('fs-extra')
+// const mime = require('mime-types')
+// const status = require('http-status-codes')
 
-/* IMPORT CUSTOM MODULES */
+/* CUSTOM MODULE IMPORTS */
 const User = require('./modules/user')
 
 const app = new Koa()
 const router = new Router()
 
-/* CONFIGURING THE MIDDLEWARE */
+/* CONFIGURING MIDDLEWARE */
 app.keys = ['darkSecret']
-app.use(staticDir('public'))
 app.use(bodyParser())
 app.use(session(app))
-app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handlebars: 'handlebars' }}))
 
 const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 const dbName = 'website.db'
-const saltRounds = 10
+// const saltRounds = 10
 
 /**
  * The secure home page.
@@ -43,24 +36,17 @@ const saltRounds = 10
  * @route {GET} /
  * @authentication This route requires cookie-based authentication.
  */
-router.get('/', async ctx => {
-	try {
-		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
-		const data = {}
-		if(ctx.query.msg) data.msg = ctx.query.msg
-		await ctx.render('index')
-	} catch(err) {
-		await ctx.render('error', {message: err.message})
-	}
-})
 
-/**
- * The user registration page.
- *
- * @name Register Page
- * @route {GET} /register
- */
-router.get('/register', async ctx => await ctx.render('register'))
+// --- Check authorised
+// 	router.get('/', async ctx => {
+// 	try {
+// 		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
+// 		const data = {}
+// 		if(ctx.query.msg) data.msg = ctx.query.msg
+// 	} catch(err) {
+// 		await ctx.redirect('/')
+// 	}
+//  })
 
 /**
  * The script to process new user registrations.
@@ -69,27 +55,23 @@ router.get('/register', async ctx => await ctx.render('register'))
  * @route {POST} /register
  */
 router.post('/register', koaBody, async ctx => {
+	//TODO
+	//respond with an error message
+
 	try {
 		// extract the data from the request
 		const body = ctx.request.body
 		console.log(body)
-		const {path, type} = ctx.request.files.avatar
+		// const {path, type} = ctx.request.files.avatar
 		// call the functions in the module
 		const user = await new User(dbName)
 		await user.register(body.user, body.pass)
 		// await user.uploadPicture(path, type)
 		// redirect to the home page
-		ctx.redirect(`/?msg=new user "${body.name}" added`)
+		ctx.redirect(`/?msg=Welcome ${body.user}, you have successfully created an account.`)
 	} catch(err) {
-		await ctx.render('error', {message: err.message})
+		await ctx.redirect('/register?msg=Oh no! something went wrong when trying to create an account.')
 	}
-})
-
-router.get('/login', async ctx => {
-	const data = {}
-	if(ctx.query.msg) data.msg = ctx.query.msg
-	if(ctx.query.user) data.user = ctx.query.user
-	await ctx.render('login', data)
 })
 
 router.post('/login', async ctx => {
@@ -100,7 +82,19 @@ router.post('/login', async ctx => {
 		ctx.session.authorised = true
 		return ctx.redirect('/?msg=you are now logged in...')
 	} catch(err) {
-		await ctx.render('error', {message: err.message})
+		await ctx.redirect(`/?msg=${err.message}`)
+	}
+})
+
+router.get('/a', async ctx => {
+	ctx.session.authorised = !ctx.session.authorised
+})
+
+router.get('/test', async ctx => {
+	if(ctx.session.authorised) {
+		ctx.body = 'Welcome to the club.'
+	} else {
+		ctx.body = 'You are not permitted to access this resource.'
 	}
 })
 

@@ -6,6 +6,7 @@ const fs = require('fs-extra')
 const mime = require('mime-types')
 const sqlite = require('sqlite-async')
 const saltRounds = 10
+// const mongoose = require('mongoose')
 
 module.exports = class User {
 
