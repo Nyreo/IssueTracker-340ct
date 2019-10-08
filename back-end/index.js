@@ -11,7 +11,7 @@ const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
 const session = require('koa-session')
 // const fs = require('fs-extra')
 // const mime = require('mime-types')
-// const status = require('http-status-codes')
+const status = require('http-status-codes')
 
 /* CUSTOM MODULE IMPORTS */
 const User = require('./modules/user')
@@ -100,7 +100,7 @@ router.get('/test', async ctx => {
 
 router.get('/logout', async ctx => {
 	ctx.session.authorised = null
-	ctx.redirect('/?msg=you are now logged out')
+	ctx.status = status.OK
 })
 
 app.use(router.routes())
