@@ -2,14 +2,13 @@
 'use strict'
 
 const bcrypt = require('bcrypt-promise')
-const fs = require('fs-extra')
-const mime = require('mime-types')
+// const fs = require('fs-extra')
+// const mime = require('mime-types')
 const sqlite = require('sqlite-async')
 const saltRounds = 10
-// const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 
 module.exports = class User {
-
 	constructor(dbName = ':memory:') {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
@@ -18,6 +17,15 @@ module.exports = class User {
 			await this.db.run(sql)
 			return this
 		})()
+	}
+
+	async generateWebToken(data) {
+		try {
+			const payload = { username: data.username }
+			return jwt.sign(payload, 'somekey')
+		} catch (err) {
+			 throw err
+		}
 	}
 
 	async register(user, pass) {
@@ -36,13 +44,6 @@ module.exports = class User {
 		}
 	}
 
-	async uploadPicture(path, mimeType) {
-		const extension = mime.extension(mimeType)
-		console.log(`path: ${path}`)
-		console.log(`extension: ${extension}`)
-		//await fs.copy(path, `public/avatars/${username}.${fileExtension}`)
-	}
-
 	async login(username, password) {
 		try {
 			let sql = `SELECT count(id) AS count FROM users WHERE user="${username}";`
@@ -57,5 +58,4 @@ module.exports = class User {
 			throw err
 		}
 	}
-
 }

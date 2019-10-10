@@ -1,6 +1,7 @@
 
 'use strict'
 
+const jwt = require('jsonwebtoken')
 const Accounts = require('../modules/user.js')
 
 describe('register()', () => {
@@ -40,11 +41,6 @@ describe('register()', () => {
 
 })
 
-describe('uploadPicture()', () => {
-	// this would have to be done by mocking the file system
-	// perhaps using mock-fs?
-})
-
 describe('login()', () => {
 	test('log in with valid credentials', async done => {
 		expect.assertions(1)
@@ -73,4 +69,25 @@ describe('login()', () => {
 		done()
 	})
 
+})
+
+describe('generateWebToken()', () => {
+
+	test('decoding payload', async done => {
+		expect.assertions(1)
+		const payload = {
+			username : 'testing'
+		}
+		const account = await new Accounts()
+		const token = await account.generateWebToken(payload)
+
+		// remove instantiation time key from generated token
+		const decoded_token = jwt.decode(token)
+		delete decoded_token.iat
+
+		expect(decoded_token).toEqual(payload)
+
+		done()		
+
+	})
 })

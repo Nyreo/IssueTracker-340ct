@@ -1,24 +1,67 @@
+/* standard imports */
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect
+} from 'react-router-dom'
 
-function App() {
+/* Component Imports */
+
+import LoginForm from './components/loginForm'
+import RegisterForm from './components/registerForm'
+import Home from './components/home'
+import IssuesList  from './components/issues'
+
+/* Custom imports */
+
+import { clearUser } from './actions/userActions'
+
+// main app
+function App(props) {
+
+  const userData = props.store.getState().userReducer.user ? props.store.getState().userReducer : {} 
+
+  const logout = () => {
+    props.store.dispatch(clearUser())
+    localStorage.removeItem('token')
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <div>
+          <div>
+            <Link to="/">home</Link>
+            {userData.isAuth ? 
+              <>
+              <Link to="/issues">Issues</Link>
+              <button onClick={() => logout()}>Logout</button>
+              <em>Welcome, {userData.user.username}</em>
+              </>
+              : 
+              <>
+                <Link to="/register">register</Link>
+                <Link to="/login">login</Link>
+              </>
+            }
+            
+          </div>
+          <Route exact path="/" render={() => <Home userData={userData}/>} />
+          
+          <Route exact path="/register" render={(compProps) => 
+            userData.isAuth ? <Redirect to="/" /> : <RegisterForm {...compProps} store={props.store} />
+          } />
+          
+          <Route exact path="/login" render={(compProps) => 
+            userData.isAuth ? <Redirect to="/"/> : <LoginForm {...compProps} store={props.store} />
+          } />
+
+          <Route exact path="/issues" render={(compProps) => 
+            userData.isAuth ? <IssuesList {...compProps} store={props} /> : <Redirect to="/login"/>
+          } />
+        </div>
+      </Router>
     </div>
   );
 }
