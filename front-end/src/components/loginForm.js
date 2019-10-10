@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
 import jwt from 'jsonwebtoken'
 import '../App.css'
-import '../animate.css'
 
 import {login} from '../modules/userAuthentication'
 import {setUser} from '../actions/userActions'
+
+import InputField from './inputField'
 
 const LoginForm = ({store, history}) => {
 
@@ -31,20 +32,27 @@ const LoginForm = ({store, history}) => {
       
       login(username,password)
         .then(response => {
-          console.log(response)
-            if(!response.data.err) {
-                // write token to localStorage
-                const token = response.data.token
-                localStorage.setItem('token', token)
-                
-                // decode jsonwebtoken provided by server
-                const user = jwt.decode(token)
-                store.dispatch(setUser(user))
+          try {
+            // write token to localStorage
+            const token = response.data.token
+            localStorage.setItem('token', token)
+            
+            // decode jsonwebtoken provided by server
+            const user = jwt.decode(token)
+            store.dispatch(setUser(user))
 
-                //redirect to home page
-                history.push('/')
-
-            } else setError(response.data.err)
+            //redirect to home page
+            history.push('/')
+          } catch (err) {}
+        })
+        .catch(err => {
+          // an error occured with the login credentials
+          try{
+            setError(err.data)
+          } catch (err) { 
+            // internal server error occured :(
+            setError("Internal Server Error.")
+          }
         })
     }
     
@@ -55,20 +63,17 @@ const LoginForm = ({store, history}) => {
       {error ? <span className='animated shake error centered-margin'>{error}</span> : null}
       <form className='form centered centered-margin' onSubmit={onSubmit}>
         
-        <h1 className='header centered'>Login</h1>
-        <div className='input'>
-          <label>Username</label>
-          <input value={username} onChange={updateUsername} />
-          {username ? null : <span className='input-warning'>(*) Please enter a username</span>}
-        </div>
-        <div className='input'>
-          <label>Password</label>
-          <input value={password} onChange={updatePassword} type='password' />
-          {password ? null : <span className='input-warning'>(*) Please enter a password</span>}
+        <h1 className='header centered'>LOGIN</h1>
+        <div className="input-fields centered-margin">
+          <InputField label={"Username"}  type={"text"} value={username} onChange={updateUsername}/>
+          <InputField label={"Password"}  type={"password"} value={password} onChange={updatePassword}/>
+
+          <input className="submit-button" type='submit' value='Log In!' />
         </div>
         
-        <button type='submit'>Login</button>
+        
       </form>
+
       </div>
     )
   }

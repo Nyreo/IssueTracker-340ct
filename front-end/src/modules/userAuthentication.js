@@ -14,7 +14,7 @@ export const register = (user,pass) => {
             return response
         })
         .catch(err => {
-            return err
+            throw err
         })
 }  
 
@@ -30,8 +30,7 @@ export const login = async (user, pass) => {
         .post(api_endpoint, userObject)
         .then(response => {
             return response
-        })
-        .catch(err => {
-            return err
+        }).catch(err => {
+            throw err.response
         })
 }

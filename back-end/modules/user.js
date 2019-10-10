@@ -34,7 +34,7 @@ module.exports = class User {
 			if(pass.length === 0) throw new Error('missing password')
 			let sql = `SELECT COUNT(id) as records FROM users WHERE user="${user}";`
 			const data = await this.db.get(sql)
-			if(data.records !== 0) throw new Error(`username "${user}" already in use`)
+			if(data.records !== 0) throw new Error(`the username '${username}' is already`)
 			pass = await bcrypt.hash(pass, saltRounds)
 			sql = `INSERT INTO users(user, pass) VALUES("${user}", "${pass}")`
 			await this.db.run(sql)

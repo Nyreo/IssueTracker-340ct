@@ -79,7 +79,8 @@ router.post('/user/login', async ctx => {
 		console.log(token)
 		ctx.body = {token}
 	} catch(err) {
-		ctx.app.emit('error', err.message, ctx)
+		ctx.status = status.UNAUTHORIZED
+		ctx.message = err.message
 	}
 })
 
