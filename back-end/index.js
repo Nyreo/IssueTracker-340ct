@@ -42,19 +42,20 @@ const dbName = 'website.db'
 router.post('/user/register', async ctx => {
 	try {
 		// extract the data from the request
-		const body = ctx.request.body
+		const userDetails = ctx.request.body
+		// console.log(body)
 		// call the functions in the module
 		const user = await new User(dbName)
-		await user.register(body.user, body.pass)
+		await user.register(userDetails)
 		// update response status
 		ctx.status = status.OK
 		// generate data token
-		const data = { username: body.user }
+		const data = { username: userDetails.username, isStaff: false }
 		const token = await user.generateWebToken(data)
 		ctx.body = {token}
-
 	} catch(err) {
-		ctx.app.emit('error', err.message, ctx)
+		ctx.status = status.BAD_REQUEST
+		ctx.message = err.message
 	}
 })
 
@@ -74,9 +75,10 @@ router.post('/user/login', async ctx => {
 		ctx.status = status.OK
 
 		// generate data token -- TODO: add rest of data
-		const data = { username: body.user }
+		const isStaff = await user.isStaff(body.user)
+		const data = { username: body.user, isStaff}
 		const token = await user.generateWebToken(data)
-		console.log(token)
+		// console.log(token)
 		ctx.body = {token}
 	} catch(err) {
 		ctx.status = status.UNAUTHORIZED
@@ -90,7 +92,7 @@ router.post('/user/login', async ctx => {
  * @name Error handling script
  */
 app.on('error', (err, ctx) => {
-	console.log(err)
+	// console.log(err)
 	ctx.body = {err}
 })
 

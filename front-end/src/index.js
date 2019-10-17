@@ -21,9 +21,21 @@ const store = createStore (
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
+// check for local data storage token -- maybe moev to another file?
 if(localStorage.token) {
-    const user = jwt.decode(localStorage.token)
-    store.dispatch(setUser(user))
+    // const token_data = jwt.decode(localStorage.token)
+    try {
+        const token_data = jwt.verify(localStorage.token, 'somekey')
+        if((token_data.exp * 1000) <= Date.now()) {
+            // token has expired -- requires refresh token
+            console.log('token has expired! please login')
+            localStorage.removeItem('token')
+        } else store.dispatch(setUser(token_data))
+    } catch(err) {
+        // token has changed
+        console.log('token has been changed!')
+        localStorage.removeItem('token')
+    }
 }
 
 const renderApp = () => {

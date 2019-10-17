@@ -3,19 +3,19 @@ const initialState = {
     notification : ""
 }
 
-export default ( state = initialState, action = {}) => {
+export default ( state = initialState, action) => {
     switch(action.type) {
-        case 'SET_ERROR_MESSAGE': 
+        case 'SET_ERROR': 
             return {
                 ...state,
-                errMessage : action.errMessage
+                errMessage : action.message
             }
         case 'SET_NOTIFICATION':
             return {
                 ...state,
-                notification : action.notification
+                notification : action.message
             }
-        case 'CLEAR_ERROR_MESSAGE':
+        case 'CLEAR_ERROR':
             return {
                 ...state,
                 errMessage : ""
@@ -25,6 +25,8 @@ export default ( state = initialState, action = {}) => {
                 ...state,
                 notification : ""
             }
+        case 'CLEAR_ALL':
+            return initialState
         default : return state
     }
 }

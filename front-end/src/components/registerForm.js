@@ -1,16 +1,20 @@
+// standard imports
 import React, {useState} from 'react'
 import jwt from 'jsonwebtoken'
 
+// custom imports
 import {register} from '../modules/userAuthentication'
 import {setUser} from '../actions/userActions'
 
+// component imports
 import InputField from './inputField'
 
 const RegisterForm = ({store, history}) => {
 
-    // react states
+    // react state for user registration credentials
     const [registerDetails, setRegisterDetails] = useState({
-      fullName : "",
+      firstName : "",
+      lastName : "",
       email : "",
       username : "",
       password : "",
@@ -64,34 +68,34 @@ const RegisterForm = ({store, history}) => {
       setRegisterDetails({...registerDetails, postCode})
     }
 
-    
-
-
     // form submission for the register form
     const onSubmit = (e) => {
       e.preventDefault()
       
-      register(registerDetails.username,registerDetails.password)
+      // attempt to create user in databse through api with inputted credentials
+      register(registerDetails)
         .then(response => {
-          
           try {
-            if(!response.data.err) {
-              // write token to local storage
-              const token = response.data.token
-              localStorage.setItem('token', token)
-              
-              // decode token to user
-              const user = jwt.decode(token)
-              store.dispatch(setUser(user))
+            // write token to local storage
+            const token = response.data.token
+            localStorage.setItem('token', token)
+            
+            // decode token to user
+            const user = jwt.decode(token)
+            store.dispatch(setUser(user))
 
-              // redirect to home page once registration is complete
-              history.push('/') 
-
-            } else setError(response.data.err)
+            // redirect to home page once registration is complete
+            history.push('/') 
           } catch (err) {
+            // something else went wrong (check server logs)
             setError('There was an unexpected error, Please try again.')
           }
             
+        })
+        .catch(err => {
+          console.log(err)
+          // invalid user credentials, display to user
+          setError(err.data)
         })
     }
     
@@ -117,7 +121,7 @@ const RegisterForm = ({store, history}) => {
             </div>
             <input className="submit-button" type='submit' value='Sign me up!' />
           </div>
-          
+          <a href='/login'>Already have an account?</a>
         </form>
       </div>
     )

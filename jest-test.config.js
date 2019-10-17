@@ -15,5 +15,8 @@ module.exports = {
 	testPathIgnorePatterns: [
 		'/node_modules/',
 		'/__tests__/fixtures/',
-	]
+	],
+	transform: {
+		'^.+\\.[t|j]sx?$': './node_modules/babel-jest'
+	}
 }

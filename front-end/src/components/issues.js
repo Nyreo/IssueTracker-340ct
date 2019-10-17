@@ -3,7 +3,7 @@ import React from 'react'
 const IssuesList = () => {
     return (
         <div>
-            <h2>Issues everywhere :(</h2>
+            <p>Issues page</p>
         </div>
     )
 }
