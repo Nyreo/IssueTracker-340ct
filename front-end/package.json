@@ -3,14 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/polyfill": "^7.6.0",
+    "animate.css": "^3.7.2",
+    "axios": "^0.19.0",
+    "jsonwebtoken": "^8.5.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "react-scripts": "3.2.0"
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
+    "redux": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --coverage --detectOpenHandles",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -27,5 +33,25 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ],
+    "plugins": [
+      "@babel/plugin-transform-runtime"
+    ]
+  },
+  "jest": {
+    "transform": {
+      ".*": "<rootDir>/node_modules/babel-jest"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babel-jest": "^24.9.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "jest": "^24.9.0"
   }
 }

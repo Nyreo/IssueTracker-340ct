@@ -2,21 +2,120 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
+.header {
+  font-size : 4em;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.centered {
+  text-align : center;
 }
 
-.App-link {
-  color: #09d3ac;
+.centered-margin {
+  margin-left : auto;
+  margin-right : auto
+}
+
+.form {
+  background-color : whitesmoke;
+  width : 40%;
+  padding-bottom : 5em;
+  position : relative;
+  box-shadow: 10px 10px 6px -6px rgb(201, 201, 201);
+}
+
+.error {
+  color : rgb(255, 101, 101);
+  font-size : 1em;
+  text-transform: capitalize;
+}
+
+.form .header {
+  background-color : rgb(60, 136, 146);;
+  padding : 5px;
+  color : whitesmoke;
+}
+
+
+.input-warning {
+  color : red;
+}
+
+a { 
+  padding : 5px;
+}
+
+input[type=text],input[type=password] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-bottom : 4px solid lightblue;
+  box-sizing:border-box;
+}
+
+.row {
+  position:relative;
+  width:100%;
+}
+
+.input-fields {
+  width : 75%;
+}
+
+.input-fields input {
+  margin-top : 2em;
+}
+
+.input-double .row {
+  display: inline-block;
+  width : 47.5%;
+}
+
+.input-double .row:nth-child(1) {
+  float:left;
+}
+.input-double .row:nth-child(2) {
+  float:right;
+}
+
+.input-double::after {
+  content:"";
+  clear:both;
+  display:table;
+}
+
+
+.input-label {
+  position: absolute;
+  top : 5px;
+  font-size : 12px;
+  color : gray;
+}
+
+.submit-button {
+  width : 100%;
+  background-color : rgb(60, 136, 146);
+  padding : 10px;
+  font-size : 24px;
+  color : white;
+  border: 0;
+  margin-top : 1em;
+  transition: .2s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color : rgb(43, 106, 114);
+}
+
+.form a {
+  position : absolute;
+  bottom : 5%;
+  left : 50%;
+  transform:translate(-50%);
+  font-size : 14px;
+  text-decoration: none;
+  transition : .2s ease-in-out;
+}
+
+.form a:hover {
+  font-size : 16px;
 }

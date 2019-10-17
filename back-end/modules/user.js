@@ -1,34 +1,100 @@
+/* eslint-disable complexity */
 
 'use strict'
 
 const bcrypt = require('bcrypt-promise')
-const fs = require('fs-extra')
-const mime = require('mime-types')
+// const fs = require('fs-extra')
+// const mime = require('mime-types')
 const sqlite = require('sqlite-async')
 const saltRounds = 10
-// const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 
 module.exports = class User {
-
 	constructor(dbName = ':memory:') {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// we need this table to store the user accounts
-			const sql = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT, pass TEXT);'
+			// eslint-disable-next-line max-len
+			const sql = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, firstName TEXT, lastName TEXT, email TEXT, address TEXT, postCode TEXT, isStaff INTEGER DEFAULT 0);'
 			await this.db.run(sql)
 			return this
 		})()
 	}
 
-	async register(user, pass) {
+	async generateWebToken(data) {
+		// console.log('data: ', data)
+		const options = {
+			expiresIn: '30m'
+		}
+		return jwt.sign(data, 'somekey', options)
+	}
+
+	async isStaff(username) {
+		const sql = `SELECT isStaff from users WHERE username="${username}"`
+		const record = await this.db.get(sql)
+
+		return record.isStaff
+	}
+
+	async validateEmailAddress(email) {
+		// check if the email address contains the @ symbol
+		const atIndex = email.indexOf('@')
+		const dotIndex = email.indexOf('.')
+		if(atIndex < 0 || dotIndex < 0 || atIndex > dotIndex) throw new Error('invalid email address')
+		return true
+	}
+
+	/**
+	 * Function to check the credentials object submitted by the user
+	 *
+	 * @name validateUserCredentials Script
+	 * @param {object} userDetails - Consists of the user's credentials
+	 * @returns {boolean} success of the operation
+	 * @throws {Error} invalid credentials
+	 */
+	async validateUserCredentials(userDetails) {
+		// check if any of the details are blank
+		for(const key of Object.keys(userDetails)) {
+			if(userDetails[key] === '') throw new Error(`${key} must not be blank`)
+		}
+		// validate email address
+		await this.validateEmailAddress(userDetails.email)
+
+		// check if the user exists already
+		const sql = `SELECT COUNT(id) as records FROM users WHERE username="${userDetails.username}";`
+		const data = await this.db.get(sql)
+		if(data.records !== 0) throw new Error(`username "${userDetails.username}" already in use`)
+
+		// if all details are there check if passwords match
+		if(userDetails.password !== userDetails.confirmPassword) throw new Error('passwords must match')
+		// if no errors thrown
+		return true
+	}
+
+	/**
+	 * Function to register the user's credentials in the database.
+	 *
+	 * @name Register Script
+	 * @param {object} userDetails - Consists of the user's credentials
+	 * @returns {boolean} success of the operation
+	 */
+	// eslint-disable-next-line max-lines-per-function
+	async register(userDetails) {
 		try {
-			if(user.length === 0) throw new Error('missing username')
-			if(pass.length === 0) throw new Error('missing password')
-			let sql = `SELECT COUNT(id) as records FROM users WHERE user="${user}";`
-			const data = await this.db.get(sql)
-			if(data.records !== 0) throw new Error(`username "${user}" already in use`)
-			pass = await bcrypt.hash(pass, saltRounds)
-			sql = `INSERT INTO users(user, pass) VALUES("${user}", "${pass}")`
+			//destructure object
+			const {username, password, firstName, lastName, email, address, postCode} = userDetails
+
+			await this.validateUserCredentials(userDetails)
+			// if no validation issues, insert the user
+			const ePassword = await bcrypt.hash(password, saltRounds)
+			const sql = `INSERT INTO users(username, password, firstName, lastName, address, email, postCode) 
+				VALUES("${username}", 
+				"${ePassword}", 
+				"${firstName}", 
+				"${lastName}", 
+				"${address}", 
+				"${email}", 
+				"${postCode}");`
 			await this.db.run(sql)
 			return true
 		} catch(err) {
@@ -36,26 +102,30 @@ module.exports = class User {
 		}
 	}
 
-	async uploadPicture(path, mimeType) {
-		const extension = mime.extension(mimeType)
-		console.log(`path: ${path}`)
-		console.log(`extension: ${extension}`)
-		//await fs.copy(path, `public/avatars/${username}.${fileExtension}`)
-	}
-
+	/**
+	 * Function to check the user's credentials when logging in to determine authorisation
+	 *
+	 * @name Login Script
+	 * @param {string} username - The username to be checked
+	 * @param {string} password - The password to be checked
+	 * @returns {boolean} success of the operation
+	 */
 	async login(username, password) {
 		try {
-			let sql = `SELECT count(id) AS count FROM users WHERE user="${username}";`
+			// check for blank inptus
+			if(username === '') throw new Error('username must not be blank')
+			if(password === '') throw new Error('password must not be blank')
+			// fetch record from database
+			let sql = `SELECT count(id) AS count FROM users WHERE username="${username}";`
 			const records = await this.db.get(sql)
 			if(!records.count) throw new Error(`username "${username}" not found`)
-			sql = `SELECT pass FROM users WHERE user = "${username}";`
+			sql = `SELECT password FROM users WHERE username = "${username}";`
 			const record = await this.db.get(sql)
-			const valid = await bcrypt.compare(password, record.pass)
+			const valid = await bcrypt.compare(password, record.password)
 			if(valid === false) throw new Error(`invalid password for account "${username}"`)
 			return true
 		} catch(err) {
 			throw err
 		}
 	}
-
 }
