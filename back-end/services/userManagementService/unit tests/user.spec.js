@@ -2,7 +2,7 @@
 'use strict'
 
 const jwt = require('jsonwebtoken')
-const Accounts = require('../modules/user.js')
+const Accounts = require('../user')
 
 describe('register()', () => {
 
@@ -260,10 +260,7 @@ describe('login()', () => {
 		done()
 	})
 
-	// test('password should not contain any illegal characters', async done =>{
-	// 	// todo
-	// 	done()
-	// })
+	test.todo('password should not contain any illegal characters')
 
 })
 
