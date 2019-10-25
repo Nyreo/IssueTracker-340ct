@@ -31,8 +31,16 @@ module.exports = class Issue {
 		if(timestamp > Date.now() + daySeconds) throw new Error('timestamp is too far in the future')
 	}
 
+	checkUndefinedParams(params) {
+		for(const key of Object.keys(params)) {
+			if(!params[key] || params[key]==='') throw new Error(`${key} must not be blank`)
+		}
+	}
+
 	async validateIssueCredentials(issue) {
 		try {
+			// check issue is defined
+			this.checkUndefinedParams({issue})
 			// check missing data
 			this.checkMissingData(issue)
 			// check validate timestamp
@@ -40,6 +48,13 @@ module.exports = class Issue {
 		} catch(err) {
 			throw err
 		}
+	}
+
+	async checkIssueExists(id) {
+		const sql = `SELECT COUNT(id) as count FROM issues WHERE id=${id};`
+		const records = await this.db.get(sql)
+
+		if(records.count === 0) throw new Error('issue does not exist')
 	}
 
 	async reportIssue(issue) {
@@ -62,17 +77,65 @@ module.exports = class Issue {
 	}
 
 	async fetchIssue(id) {
-		const sql = `SELECT * from issues WHERE id=${id}`
+		this.checkUndefinedParams({id})
+
+		const sql = `SELECT * FROM issues WHERE id=${id}`
 		const record = await this.db.get(sql)
 
 		return record ? record : {}
 	}
 
 	async fetchAllIssues() {
-		const sql = 'SELECT * from issues'
+		const sql = 'SELECT * FROM issues'
 		const records = await this.db.all(sql)
 
+		return records
+	}
 
-		return records ? records : []
+	async fetchUserIssues(username) {
+		this.checkUndefinedParams({username})
+
+		const sql = `SELECT * FROM issues WHERE username="${username}"`
+		const records = await this.db.all(sql)
+
+		return records
+	}
+
+	async deleteIssue(id) {
+		try {
+			this.checkUndefinedParams({id})
+			await this.checkIssueExists(id)
+			const sql = `DELETE from issues WHERE id=${id}`
+			this.db.run(sql)
+		} catch(err) {
+			throw err
+		}
+	}
+
+	async updateIssueStatus(id, status) {
+		try {
+			this.checkUndefinedParams({id, status})
+			await this.checkIssueExists(id)
+			const sql = `UPDATE issues SET status="${status}" WHERE id=${id};`
+			this.db.run(sql)
+		} catch (err) {
+			throw err
+		}
+	}
+
+	// eslint-disable-next-line complexity
+	async updateIssuePriority(id, priority) {
+		try {
+			this.checkUndefinedParams({id, priority})
+			await this.checkIssueExists(id)
+
+			if(isNaN(priority)) throw new Error('priority must be a positive number')
+			if(priority <= 0) throw new Error('priority cannot be negative or equal to 0')
+
+			const sql = `UPDATE issues SET priority=${priority} WHERE id=${id}`
+			this.db.run(sql)
+		} catch (err) {
+			throw err
+		}
 	}
 }

@@ -12,8 +12,8 @@ const cors = require('@koa/cors')
 // const mime = require('mime-types')
 
 // router imports
-const userRouter = require('./modules/userManagementService/userRouter')
-const issueRouter = require('./modules/issueManagementService/issueRouter')
+const userRouter = require('./services/userManagementService/userRouter')
+const issueRouter = require('./services/issueManagementService/issueRouter')
 
 const app = new Koa()
 

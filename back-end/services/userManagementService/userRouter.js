@@ -54,7 +54,6 @@ router.post('/user/login', async ctx => {
 		const isStaff = await user.isStaff(body.user)
 		const data = { username: body.user, isStaff}
 		const token = await user.generateWebToken(data)
-		console.log(token)
 		ctx.body = {token}
 	} catch(err) {
 		ctx.status = status.UNAUTHORIZED

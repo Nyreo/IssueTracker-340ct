@@ -2,6 +2,7 @@
 
 // STANDARD IMPORTS
 const Router = require('koa-router')
+const status = require('http-status-codes')
 
 // CUSTOM IMPORTS
 const Issue = require('./issue')
@@ -16,6 +17,12 @@ const dbName = 'issues.db'
  * @route {GET} /issues/fetch
  */
 router.get('/issues/fetch', async ctx => {
+	const issues = await new Issue(dbName)
+
+	const data = await issues.fetchAllIssues()
+
+	ctx.body = data
+	ctx.status = status.OK
 })
 
 /**
