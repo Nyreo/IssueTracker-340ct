@@ -13,7 +13,6 @@ module.exports = class User {
 	constructor(dbName = ':memory:') {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
-			// we need this table to store the user accounts
 			// eslint-disable-next-line max-len
 			const sql = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, firstName TEXT, lastName TEXT, email TEXT, address TEXT, postCode TEXT, isStaff INTEGER DEFAULT 0);'
 			await this.db.run(sql)
@@ -22,7 +21,6 @@ module.exports = class User {
 	}
 
 	async generateWebToken(data) {
-		// console.log('data: ', data)
 		const options = {
 			expiresIn: '30m'
 		}
@@ -67,8 +65,6 @@ module.exports = class User {
 
 		// if all details are there check if passwords match
 		if(userDetails.password !== userDetails.confirmPassword) throw new Error('passwords must match')
-		// if no errors thrown
-		return true
 	}
 
 	/**

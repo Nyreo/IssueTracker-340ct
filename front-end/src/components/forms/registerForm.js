@@ -3,11 +3,11 @@ import React, {useState} from 'react'
 import jwt from 'jsonwebtoken'
 
 // custom imports
-import {register} from '../modules/userAuthentication'
-import {setUser} from '../actions/userActions'
+import {register} from '../../modules/userAuthentication'
+import {setUser} from '../../actions/userActions'
 
 // component imports
-import InputField from './inputField'
+import InputField from '../inputField'
 
 const RegisterForm = ({store, history}) => {
 
@@ -102,19 +102,21 @@ const RegisterForm = ({store, history}) => {
     // visual return of the component
     return (
       <div className='centered'>  
-        {error ? <span className='animated shake error centered-margin'>{error}</span> : null}
-        <form className='form centered centered-margin' onSubmit={onSubmit}>
+        {error ? <span className='animated shake error h-centered-margin'>{error}</span> : null}
+        <form className='form centered h-centered-margin' onSubmit={onSubmit}>
           <h1 className='header centered'>REGISTER</h1>
 
-          <div className="input-fields centered-margin">
+          <div className="input-fields h-centered-margin">
             <div className="input-double">
               <InputField label={"First Name"}  type={"text"} value={registerDetails.firstName} onChange={updateFirstName}/>
               <InputField label={"Last Name"} type={"text"} value={registerDetails.lastName} onChange={updateLastName}/>
             </div>
             <InputField label={"Email Address"}  type={"text"} value={registerDetails.email} onChange={updateEmail}/>
             <InputField label={"Username"}  type={"text"} value={registerDetails.username} onChange={updateUsername}/>
-            <InputField label={"Password"}  type={"password"} value={registerDetails.password} onChange={updatePassword}/>
-            <InputField label={"Confirm Password"} placeholder={"Confirm your password"} type={"password"} value={registerDetails.confirmPassword} onChange={updateConfirmPassword}/>
+            <div className='input-double'>
+              <InputField label={"Password"}  type={"password"} value={registerDetails.password} onChange={updatePassword}/>
+              <InputField label={"Confirm Password"} placeholder={"Confirm your password"} type={"password"} value={registerDetails.confirmPassword} onChange={updateConfirmPassword}/>
+            </div>
             <div className="input-double">
               <InputField label={"Address"}  type={"text"} value={registerDetails.address} onChange={updateAddress}/>
               <InputField label={"Post Code"} type={"text"} value={registerDetails.postCode} onChange={updatePostCode}/>

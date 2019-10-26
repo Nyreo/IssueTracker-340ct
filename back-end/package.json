@@ -1,7 +1,7 @@
 {
-  "name": "10_auth",
+  "name": "Local_Community",
   "version": "1.0.0",
-  "description": "",
+  "description": "Local Community issue reporting web app.",
   "main": "index.js",
   "engines": {
     "node": "12.x"
@@ -32,9 +32,7 @@
     "koa-body": "^4.0.8",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
-    "koa-session": "^5.10.1",
     "mime-types": "^2.1.22",
-    "mongoose": "^5.7.3",
     "sqlite-async": "^1.0.11"
   },
   "devDependencies": {

@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 const InputField = (props) => {
     return (
       <div className="row centered-margin">
@@ -10,8 +9,9 @@ const InputField = (props) => {
           onChange={props.onChange} 
           type={props.type} 
           name={props.label} 
-          placeholder={props.placeholder ? props.placeholder : `Enter your ${props.label}`} 
-          required/>
+          placeholder={props.placeholder ? props.placeholder : `Enter your ${props.label}`}
+          />
+          
       </div>
     )
   }

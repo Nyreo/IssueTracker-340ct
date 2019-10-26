@@ -5,11 +5,17 @@ import {
   BrowserRouter as Router,
   Route, Link, Redirect
 } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+/* Icon imports */
+import { faHome, faUser, faUserCog } from '@fortawesome/free-solid-svg-icons'
 
 /* Component Imports */
 
-import LoginForm from './components/loginForm'
-import RegisterForm from './components/registerForm'
+import LoginForm from './components/forms/loginForm'
+import RegisterForm from './components/forms/registerForm'
+import ReportIssueForm from './components/forms/reportIssueForm'
+
 import Home from './components/home'
 import IssuesList  from './components/issues'
 
@@ -31,30 +37,46 @@ function App(props) {
   return (
     <div>
       <Router>
-        <div>
-          <div>
-            <Link to="/">home</Link>
-            {/* is the user logged in? */}
-            {userData.isAuth ? 
-              <>
-                <Link to="/issues">Issues</Link>
-                {/* is the user a member of staff? */}
-                {userData.user.isStaff ? 
+      <div className='nav'>
+            <div className='fl-left h-centered-margin'>
+              <Link className='link' to='/'><FontAwesomeIcon icon={faHome}/>Home</Link>
+              {
+                userData.isAuth ?
                 <>
-                  <Link to="/admin">Admin</Link>
-                </> : null}
-                <button onClick={() => logout()}>Logout</button>
-                <em>Welcome, {userData.user.username}</em>
-              </>
-              : 
-              <>
-                {/* if not logged in */}
-                <Link to="/register">register</Link>
-                <Link to="/login">login</Link>
-              </>
-            }
+                  <Link className='link' to='/issues'>Issues</Link>
+                  <Link className='link' to='/issues/report'>Report Issue</Link>
+                </>
+                :
+                null
+              }
+              {
+                userData.user.isStaff ?
+                <>
+                  <Link className='link' to='/admin'><FontAwesomeIcon icon={faUserCog}/>Admin</Link>
+                </>
+                :
+                null
+              }
+            </div>
+            <div className='fl-right'>
+                {
+                  userData.isAuth ? 
+                  <>
+                    <em className='welcome-message'>Welcome, {userData.user.username}</em>
+                    <Link className='link' to='/account'><FontAwesomeIcon icon={faUser}/>Account</Link>
+                    <button className='link' onClick={() => logout()}>Logout</button>
+                  </>
+                  :
+                  <>
+                    <Link className='link' to='/register'>Register</Link>
+                    <Link className='link' to='/login'>Login</Link>
+                  </>
+                }
+            </div>
             
           </div>
+        <div className='container h-centered-margin' >
+          
           <Route exact path="/" render={() => <Home userData={userData}/>} />
           
           <Route exact path="/register" render={(compProps) => 
@@ -66,7 +88,15 @@ function App(props) {
           } />
 
           <Route exact path="/issues" render={(compProps) => 
-            userData.isAuth ? <IssuesList {...compProps} store={props} /> : <Redirect to="/login"/>
+            userData.isAuth ? <IssuesList {...compProps} store={props.store} /> : <Redirect to="/login"/>
+          } />
+
+          <Route exact path="/issues/report" render={(compProps) => 
+            userData.isAuth ?  <ReportIssueForm {...compProps} store={props.store} /> : <Redirect to="/login"/>
+          } />
+
+          <Route exact path="/account" render={(compProps) => 
+            userData.isAuth ? <h1>{userData.user.username}'s Account</h1> : <Redirect to="/login"/>
           } />
 
           <Route exact path="/admin" render={(compProps) => 
