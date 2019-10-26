@@ -2,15 +2,23 @@
 
 const sqlite = require('sqlite-async')
 
-const requiredIssueKeys=['description', 'type', 'dateSubmitted', 'username', 'priority', 'lat', 'lng']
-
+const requiredIssueKeys=['description', 'type', 'dateSubmitted', 'username']
+const exampleResponse = {
+	description: 'example',
+	type: 'example',
+	dateSubmitted: 1,
+	username: 'example',
+	lat: 1.0,
+	lng: 1.0,
+	streetName: 'example'
+}
 
 module.exports = class Issue {
 	constructor(dbName = ':memory:') {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// eslint-disable-next-line max-len
-			const sql = `CREATE TABLE IF NOT EXISTS issues (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, type TEXT, dateSubmitted INTEGER, status TEXT DEFAULT "pending", username TEXT, priority INTEGER, votes INTEGER DEFAULT 0, lat REAL, lng REAL);
+			const sql = `CREATE TABLE IF NOT EXISTS issues (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, type TEXT, dateSubmitted INTEGER, status TEXT DEFAULT "pending", username TEXT, priority INTEGER DEFAULT 0, votes INTEGER DEFAULT 0, lat REAL, lng REAL, streetName TEXT DEFAULT "");
 						 CREATE TABLE IF NOT EXISTS userVotes (issueID INTEGER, username TEXT);`
 			await this.db.run(sql)
 			return this
@@ -20,6 +28,12 @@ module.exports = class Issue {
 	checkMissingData(issue) {
 		for(const key of requiredIssueKeys) {
 			if(!(key in issue)) throw new Error(`${key} missing`)
+		}
+	}
+
+	checkCorrectDataTypes(issue) {
+		for(const key of Object.keys(issue)) {
+			if(typeof issue[key] !== typeof exampleResponse[key]) throw new Error(`${key} has invalid data type`)
 		}
 	}
 
@@ -43,8 +57,11 @@ module.exports = class Issue {
 			this.checkUndefinedParams({issue})
 			// check missing data
 			this.checkMissingData(issue)
+			// check data types
+			this.checkCorrectDataTypes(issue)
 			// check validate timestamp
 			this.validateTimestamp(issue.dateSubmitted)
+
 		} catch(err) {
 			throw err
 		}
@@ -61,14 +78,14 @@ module.exports = class Issue {
 		try {
 			await this.validateIssueCredentials(issue)
 
-			const sql = `INSERT INTO issues(description, type, dateSubmitted, username, priority, lat, lng)
+			const sql = `INSERT INTO issues(description, type, dateSubmitted, username, lat, lng, streetName)
 			VALUES("${issue.description}",
 			"${issue.type}",
 			${issue.dateSubmitted},
 			"${issue.username}",
-			${issue.priority},
 			${issue.lat},
-			${issue.lng})`
+			${issue.lng},
+			"${(issue.streetName ? issue.streetName : '')}");`
 
 			await this.db.run(sql)
 		} catch(err) {

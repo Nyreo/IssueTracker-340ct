@@ -1,17 +1,16 @@
 // standard imports
 import React, {useState} from 'react'
+import { CSSTransitionGroup } from 'react-transition-group'
 import jwt from 'jsonwebtoken'
 
 // custom imports
-import {login} from '../modules/userAuthentication'
-import {setUser} from '../actions/userActions'
+import {login} from '../../modules/userAuthentication'
+import {setUser} from '../../actions/userActions'
 
 // component imports
-import InputField from './inputField'
+import InputField from '../inputField'
+import ErrorBox from '../errorBox'
 
-// styling imports
-import '../App.css'
-import 'animate.css'
 
 const LoginForm = ({store, history}) => {
 
@@ -30,6 +29,12 @@ const LoginForm = ({store, history}) => {
     const updatePassword = (e) => {
       const _password = e.target.value
       setPassword(_password)
+    }
+
+    const RenderErrorBox = () => {
+      return (
+        <ErrorBox message={error} closeMe={() => setError('')}/>
+      );
     }
   
     // handles the login form submission logic
@@ -60,32 +65,35 @@ const LoginForm = ({store, history}) => {
             setError(err.data)
           } catch (err) { 
             // internal server error occured :( check server logs
-            setError("Internal Server Error.")
+            setError('Internal Server Error')
           }
         })
     }
     
     // visual representation of the loginForm component
     return (
-      <div className='centered'>
-        
-      {error ? <span id='errorMsg' className='shake error centered-margin'>{error}</span> : null}
-      <form className='form centered centered-margin' onSubmit={onSubmit}>
-        
-        <h1 className='header centered'>LOGIN</h1>
-        <div className="input-fields centered-margin">
-          <InputField label={"Username"}  type={"text"} value={username} onChange={updateUsername}/>
-          <InputField label={"Password"}  type={"password"} value={password} onChange={updatePassword}/>
+        <div className='anim-movement centered'>
+          <form className='anim-movement form centered h-centered-margin' onSubmit={onSubmit}>
+            <h1 className='header centered'>LOGIN</h1>
+            <CSSTransitionGroup
+          transitionName="error-box"
+          transitionAppear={true}
+          transitionAppearTimeout={200}
+          transitionLeaveTimeout={200}
+          transitionEnterTimeout={200}
+        >{error ? RenderErrorBox() : null}</CSSTransitionGroup>
+            <div className="input-fields h-centered-margin">
+              <InputField label={"Username"}  type={"text"} value={username} onChange={updateUsername}/>
+              <InputField label={"Password"}  type={"password"} value={password} onChange={updatePassword}/>
 
-          <input className="submit-button" type='submit' value='Log In!' />
+              <input className="submit-button" type='submit' value='Log In!' />
+            </div>
+            
+            <a href='/register'>Don't have an account?</a>
+            
+          </form>
+          
         </div>
-        
-        <a href='/register'>Don't have an account?</a>
-        
-      </form>
-
-      
-      </div>
     )
   }
 

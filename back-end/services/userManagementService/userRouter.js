@@ -45,8 +45,8 @@ router.post('/user/register', async ctx => {
 router.post('/user/login', async ctx => {
 	try {
 		const body = ctx.request.body
-        const user = await new User(dbName)
-        await user.login(body.user, body.pass)
+		const user = await new User(dbName)
+		await user.login(body.user, body.pass)
 
 		// update response status
 		ctx.status = status.OK

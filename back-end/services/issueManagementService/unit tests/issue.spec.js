@@ -3,17 +3,17 @@
 
 const Issues = require('../issue')
 
-describe('reportIssue()', () => {
+const baseIssue = {
+	description: 'testing',
+	type: 'noise',
+	dateSubmitted: 1571784284425,
+	username: '123',
+	lat: 54.3,
+	lng: -0.14,
+	streetName: 'test road'
+}
 
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
+describe('reportIssue()', () => {
 
 	test('reporting issue with correct details', async done => {
 		try {
@@ -62,7 +62,7 @@ describe('reportIssue()', () => {
 		expect.assertions(2)
 
 		const issue1 = {...baseIssue, dateSubmitted: Date.now() + (60*60*24) + 30}
-		const issue2 = {...baseIssue, dateSubmitteD: Date.now() + (60*60*24) - 1}
+		const issue2 = {...baseIssue, dateSubmitted: Date.now() + (60*60*24) - 1}
 		const issues = await new Issues()
 
 		await expect(issues.reportIssue(issue1))
@@ -73,18 +73,50 @@ describe('reportIssue()', () => {
 
 		done()
 	})
+
+	test('reporting issue with invalid date type submitted (NaN)', async done =>{
+		try {
+			const issues = await new Issues()
+			const issue = {
+				...baseIssue,
+				dateSubmitted: 'testing'
+			}
+			
+			await expect(issues.reportIssue(issue))
+				.rejects.toEqual(Error('dateSubmitted has invalid data type'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('reporting issue without streetName data', async done => {
+		try {
+			const issues = await new Issues()
+			const issue1 = {...baseIssue}
+			delete issue1.streetName
+
+			await issues.reportIssue(issue1)
+
+			await expect(issues.fetchIssue(1))
+				.resolves.toEqual({
+					...baseIssue,
+					streetName: '',
+					votes: 0,
+					priority: 0,
+					id: 1,
+					status: 'pending'
+				})
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
 })
 
 describe('fetchIssue', () => {
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
 
 	test('fetching existing issue', async done => {
 		expect.assertions(1)
@@ -99,7 +131,8 @@ describe('fetchIssue', () => {
 				...baseIssue,
 				status:'pending',
 				votes:0,
-				id: 1
+				id: 1,
+				priority : 0
 			})
 		} catch(err) {
 			done.fail(err.message)
@@ -141,16 +174,6 @@ describe('fetchIssue', () => {
 
 describe('fetchAllIssues()', () => {
 
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
-
 	test('fetching all issues', async done => {
 		try {
 			const issues = await new Issues()
@@ -164,13 +187,15 @@ describe('fetchAllIssues()', () => {
 				...baseIssue,
 				id: 1,
 				votes: 0,
-				status: 'pending'
+				status: 'pending',
+				priority: 0
 			},
 			{
 				...baseIssue,
 				id: 2,
 				votes: 0,
-				status: 'pending'
+				status: 'pending',
+				priority: 0
 			}])
 		} catch(err) {
 			done.fail(err.message)
@@ -194,16 +219,6 @@ describe('fetchAllIssues()', () => {
 })
 
 describe('fetchUserIssues()', () => {
-	
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
 
 	test('fetching all issues reported by valid user', async done => {
 		expect.assertions(1)
@@ -213,7 +228,7 @@ describe('fetchUserIssues()', () => {
 			await issues.reportIssue(baseIssue)
 			await issues.reportIssue(baseIssue)
 
-			const expectedIssue = {...baseIssue, votes:0, status:'pending'}
+			const expectedIssue = {...baseIssue, votes:0, status:'pending', priority: 0}
 
 			await expect(issues.fetchUserIssues('123'))
 				.resolves.toEqual([{...expectedIssue, id:1}, {...expectedIssue, id:2}])
@@ -253,16 +268,6 @@ describe('fetchUserIssues()', () => {
 })
 
 describe('deleteIssue()', () => {
-	
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
 
 	test('delete existing issue', async done => {
 
@@ -314,16 +319,6 @@ describe('deleteIssue()', () => {
 })
 
 describe('updateIssueStatus()', () => {
-
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
 
 	test('updating status of existing issue', async done =>{
 		expect.assertions(1)
@@ -388,16 +383,6 @@ describe('updateIssueStatus()', () => {
 })
 
 describe('updateIssuePriority()', () => {
-
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
 
 	test('updating priority of existing issue', async done =>{
 		expect.assertions(1)
@@ -495,16 +480,6 @@ describe('updateIssuePriority()', () => {
 })
 
 describe('voteForIssue()', () => {
-
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
 	test.todo('voting for existing issue')
 
 	test.todo('voting for non-existing issue')
@@ -519,15 +494,6 @@ describe('voteForIssue()', () => {
 })
 
 describe('voteAgainstIssue()', () => {
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
 
 	test.todo('voting against existing issue')
 
@@ -541,15 +507,6 @@ describe('voteAgainstIssue()', () => {
 })
 
 describe('cancelVote()', () => {
-	const baseIssue = {
-		description: 'testing',
-		type: 'noise',
-		dateSubmitted: 1571784284425,
-		username: '123',
-		priority: 1,
-		lat: 54.3,
-		lng: -0.14
-	}
 
 	test.todo('cancelling vote against existing issue')
 
