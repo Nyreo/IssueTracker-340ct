@@ -51,7 +51,7 @@ router.get('/issues/fetch/:id', async ctx => {
  * The script to process updating a single issue
  *
  * @name Update Script
- * @route {PUT} /issues/update/:id
+ * @route {PUT} /issues/update/status/:id
  */
 router.put('/issues/update/status/:id', async ctx => {
 	try {
@@ -62,6 +62,29 @@ router.put('/issues/update/status/:id', async ctx => {
 		const issues = await new Issue(dbName)
 
 		await issues.updateIssueStatus(id, status)
+		ctx.status = status.OK
+	} catch(err) {
+		ctx.status = status.BAD_REQUEST
+		ctx.message = err.message
+	}
+})
+
+/**
+ * The script to process updating a single issue
+ *
+ * @name Update Script
+ * @route {PUT} /issues/update/priority/:id
+ */
+router.put('/issues/update/priority/:id', async ctx => {
+	try {
+		const priority = ctx.request.body.priority
+		const id = ctx.params.id
+
+		console.log(`\tupdating issue: ${id} to priority: ${priority}`)
+
+		const issues = await new Issue(dbName)
+
+		await issues.updateIssuePriority(id, priority)
 		ctx.status = status.OK
 	} catch(err) {
 		ctx.status = status.BAD_REQUEST

@@ -17,7 +17,8 @@ import RegisterForm from './components/forms/registerForm'
 import ReportIssueForm from './components/forms/reportIssueForm'
 
 import Home from './components/home'
-import IssuesList  from './components/issues'
+import IssuesPage  from './components/issues'
+import AdminPage from './components/pages/admin'
 
 /* Custom imports */
 
@@ -49,14 +50,7 @@ function App(props) {
                 :
                 null
               }
-              {
-                userData.user.isStaff ?
-                <>
-                  <Link className='link' to='/admin'><FontAwesomeIcon icon={faUserCog}/>Admin</Link>
-                </>
-                :
-                null
-              }
+              
             </div>
             <div className='fl-right'>
                 {
@@ -64,6 +58,14 @@ function App(props) {
                   <>
                     <em className='welcome-message'>Welcome, {userData.user.username}</em>
                     <Link className='link' to='/account'><FontAwesomeIcon icon={faUser}/>Account</Link>
+                    {
+                      userData.user.isStaff ?
+                      <>
+                        <Link className='link' to='/admin'><FontAwesomeIcon icon={faUserCog}/>Admin</Link>
+                      </>
+                      :
+                      null
+                    }
                     <button className='link' onClick={() => logout()}>Logout</button>
                   </>
                   :
@@ -88,7 +90,11 @@ function App(props) {
           } />
 
           <Route exact path="/issues" render={(compProps) => 
-            userData.isAuth ? <IssuesList {...compProps} store={props.store} /> : <Redirect to="/login"/>
+            userData.isAuth ? <IssuesPage {...compProps} store={props.store} /> : <Redirect to="/login"/>
+          } />
+
+          <Route exact path="/admin" render={(compProps) => 
+            userData.user.isStaff ? <AdminPage {...compProps} store={props.store}/> : <Redirect to="/"/>
           } />
 
           <Route exact path="/issues/report" render={(compProps) => 
@@ -99,9 +105,7 @@ function App(props) {
             userData.isAuth ? <h1>{userData.user.username}'s Account</h1> : <Redirect to="/login"/>
           } />
 
-          <Route exact path="/admin" render={(compProps) => 
-            userData.user.isStaff ? <p>Admin page</p> : <Redirect to="/"/>
-          } />
+          
         </div>
       </Router>
     </div>

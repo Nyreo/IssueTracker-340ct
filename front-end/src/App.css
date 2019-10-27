@@ -383,4 +383,18 @@ textarea {
   background-color : whitesmoke;
 }
 
+.table td:nth-of-type(1) {
+  width : 100px;
+}
+
+.table td .description {
+  max-width: 200px;
+  max-height : 55px;
+  overflow:scroll;
+  overflow-wrap: break-word;
+  margin-left : auto;
+  margin-right : auto;
+  scrollbar
+}
+
 /* table --- end */

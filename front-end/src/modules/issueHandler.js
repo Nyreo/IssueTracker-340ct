@@ -31,7 +31,37 @@ export const reportIssue = (issue) => {
         })
 }
 
+export const updateIssuePriority = (id, priority) => {
+
+    const api_endpoint = `${api_url}/update/priority/${id}`
+
+    return axios
+        .put(api_endpoint, {priority})
+        .then(response => {
+            return response
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
+// export const updateIssueStatus = (id, status) => {
+
+//     const api_endpoint = `${api_url}/update/status/${id}`
+
+//     return axios
+//         .put(api_endpoint, {status})
+//         .then(response => {
+//             return response
+//         })
+//         .catch(err => {
+//             throw err.response
+//         })
+// }
+
+
 export default {
     fetchAllIssues,
-    reportIssue
+    reportIssue,
+    updateIssuePriority
 }

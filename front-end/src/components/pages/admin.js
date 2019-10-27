@@ -1,22 +1,42 @@
-// standard module imports
 import React, {Component} from 'react'
 
 // custom module imports
-import Issues from '../modules/issueHandler'
+import Issues from '../../modules/issueHandler'
 
-// custom component imports
-import IssuesTable from './issuesTable'
+import IssuesTable from '../issuesTable'
 
-class IssuesPage extends Component {
+import TableDropDown from '../table-dropdown'
+
+class AdminPage extends Component {
     
     constructor(props) {
         super(props)
+
         this.state = {
-            issues : null,
+            issues: null
         }
     }
 
+    setIssuePriority = (id, priority) => {
+        Issues.updateIssuePriority(id, priority)
+            .then(response => {
+                console.log(response)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
     renderIssues = (issues) => {
+
+        const priorityOptions = [
+            {value: 1,label: '1'},
+            {value: 2,label: '2'},
+            {value: 3,label: '3'},
+            {value: 4,label: '4'},
+            {value: 5,label: '5'}
+        ]
+
         const issueData = issues.map(issue => {
             return (
             <tr key={issue.id}>
@@ -27,7 +47,13 @@ class IssuesPage extends Component {
                 <td>{issue.streetName ? issue.streetName : '-'}</td>
                 <td>{issue.username}</td>
                 <td>{issue.status}</td>
-                <td>{issue.priority === 0 ? '-' : issue.priority}</td>
+                <td><TableDropDown 
+                        initialValue={issue.priority}
+                        options = {priorityOptions}
+                        id={issue.id}
+                        changeCallback={this.setIssuePriority}
+                    />
+                </td>
             </tr>)
         })
 
@@ -37,6 +63,7 @@ class IssuesPage extends Component {
         })
     }
 
+    // fetch all issues when the component is loaded
     componentDidMount = () => {
         Issues.fetchAllIssues()
             .then((response) => {
@@ -49,10 +76,10 @@ class IssuesPage extends Component {
     render() {
         return (
             <>
-                <h1>Issues</h1>
+            <h1>Admin</h1>
                 <div className='flex'>
                     {this.state.issues ? 
-                        <IssuesTable issues={this.state.issues} isAdmin={false}/>
+                        <IssuesTable issues={this.state.issues}/>
                     :
                         // replace with table loading animation
                         <p>Loading Issues...</p>
@@ -62,7 +89,6 @@ class IssuesPage extends Component {
             </>
         )
     }
-    
 }
 
-export default IssuesPage
+export default AdminPage
