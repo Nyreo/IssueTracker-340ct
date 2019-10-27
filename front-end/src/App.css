@@ -394,7 +394,18 @@ textarea {
   overflow-wrap: break-word;
   margin-left : auto;
   margin-right : auto;
-  scrollbar
 }
+/* 
+.table th span {
+  position : relative;
+}
+
+.table th span:before {
+  content : '?';
+  position : absolute;
+  right:-5px;
+  top:-5px;
+  font-size : 8px;
+} */
 
 /* table --- end */

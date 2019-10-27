@@ -55,13 +55,12 @@ router.get('/issues/fetch/:id', async ctx => {
  */
 router.put('/issues/update/status/:id', async ctx => {
 	try {
-		const status = ctx.request.body.status
-		console.log('status: ', status)
+		const issueStatus = ctx.request.body.status
 		const id = ctx.params.id
 
 		const issues = await new Issue(dbName)
 
-		await issues.updateIssueStatus(id, status)
+		await issues.updateIssueStatus(id, issueStatus)
 		ctx.status = status.OK
 	} catch(err) {
 		ctx.status = status.BAD_REQUEST

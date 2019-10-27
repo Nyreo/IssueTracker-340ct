@@ -19,9 +19,14 @@ class AdminPage extends Component {
 
     setIssuePriority = (id, priority) => {
         Issues.updateIssuePriority(id, priority)
-            .then(response => {
-                console.log(response)
+            .catch(err => {
+                console.log(err)
             })
+    }
+
+    setIssueStatus = (id, status) => {
+        Issues.updateIssueStatus(id, status)
+            .then(() => {})
             .catch(err => {
                 console.log(err)
             })
@@ -37,6 +42,12 @@ class AdminPage extends Component {
             {value: 5,label: '5'}
         ]
 
+        const statusOptions = [
+            {value: 'reported', label:'reported'},
+            {value: 'allocated', label:'allocated'},
+            {value: 'resolved', label:'resolved'}
+        ]
+
         const issueData = issues.map(issue => {
             return (
             <tr key={issue.id}>
@@ -46,10 +57,15 @@ class AdminPage extends Component {
                 <td>{issue.lat.toFixed(2)},{issue.lng.toFixed(2)}</td>
                 <td>{issue.streetName ? issue.streetName : '-'}</td>
                 <td>{issue.username}</td>
-                <td>{issue.status}</td>
+                <td><TableDropDown 
+                        initialValue={issue.status}
+                        options={statusOptions}
+                        id={issue.id}
+                        changeCallback={this.setIssueStatus}
+                    /></td>
                 <td><TableDropDown 
                         initialValue={issue.priority}
-                        options = {priorityOptions}
+                        options={priorityOptions}
                         id={issue.id}
                         changeCallback={this.setIssuePriority}
                     />
