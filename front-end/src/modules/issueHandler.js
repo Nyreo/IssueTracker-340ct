@@ -31,6 +31,9 @@ export const reportIssue = (issue) => {
         })
 }
 
+export const deleteIssue = (id) => {
+}
+
 export const updateIssuePriority = (id, priority) => {
 
     const api_endpoint = `${api_url}/update/priority/${id}`
@@ -59,10 +62,36 @@ export const updateIssueStatus = (id, status) => {
         })
 }
 
+export const filterIssues = (issues, filter) => {
+    let filteredIssues = issues
+
+    for(const key of Object.keys(filter)) {
+        if(filter[key] !== 'Select...') {
+            filteredIssues = filteredIssues.filter(issue => {
+                return (issue[key]).toString() === (filter[key]).toString()
+            })
+        }
+    }
+    return filteredIssues
+}
+
+export const splitIssues = (issues, rpp) => {
+    let splitIssues = [];
+
+    for(let i = 0; i <= issues.length; i+=rpp) {
+        let temp = issues.slice(i, i+rpp)
+        splitIssues.push(temp)
+    }
+
+    return splitIssues
+}
+
 
 export default {
     fetchAllIssues,
     reportIssue,
     updateIssuePriority,
-    updateIssueStatus
+    updateIssueStatus,
+    filterIssues,
+    splitIssues
 }

@@ -115,7 +115,7 @@ describe('register()', () => {
 		done()
 	})
 
-	test('email should contain the @ and . symbols', async done => {
+	test('email should contain the @ symbol', async done => {
 		expect.assertions(1)
 		const userAccount = {
 			firstName: 'joe',
@@ -129,7 +129,25 @@ describe('register()', () => {
 		}
 		const account = await new Accounts()
 		await expect(account.register(userAccount))
-			.rejects.toEqual(new Error('invalid email address'))
+			.rejects.toEqual(new Error('email must contain the @ symbol'))
+		done()
+	})
+
+	test('email should contain atleast 1 . symbol', async done => {
+		expect.assertions(1)
+		const userAccount = {
+			firstName: 'joe',
+			lastName: 'mitchell',
+			username: 'userjoe',
+			password: 'password',
+			confirmPassword: 'password',
+			email: 'test@',
+			address: '123 test lane',
+			postCode: '123 456'
+		}
+		const account = await new Accounts()
+		await expect(account.register(userAccount))
+			.rejects.toEqual(new Error('email must contain atleast one . symbol'))
 		done()
 	})
 
@@ -147,7 +165,25 @@ describe('register()', () => {
 		}
 		const account = await new Accounts()
 		await expect(account.register(userAccount))
-			.rejects.toEqual(new Error('invalid email address'))
+			.rejects.toEqual(new Error('email\'s @ symbol must come before the . symbol'))
+		done()
+	})
+
+	test('email address should contain @ and . symbol with content after the .', async done => {
+		expect.assertions(1)
+		const userAccount = {
+			firstName: 'joe',
+			lastName: 'mitchell',
+			username: 'userjoe',
+			password: 'password',
+			confirmPassword: 'password',
+			email: 'test@gmail.',
+			address: '123 test lane',
+			postCode: '123 456'
+		}
+		const account = await new Accounts()
+		await expect(account.register(userAccount))
+			.rejects.toEqual(new Error('email must contain content after the . symbol'))
 		done()
 	})
 

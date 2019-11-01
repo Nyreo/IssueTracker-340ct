@@ -1,4 +1,10 @@
-export const STATUS_OPTIONS = [
+export const USER_STATUS_OPTIONS = [
+    {value: 'reported', label:'reported'},
+    {value: 'allocated', label:'allocated'},
+    {value: 'resolved', label:'resolved'}
+]
+
+export const ADMIN_STATUS_OPTIONS = [
     {valie: 'pending', label:'pending'},
     {value: 'reported', label:'reported'},
     {value: 'allocated', label:'allocated'},

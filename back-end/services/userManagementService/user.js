@@ -38,7 +38,11 @@ module.exports = class User {
 		// check if the email address contains the @ symbol
 		const atIndex = email.indexOf('@')
 		const dotIndex = email.indexOf('.')
-		if(atIndex < 0 || dotIndex < 0 || atIndex > dotIndex) throw new Error('invalid email address')
+		// if(atIndex < 0 || dotIndex < 0 || atIndex > dotIndex) throw new Error('invalid email address')
+		if(atIndex < 0) throw new Error('email must contain the @ symbol')
+		if(dotIndex < 0) throw new Error('email must contain atleast one . symbol')
+		if(atIndex > dotIndex) throw new Error('email\'s @ symbol must come before the . symbol')
+		if(dotIndex === email.length - 1) throw new Error('email must contain content after the . symbol')
 		return true
 	}
 

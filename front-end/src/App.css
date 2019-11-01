@@ -449,26 +449,28 @@ textarea {
 .table thead {
   background-color : rgb(60, 136, 146);
   color : whitesmoke;
-}
-
-.table th, .table td{
-  padding : 8px;
+  border-radius : 5px;
 }
 
 .table th {
   font-weight : bold;
 }
 
+.table th, .table td{
+  padding : 8px;
+}
+
+.table tbody tr {
+  border-bottom : 1px solid whitesmoke;
+  padding : 5px;
+}
+
+.table tbody tr td {
+  margin : 5px;
+}
+
 .table tbody tr:hover {
-  background-color : rgb(223, 223, 223);
-}
-
-.table tr:nth-child(even) {
   background-color : whitesmoke;
-}
-
-.table td:nth-of-type(1) {
-  width : 100px;
 }
 
 .table td .description {
@@ -483,7 +485,7 @@ textarea {
 .pagination { 
   position:absolute;
   left : 50%;
-  bottom : -8%;
+  bottom : -10%;
   transform: translate(-50%);
 }
 
@@ -501,7 +503,7 @@ textarea {
 
 .filter-bar {
   flex : 0 0 250px;
-  height : 80%;
+  height : 90%;
   margin-bottom : 10%;
 }
 
@@ -512,13 +514,31 @@ textarea {
   padding : 10px;
 }
 
-.filter-option {
-  border-bottom : 1px solid lightgray;
+.filter-option td {
   padding-bottom : 5px;
   margin-bottom : 1em;
 }
 
+.filter-option td:nth-child(1) {
+  width:25%;
+}
+
+.filter-option td:nth-child(2) { text-align: right; }
+
+.filter-option td select {
+  border : 1px solid lightgray;
+  width : 75%
+}
+
 .filter-option span {
   font-weight : bold;
+}
+
+.filter-table {
+  width : 100%;
+}
+
+.filter-table td {
+  width : 50%;
 }
 /* issues filter --- end */
