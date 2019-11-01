@@ -10,7 +10,7 @@ const InputField = (props) => {
           type={props.type} 
           name={props.label} 
           placeholder={props.placeholder ? props.placeholder : `Enter your ${props.label}`}
-          />
+          required={props.required}/>
           
       </div>
     )

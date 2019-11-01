@@ -16,8 +16,8 @@ import LoginForm from './components/forms/loginForm'
 import RegisterForm from './components/forms/registerForm'
 import ReportIssueForm from './components/forms/reportIssueForm'
 
-import Home from './components/home'
-import IssuesPage  from './components/issues'
+import Home from './components/pages/home'
+import IssuesPage  from './components/pages/issues'
 import AdminPage from './components/pages/admin'
 
 /* Custom imports */
