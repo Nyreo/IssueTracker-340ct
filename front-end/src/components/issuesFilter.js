@@ -26,10 +26,44 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
         filterCallback(currentFilter)
     }
 
+    const resetFilter = () => {
+        
+
+        setFilter({})
+        filterCallback({})
+    }
+
     return (
         <div className='filter-bar h-centered-margin'>
             <p className='panel-header'><FontAwesomeIcon icon={faFilter} />Filter</p>
-            <table className='filter-table'>
+            <div className='filter-container'>
+                <div className='item'>
+                    <span>Status</span>
+                    <TableDropDown 
+                        options={STATUS_OPTIONS}
+                        id={'status'}
+                        initialValue={STATUS_OPTIONS[0].value}
+                        changeCallback={updateFilter}
+                        defaultValue={true}
+                    />
+                </div>
+                <div className='item'>
+                    <span>Priority</span>
+                    <TableDropDown 
+                        options={PRIORITY_OPTIONS}
+                        id={'priority'}
+                        initialValue={PRIORITY_OPTIONS[0].value}
+                        changeCallback={updateFilter}
+                        defaultValue={true}
+                    />
+                </div>
+                <div style={{width:'100%',marginTop:'1em'}}>
+                    <button onClick={() => resetFilter()}>Reset</button>
+                </div>
+               
+            </div>
+            
+            {/* <table className='filter-table'>
                 <tbody>
                     <tr className='filter-option'>
                     <td>Status</td>
@@ -51,8 +85,13 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
                         defaultValue={true}
                     /></td>
                     </tr>
+                    <tr>
+                        <td>
+                            <button>Reset Filter</button>
+                        </td>
+                    </tr>
                 </tbody>
-            </table>
+            </table> */}
         </div>
     )
 }

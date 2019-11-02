@@ -1,3 +1,5 @@
+/* rgb(60, 136, 146) */
+
 .App {
   text-align: center;
 }
@@ -46,6 +48,9 @@ button {
   overflow-x:scroll; 
 }
 
+.shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
 
 .fl-left {
   float : left;
@@ -171,6 +176,22 @@ a {
 
 /* navbar --- end */
 
+/* section --- start */
+
+.section {
+  width : 90%;
+  padding : 10px 0 10px 20px;
+  margin-bottom : 1em;
+  text-align : center;
+  /* border-left : 5px solid black; */
+}
+
+.section:nth-of-type(1) {
+  margin-top : 2em;
+}
+
+/* section --- end */
+
 /* form --- start */
 
 .anim-movement {
@@ -184,7 +205,6 @@ a {
   margin-bottom : 2em;
   
   position : relative;
-  box-shadow: 10px 10px 6px -6px rgb(201, 201, 201);
 }
 
 .form .header {
@@ -327,13 +347,9 @@ textarea {
 
 .report-container .report .form {
   width : 100% !important;
-  /* height : 100%; */
-  box-shadow : none;
   padding-bottom : 1em;
   margin-bottom : 0;
 }
-
-
 
 .report-container .map .frame {
   /* padding : 1em; */
@@ -432,9 +448,9 @@ textarea {
 
 .table-container {
   position : relative;
-  margin-left : 10px;
-  height:90%;
-  flex : 1 1 90%;
+  height:100%;
+  border-radius : 10px;
+  overflow : hidden;
 }
 
 .table {
@@ -442,8 +458,6 @@ textarea {
   width:100%;
   border-collapse: collapse;
   text-align : center;
-  flex : 1;
-  margin:0;
 }
 
 .table thead {
@@ -452,21 +466,14 @@ textarea {
   border-radius : 5px;
 }
 
-.table th {
+.table thead tr th {
   font-weight : bold;
-}
-
-.table th, .table td{
-  padding : 8px;
-}
-
-.table tbody tr {
-  border-bottom : 1px solid whitesmoke;
-  padding : 5px;
+  padding : 10px;
 }
 
 .table tbody tr td {
-  margin : 5px;
+  border-bottom : 1px solid whitesmoke;
+  padding : 5px;
 }
 
 .table tbody tr:hover {
@@ -485,8 +492,8 @@ textarea {
 .pagination { 
   position:absolute;
   left : 50%;
-  bottom : -10%;
   transform: translate(-50%);
+  padding : 10px;
 }
 
 .pagination .item {
@@ -502,43 +509,98 @@ textarea {
 /* issues filter --- start */
 
 .filter-bar {
-  flex : 0 0 250px;
   height : 90%;
-  margin-bottom : 10%;
+  margin-bottom : 2em;
 }
 
-.filter-bar .filter-list {
-  background-color : whitesmoke;
-  flex : 1;
-  height : 100%;
-  padding : 10px;
+.filter-container {
+  display:flex;
+  flex-flow : row wrap;
 }
 
-.filter-option td {
-  padding-bottom : 5px;
+.filter-container .item {
+  flex: 0 0 25%;
+  display : flex;
+  flex-flow : row nowrap;
   margin-bottom : 1em;
 }
 
-.filter-option td:nth-child(1) {
-  width:25%;
-}
-
-.filter-option td:nth-child(2) { text-align: right; }
-
-.filter-option td select {
-  border : 1px solid lightgray;
-  width : 75%
-}
-
-.filter-option span {
+.filter-container .item span {
+  flex : 0 0 25%;
   font-weight : bold;
 }
 
-.filter-table {
-  width : 100%;
+.filter-container .item select {
+  border : 1px solid lightgray;
+  flex : 0 1 50%;
 }
 
-.filter-table td {
-  width : 50%;
-}
 /* issues filter --- end */
+
+/* issue-list --- start */
+
+.issue-list { 
+  height : 100%;
+  width:100%;
+  position: relative;
+}
+
+/* issue-list --- end */
+
+/* issue-card --- start */
+
+.issue-card {
+  position:relative;
+  min-height : 200px;
+  border-radius : 10px;
+  margin: auto auto 1em auto;
+  padding : 10px 0 10px 0;
+  overflow:hidden;
+  width:100%;
+}
+
+.issue-card .title {
+  font-weight : bold;
+  text-transform: capitalize;
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  background-color:rgb(60, 136, 146);
+  height:1em;
+  padding:15px;
+  color:whitesmoke;
+}
+
+.issue-card .details {
+  margin-top : 3em;
+  list-style :none;
+  display:flex;
+  flex-flow : row wrap;
+}
+
+.issue-card .details li:nth-of-type(1) {
+  flex : 1 1 100%;
+  word-break: break-all;
+}
+
+.issue-card .details li {
+  flex : 0 0 25%;
+  margin-top : 10px;
+  /* padding-right : 10px; */
+}
+
+.issue-card .details .type {
+  font-weight: bold;
+}
+
+.issue-card .details p {
+  margin-left : 1em;
+}
+
+.issue-card .user {
+  float:right;
+  padding-right : 10px;
+}
+
+/* issue-card --- end */

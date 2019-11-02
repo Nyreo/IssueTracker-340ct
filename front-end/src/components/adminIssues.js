@@ -94,6 +94,7 @@ class AdminIssues extends Component {
             </tr>)
         })
 
+        // seperate issues into chunks
         const splitIssues = IssueHandler.splitIssues(issueData, this.state.rpp)
         this.setState({issues:splitIssues})
     }
@@ -102,11 +103,11 @@ class AdminIssues extends Component {
 
     render() {
         return (
-            <div className='flex fill-container'>
+            <div>
                 {this.state.issues ?
                     <>
                         <IssuesFilter filterCallback={this.filterIssues} isAdmin={true}/>
-                        <div className='table-container'> 
+                        <div> 
                             <IssuesTable issues={this.state.issues[this.state.pagination]}/>
                             <Pagination pagination={this.state.pagination} numberOfPages={this.state.issues.length} setPagination={(p) => {this.setState({pagination:p})}}/>
                         </div>

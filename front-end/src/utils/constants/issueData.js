@@ -5,7 +5,7 @@ export const USER_STATUS_OPTIONS = [
 ]
 
 export const ADMIN_STATUS_OPTIONS = [
-    {valie: 'pending', label:'pending'},
+    {value: 'pending', label:'pending'},
     {value: 'reported', label:'reported'},
     {value: 'allocated', label:'allocated'},
     {value: 'resolved', label:'resolved'}

@@ -1,7 +1,7 @@
 // standard module imports
 import React, {Component} from 'react'
 
-import Issues from '../userIssues'
+import UserIssues from '../userIssues'
 
 class IssuesPage extends Component {
     
@@ -9,7 +9,7 @@ class IssuesPage extends Component {
         return (
             <>
                 <h1>Reported Issues</h1>
-                <Issues/>
+                <UserIssues/>
             </>
         )
     }

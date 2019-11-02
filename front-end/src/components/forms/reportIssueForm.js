@@ -6,7 +6,7 @@ import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 // component imports
 import InputField from '../inputField'
-import ErrorBox from '../errorBox'
+import ErrorBox from '../utility/errorBox'
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -110,7 +110,6 @@ const ReportIssueForm = ({store, history}) => {
         if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(setCurrentLocation)
         }
-        
     }
 
     const nextFormPage = () => {
@@ -133,7 +132,7 @@ const ReportIssueForm = ({store, history}) => {
                 {/* manual report */}
                 <div className='report'>
                     {/* form --- start */}
-                    <form onSubmit={submitIssueForm} className='form'>
+                    <form onSubmit={submitIssueForm} className='form shadow'>
                         <h1 className='header centered'>Report Issue</h1>
                         <CSSTransitionGroup
                             transitionName="error-box"

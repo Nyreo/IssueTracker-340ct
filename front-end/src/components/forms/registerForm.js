@@ -9,7 +9,7 @@ import {setUser} from '../../actions/userActions'
 
 // component imports
 import InputField from '../inputField'
-import ErrorBox from '../errorBox'
+import ErrorBox from '../utility/errorBox'
 
 const RegisterForm = ({store, history}) => {
 
@@ -110,7 +110,7 @@ const RegisterForm = ({store, history}) => {
     // visual return of the component
     return (
       <div className='centered'>  
-        <form className='form centered h-centered-margin' onSubmit={onSubmit}>
+        <form className='form centered h-centered-margin shadow' onSubmit={onSubmit}>
           <h1 className='header centered'>REGISTER</h1>
           <CSSTransitionGroup
           transitionName="error-box"
