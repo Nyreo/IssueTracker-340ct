@@ -10,7 +10,7 @@ export const fetchAllIssues = () => {
     return axios
         .get(api_endpoint)
         .then(response => {
-            return response
+            return response.data
         })
         .catch(err => {
             throw err.response
@@ -31,8 +31,8 @@ export const reportIssue = (issue) => {
         })
 }
 
-export const deleteIssue = (id) => {
-}
+// export const deleteIssue = (id) => {
+// }
 
 export const updateIssuePriority = (id, priority) => {
 
@@ -63,10 +63,13 @@ export const updateIssueStatus = (id, status) => {
 }
 
 export const filterIssues = (issues, filter) => {
+    
+    if(!issues.length) throw new Error('No issues available')
+
     let filteredIssues = issues
 
     for(const key of Object.keys(filter)) {
-        if(filter[key] !== 'Select...') {
+        if(filter[key] !== 'Select...' && Object.keys(issues[0]).indexOf(key) >= 0) {
             filteredIssues = filteredIssues.filter(issue => {
                 return (issue[key]).toString() === (filter[key]).toString()
             })
@@ -75,7 +78,8 @@ export const filterIssues = (issues, filter) => {
     return filteredIssues
 }
 
-export const splitIssues = (issues, rpp) => {
+export const splitIssues = (issues, rpp=10) => {
+    if(!issues) throw new Error('No issues available')
     let splitIssues = [];
 
     for(let i = 0; i <= issues.length; i+=rpp) {

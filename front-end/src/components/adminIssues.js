@@ -53,7 +53,7 @@ class AdminIssues extends Component {
     refreshIssueList = () => {
         IssueHandler.fetchAllIssues()
             .then((response) => {
-                const rawIssues = response.data
+                const rawIssues = response
                 this.setState({rawIssues})
                 this.filterIssues(this.state.currentFilter)
             })

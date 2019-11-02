@@ -12,7 +12,7 @@ export const register = (userDetails) => {
     return axios
         .post(api_endpoint, userDetails)
         .then(response => {
-            return response
+            return response.data.token
         })
         .catch(err => {
             throw err.response
@@ -30,7 +30,7 @@ export const login = async (user, pass) => {
     return axios
         .post(api_endpoint, userObject)
         .then(response => {
-            return response
+            return response.data.token
         }).catch(err => {
             throw err.response
         })

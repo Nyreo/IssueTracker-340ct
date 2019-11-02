@@ -85,7 +85,7 @@ const RegisterForm = ({store, history}) => {
         .then(response => {
           try {
             // write token to local storage
-            const token = response.data.token
+            const token = response
             localStorage.setItem('token', token)
             
             // decode token to user

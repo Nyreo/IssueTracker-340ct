@@ -46,7 +46,7 @@ const LoginForm = ({store, history}) => {
         .then(response => {
           try {
             // write token to localStorage
-            const token = response.data.token
+            const token = response
             localStorage.setItem('token', token)
             
             // decode jsonwebtoken provided by server

@@ -24,7 +24,7 @@ class UserIssues extends Component {
     componentDidMount = () => {
         IssueHandler.fetchAllIssues()
             .then((response) => {
-                const rawIssues = response.data
+                const rawIssues = response
                 this.renderIssues(rawIssues)
                 this.setState({rawIssues})
             })
