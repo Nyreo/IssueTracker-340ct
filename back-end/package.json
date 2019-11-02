@@ -1,7 +1,7 @@
 {
-  "name": "10_auth",
-  "version": "1.0.0",
-  "description": "",
+  "name": "Local_Community",
+  "version": "0.1.0",
+  "description": "Local Community issue reporting web app.",
   "main": "index.js",
   "engines": {
     "node": "12.x"
@@ -23,16 +23,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@koa/cors": "^2.2.3",
     "bcrypt": "^3.0.6",
     "bcrypt-promise": "^2.0.0",
     "fs-extra": "^7.0.1",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.6.2",
     "koa-body": "^4.0.8",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
-    "koa-session": "^5.10.1",
     "mime-types": "^2.1.22",
-    "mongoose": "^5.7.3",
     "sqlite-async": "^1.0.11"
   },
   "devDependencies": {

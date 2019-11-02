@@ -1,22 +1,606 @@
+/* rgb(60, 136, 146) */
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
+/* general --- start */
+.header {
+  font-size : 4em;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.centered {
+  text-align : center;
 }
 
-.App-link {
-  color: #09d3ac;
+button {
+  cursor : pointer;
 }
+
+.relative {
+  position : relative;
+}
+
+.loading-blocked {
+  position : absolute;
+  z-index : 100;
+  width : 100%;
+  height : 100%;
+  top : 0;
+  left : 0;
+  background-color : rgba(0, 0, 0, 0.418);
+}
+
+.loading-blocked span {
+  color : whitesmoke;
+  font-size : 32px;
+  position:absolute;
+  left: 50%;
+  top : 50%;
+  transform:translate(-50%,-50%);
+}
+
+.yscroll {
+  overflow-y:scroll;
+}
+
+.xscroll {
+  overflow-x:scroll; 
+}
+
+.shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.fl-left {
+  float : left;
+}
+
+.fl-right {
+  float : right;
+}
+
+.flex { 
+  display:flex;
+}
+
+.h-centered-margin {
+  margin-left : auto;
+  margin-right : auto
+}
+
+.v-centered-margin {
+  margin-top : auto;
+  margin-bottom : auto;
+}
+
+.container {
+  width : 95%;
+  height : 80vh;
+}
+
+.fill-container {
+  height : 100%;
+  width : 100%;
+}
+
+.panel-header {
+  padding-bottom : 10px;
+  border-bottom : 1px solid lightgray;
+  font-weight : bold;
+}
+
+.panel-header svg {
+  padding-right : 5px;
+  font-size : .8em;
+}
+
+select {
+  font-size : 1em;
+  border : 0;
+  background-color : transparent;
+}
+
+a { 
+  padding : 5px;
+}
+
+.underline-input {
+  border: 1px solid #ccc;
+  border-bottom : 4px solid lightblue;
+}
+
+/* general --- end */
+
+/* navbar --- start */
+.nav {
+  padding : 10px;
+  width : 100%;
+  height : 10%;
+  box-sizing: border-box;
+  overflow:hidden;
+  background-color : whitesmoke;
+}
+
+.nav .link {
+  position : relative;
+  display:inline-flex;
+  padding : 10px;
+
+  background-color : transparent;
+  color : #222222;
+  border : 0;
+
+  text-align : center;
+  text-decoration: none;
+  text-transform: capitalize;
+  font-size : 1em;
+
+  transition : .2s ease-in-out;
+}
+
+.nav .link:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(60, 136, 146);
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 200ms ease-in-out;
+}
+
+.nav .link:hover:before {
+  visibility: visible;
+  transform: scaleX(1);
+}
+
+.nav .link:hover {
+  transition : .2s ease-in-out;
+}
+
+.nav .link svg {
+  margin-right : 5px;
+}
+
+.nav .link, .nav em {
+  vertical-align : middle;
+}
+
+.welcome-message {
+  border-right : 1px solid lightgray;
+  padding-right : 10px;
+}
+
+/* navbar --- end */
+
+/* section --- start */
+
+.section {
+  width : 90%;
+  padding : 10px 0 10px 20px;
+  margin-bottom : 1em;
+  text-align : center;
+  /* border-left : 5px solid black; */
+}
+
+.section:nth-of-type(1) {
+  margin-top : 2em;
+}
+
+/* section --- end */
+
+/* form --- start */
+
+.anim-movement {
+  transition : all .5s ease-in-out;
+}
+
+.form {
+  background-color : whitesmoke;
+  width : 40%;
+  padding-bottom : 4em;
+  margin-bottom : 2em;
+  
+  position : relative;
+}
+
+.form .header {
+  background-color : rgb(60, 136, 146);
+  padding : 5px;
+  color : whitesmoke;
+  font-size : 3em;
+}
+
+.form .section-header {
+  font-weight : normal;
+  font-size : 1.2em;
+  padding-bottom : .5em;
+  border-bottom : 1px solid lightgray;
+}
+
+
+.form a {
+  position : absolute;
+  bottom : 5%;
+  left : 50%;
+  transform:translate(-50%);
+  font-size : 14px;
+  text-decoration: none;
+  transition : .2s ease-in-out;
+}
+
+.form a:hover {
+  font-size : 16px;
+}
+
+.form .input-button {
+  margin-top : 2em;
+  padding : 10px 5px 10px 5px;
+  background-color : white;
+  transition: .2s ease-in-out;
+  cursor : pointer;
+  width:100%;
+}
+
+.form .input-button:hover {
+  font-weight : bold;
+}
+
+/* form --- end */
+
+
+/* inputs --- start */
+
+.row {
+  display:flex;
+  position:relative;
+  width:100%;
+}
+
+input[type=text],input[type=password], textarea, .input-select{
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-bottom : 4px solid lightblue;
+  box-sizing:border-box;
+  outline : none;
+  font-size : 80%;
+}
+
+.cust-drop-icon {
+  position : absolute;
+  right : 10px;
+  top : 55%;
+}
+
+textarea {
+  outline : none;
+}
+
+.input-select {
+  -webkit-appearance: none;
+  border-radius : 0;
+  border-bottom : 4px solid lightblue;
+  background-color : white;
+  height : 100%;
+}
+
+.input-warning {
+  color : red;
+}
+
+.input-fields {
+  width : 75%;
+}
+
+.input-fields input, .input-fields textarea, .input-fields .input-select {
+  margin-top : 2em;
+}
+
+.input-double .row {
+  display: inline-block;
+  width : 47.5%;
+}
+
+.input-double .row:nth-child(1) {
+  float:left;
+}
+.input-double .row:nth-child(2) {
+  float:right;
+}
+
+.input-double::after {
+  content:"";
+  clear:both;
+  display:table;
+}
+
+
+.input-label {
+  position: absolute;
+  top : 5px;
+  font-size : 12px;
+  color : gray;
+}
+
+/* inputs --- end */
+
+/* report container --- start */
+
+.report-container {
+  height : 100%;
+}
+
+.report-container .report {
+  flex : 0 1 350px;
+  height : 100%;
+}
+
+.report-container .map{
+  margin-top : 2em;
+  flex : 1 0 50%;
+  /* background-color : lightgray; */
+}
+
+.report-container .report .form {
+  width : 100% !important;
+  padding-bottom : 1em;
+  margin-bottom : 0;
+}
+
+.report-container .map .frame {
+  /* padding : 1em; */
+  border : 3px dotted red;
+  width:95%;
+  max-height : 100%;
+  margin : 0 20px 0 20px;
+  overflow:hidden;
+}
+
+.report-container .map .frame img {
+  height:50%;
+  width:100%;
+}
+
+/* report container --- end */
+
+/* submit button --- start */
+
+
+.submit-button {
+  width : 100%;
+  background-color : rgb(60, 136, 146);
+  padding : 10px;
+  font-size : 24px;
+  color : white;
+  border: 0;
+  margin-top : 1em;
+  transition: .2s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color : rgb(43, 106, 114);
+}
+
+/* submit button --- end */
+
+/* error-box --- start */
+.error-box {
+  position : relative;
+  overflow-y : scroll;
+  width: 70%;
+  padding : 0 10px 0 10px;
+  background-color : rgb(225, 107, 107);
+  color : whitesmoke;
+  margin-left:auto;
+  margin-right:auto;
+  border-radius : 4px;
+  text-align : center;
+  font-weight : bold;
+}
+
+.close-tag {
+  position : absolute;
+  right : 5px;
+  top : 5px;
+  color : whitesmoke;
+  transform : scale(0.9);
+  transition : transform .3s ease-in;
+}
+
+.close-tag:hover {
+  transform:scale(1);
+  transition: transform .3s ease-in-out;
+}
+
+.error-box-appear {
+  opacity: 0;
+  transform:scale(0.9);
+}
+.error-box-appear.error-box-appear-active {
+  opacity: 1;
+  transform:scale(1);
+  transition: all 200ms;
+}
+.error-box-enter {
+  opacity: 0;
+}
+.error-box-enter.error-box-enter-active {
+  opacity: 1;
+  transition: all 200ms ease-in;
+}
+.error-box-leave {
+  opacity: 1;
+  height : 100%;
+}
+.error-box-leave.error-box-leave-active {
+  opacity: 0;
+  height : 0;
+  transition: all 200ms ease-in;
+}
+
+/* error-box --- end */
+
+/* table --- start */
+
+.table-container {
+  position : relative;
+  height:100%;
+  border-radius : 10px;
+  overflow : hidden;
+}
+
+.table {
+  position : relative;
+  width:100%;
+  border-collapse: collapse;
+  text-align : center;
+}
+
+.table thead {
+  background-color : rgb(60, 136, 146);
+  color : whitesmoke;
+  border-radius : 5px;
+}
+
+.table thead tr th {
+  font-weight : bold;
+  padding : 10px;
+}
+
+.table tbody tr td {
+  border-bottom : 1px solid whitesmoke;
+  padding : 5px;
+}
+
+.table tbody tr:hover {
+  background-color : whitesmoke;
+}
+
+.table td .description {
+  max-width: 200px;
+  max-height : 55px;
+  overflow:scroll;
+  overflow-wrap: break-word;
+  margin-left : auto;
+  margin-right : auto;
+}
+
+.pagination { 
+  position:absolute;
+  left : 50%;
+  transform: translate(-50%);
+  padding : 10px;
+}
+
+.pagination .item {
+  padding : 5px;
+  font-size : 1em;
+  background-color : whitesmoke;
+  border : 0;
+  margin-right : 5px;
+}
+
+/* table --- end */
+
+/* issues filter --- start */
+
+.filter-bar {
+  height : 90%;
+  margin-bottom : 2em;
+}
+
+.filter-container {
+  display:flex;
+  flex-flow : row wrap;
+}
+
+.filter-container .item {
+  flex: 0 0 25%;
+  display : flex;
+  flex-flow : row nowrap;
+  margin-bottom : 1em;
+}
+
+.filter-container .item span {
+  flex : 0 0 25%;
+  font-weight : bold;
+}
+
+.filter-container .item select {
+  border : 1px solid lightgray;
+  flex : 0 1 50%;
+}
+
+/* issues filter --- end */
+
+/* issue-list --- start */
+
+.issue-list { 
+  height : 100%;
+  width:100%;
+  position: relative;
+}
+
+/* issue-list --- end */
+
+/* issue-card --- start */
+
+.issue-card {
+  position:relative;
+  min-height : 200px;
+  border-radius : 10px;
+  margin: auto auto 1em auto;
+  padding : 10px 0 10px 0;
+  overflow:hidden;
+  width:100%;
+}
+
+.issue-card .title {
+  font-weight : bold;
+  text-transform: capitalize;
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  background-color:rgb(60, 136, 146);
+  height:1em;
+  padding:15px;
+  color:whitesmoke;
+}
+
+.issue-card .details {
+  margin-top : 3em;
+  list-style :none;
+  display:flex;
+  flex-flow : row wrap;
+}
+
+.issue-card .details li:nth-of-type(1) {
+  flex : 1 1 100%;
+  word-break: break-all;
+}
+
+.issue-card .details li {
+  flex : 0 0 25%;
+  margin-top : 10px;
+  /* padding-right : 10px; */
+}
+
+.issue-card .details .type {
+  font-weight: bold;
+}
+
+.issue-card .details p {
+  margin-left : 1em;
+}
+
+.issue-card .user {
+  float:right;
+  padding-right : 10px;
+}
+
+/* issue-card --- end */
