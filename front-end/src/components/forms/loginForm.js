@@ -9,7 +9,7 @@ import {setUser} from '../../actions/userActions'
 
 // component imports
 import InputField from '../inputField'
-import ErrorBox from '../errorBox'
+import ErrorBox from '../utility/errorBox'
 
 
 const LoginForm = ({store, history}) => {
@@ -46,7 +46,7 @@ const LoginForm = ({store, history}) => {
         .then(response => {
           try {
             // write token to localStorage
-            const token = response.data.token
+            const token = response
             localStorage.setItem('token', token)
             
             // decode jsonwebtoken provided by server
@@ -73,7 +73,7 @@ const LoginForm = ({store, history}) => {
     // visual representation of the loginForm component
     return (
         <div className='anim-movement centered'>
-          <form className='anim-movement form centered h-centered-margin' onSubmit={onSubmit}>
+          <form className='anim-movement form centered h-centered-margin shadow' onSubmit={onSubmit}>
             <h1 className='header centered'>LOGIN</h1>
             <CSSTransitionGroup
           transitionName="error-box"

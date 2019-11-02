@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 
-const TableDropDown = ({initialValue, options, changeCallback, id}) => {
-    const [value, setValue] = useState(initialValue)
+const TableDropDown = ({initialValue, options, changeCallback, id, defaultValue}) => {
+    const [value, setValue] = useState((defaultValue ? defaultValue : initialValue))
 
     const renderOptions = () => {
+        if(defaultValue) {
+            options = [{value:null, label:'Select...'}].concat(options)
+        }
+
         const renderedOptions = options.map((option,i) => {
             return (
                 <option key={`${id}option${i}`} value={option.value}>{option.label}</option>

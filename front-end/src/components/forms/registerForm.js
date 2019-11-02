@@ -1,5 +1,6 @@
 // standard imports
 import React, {useState} from 'react'
+import { CSSTransitionGroup } from 'react-transition-group'
 import jwt from 'jsonwebtoken'
 
 // custom imports
@@ -8,6 +9,7 @@ import {setUser} from '../../actions/userActions'
 
 // component imports
 import InputField from '../inputField'
+import ErrorBox from '../utility/errorBox'
 
 const RegisterForm = ({store, history}) => {
 
@@ -23,6 +25,12 @@ const RegisterForm = ({store, history}) => {
       postCode: ""
     })
     const [error, setError] = useState("")
+
+    const RenderErrorBox = () => {
+      return (
+        <ErrorBox message={error} closeMe={() => setError('')}/>
+      );
+    }
   
     // updates the first name state for input field
     const updateFirstName = (e) => {
@@ -77,7 +85,7 @@ const RegisterForm = ({store, history}) => {
         .then(response => {
           try {
             // write token to local storage
-            const token = response.data.token
+            const token = response
             localStorage.setItem('token', token)
             
             // decode token to user
@@ -102,10 +110,15 @@ const RegisterForm = ({store, history}) => {
     // visual return of the component
     return (
       <div className='centered'>  
-        {error ? <span className='animated shake error h-centered-margin'>{error}</span> : null}
-        <form className='form centered h-centered-margin' onSubmit={onSubmit}>
+        <form className='form centered h-centered-margin shadow' onSubmit={onSubmit}>
           <h1 className='header centered'>REGISTER</h1>
-
+          <CSSTransitionGroup
+          transitionName="error-box"
+          transitionAppear={true}
+          transitionAppearTimeout={200}
+          transitionLeaveTimeout={200}
+          transitionEnterTimeout={200}
+        >{error ? RenderErrorBox() : null}</CSSTransitionGroup>
           <div className="input-fields h-centered-margin">
             <div className="input-double">
               <InputField label={"First Name"}  type={"text"} value={registerDetails.firstName} onChange={updateFirstName}/>

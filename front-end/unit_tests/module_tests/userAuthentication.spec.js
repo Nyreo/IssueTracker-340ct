@@ -8,12 +8,15 @@ describe('login', () => {
     
         // mock the axios post request (api call)
         axios.post = jest.fn(() => Promise.resolve({
-            data: 'post login'
+            data: {
+                token: 'bearer testtoken'
+            },
+            status: 200
         }))
 
-        await expect(userAuth.login('user', 'pass')).resolves.toEqual({
-            data:'post login'
-        })
+        await expect(userAuth.login('user', 'pass')).resolves.toEqual(
+            'bearer testtoken'
+        )
 
         done()
     })
@@ -27,8 +30,7 @@ describe('login', () => {
                 statusText: 'invalid password for account "username"'
             }
         }))
-        
-
+    
         await expect(userAuth.login('username', 'password')).rejects.toEqual(
             {
                 data: 'invalid password for account "username"',
@@ -46,12 +48,15 @@ describe('register', () => {
     test('register with correct credentials', async done => {
         // mock axios post request for register functionality  
         axios.post = jest.fn(() => Promise.resolve({
-            data:'post register'
+            data: {
+                token: 'bearer testtoken'
+            },
+            status: 200
         }))
 
-        await expect(userAuth.register({})).resolves.toEqual({
-            data:'post register'
-        })
+        await expect(userAuth.register({})).resolves.toEqual(
+            'bearer testtoken'
+        )
         done()
     })
 

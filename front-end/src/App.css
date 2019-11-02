@@ -1,3 +1,5 @@
+/* rgb(60, 136, 146) */
+
 .App {
   text-align: center;
 }
@@ -9,6 +11,14 @@
 
 .centered {
   text-align : center;
+}
+
+button {
+  cursor : pointer;
+}
+
+.relative {
+  position : relative;
 }
 
 .loading-blocked {
@@ -30,6 +40,17 @@
   transform:translate(-50%,-50%);
 }
 
+.yscroll {
+  overflow-y:scroll;
+}
+
+.xscroll {
+  overflow-x:scroll; 
+}
+
+.shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
 
 .fl-left {
   float : left;
@@ -55,11 +76,40 @@
 
 .container {
   width : 95%;
+  height : 80vh;
+}
+
+.fill-container {
+  height : 100%;
+  width : 100%;
+}
+
+.panel-header {
+  padding-bottom : 10px;
+  border-bottom : 1px solid lightgray;
+  font-weight : bold;
+}
+
+.panel-header svg {
+  padding-right : 5px;
+  font-size : .8em;
+}
+
+select {
+  font-size : 1em;
+  border : 0;
+  background-color : transparent;
 }
 
 a { 
   padding : 5px;
 }
+
+.underline-input {
+  border: 1px solid #ccc;
+  border-bottom : 4px solid lightblue;
+}
+
 /* general --- end */
 
 /* navbar --- start */
@@ -126,6 +176,22 @@ a {
 
 /* navbar --- end */
 
+/* section --- start */
+
+.section {
+  width : 90%;
+  padding : 10px 0 10px 20px;
+  margin-bottom : 1em;
+  text-align : center;
+  /* border-left : 5px solid black; */
+}
+
+.section:nth-of-type(1) {
+  margin-top : 2em;
+}
+
+/* section --- end */
+
 /* form --- start */
 
 .anim-movement {
@@ -139,7 +205,6 @@ a {
   margin-bottom : 2em;
   
   position : relative;
-  box-shadow: 10px 10px 6px -6px rgb(201, 201, 201);
 }
 
 .form .header {
@@ -147,6 +212,13 @@ a {
   padding : 5px;
   color : whitesmoke;
   font-size : 3em;
+}
+
+.form .section-header {
+  font-weight : normal;
+  font-size : 1.2em;
+  padding-bottom : .5em;
+  border-bottom : 1px solid lightgray;
 }
 
 
@@ -162,6 +234,19 @@ a {
 
 .form a:hover {
   font-size : 16px;
+}
+
+.form .input-button {
+  margin-top : 2em;
+  padding : 10px 5px 10px 5px;
+  background-color : white;
+  transition: .2s ease-in-out;
+  cursor : pointer;
+  width:100%;
+}
+
+.form .input-button:hover {
+  font-weight : bold;
 }
 
 /* form --- end */
@@ -182,6 +267,13 @@ input[type=text],input[type=password], textarea, .input-select{
   border-bottom : 4px solid lightblue;
   box-sizing:border-box;
   outline : none;
+  font-size : 80%;
+}
+
+.cust-drop-icon {
+  position : absolute;
+  right : 10px;
+  top : 55%;
 }
 
 textarea {
@@ -239,12 +331,12 @@ textarea {
 /* report container --- start */
 
 .report-container {
-  overflow: hidden;
-  max-height : 85vh;
+  height : 100%;
 }
 
 .report-container .report {
   flex : 0 1 350px;
+  height : 100%;
 }
 
 .report-container .map{
@@ -255,12 +347,9 @@ textarea {
 
 .report-container .report .form {
   width : 100% !important;
-  height : 100%;
-  padding-bottom : 0;
-  box-shadow : none;
+  padding-bottom : 1em;
+  margin-bottom : 0;
 }
-
-
 
 .report-container .map .frame {
   /* padding : 1em; */
@@ -268,6 +357,7 @@ textarea {
   width:95%;
   max-height : 100%;
   margin : 0 20px 0 20px;
+  overflow:hidden;
 }
 
 .report-container .map .frame img {
@@ -356,35 +446,38 @@ textarea {
 
 /* table --- start */
 
+.table-container {
+  position : relative;
+  height:100%;
+  border-radius : 10px;
+  overflow : hidden;
+}
+
 .table {
+  position : relative;
+  width:100%;
   border-collapse: collapse;
-  flex : 1 1 90%;
   text-align : center;
 }
 
 .table thead {
   background-color : rgb(60, 136, 146);
   color : whitesmoke;
+  border-radius : 5px;
 }
 
-.table th, .table td{
-  padding : 8px;
-}
-
-.table th {
+.table thead tr th {
   font-weight : bold;
+  padding : 10px;
+}
+
+.table tbody tr td {
+  border-bottom : 1px solid whitesmoke;
+  padding : 5px;
 }
 
 .table tbody tr:hover {
   background-color : whitesmoke;
-}
-
-.table tr:nth-child(even) {
-  background-color : whitesmoke;
-}
-
-.table td:nth-of-type(1) {
-  width : 100px;
 }
 
 .table td .description {
@@ -395,17 +488,119 @@ textarea {
   margin-left : auto;
   margin-right : auto;
 }
-/* 
-.table th span {
-  position : relative;
+
+.pagination { 
+  position:absolute;
+  left : 50%;
+  transform: translate(-50%);
+  padding : 10px;
 }
 
-.table th span:before {
-  content : '?';
-  position : absolute;
-  right:-5px;
-  top:-5px;
-  font-size : 8px;
-} */
+.pagination .item {
+  padding : 5px;
+  font-size : 1em;
+  background-color : whitesmoke;
+  border : 0;
+  margin-right : 5px;
+}
 
 /* table --- end */
+
+/* issues filter --- start */
+
+.filter-bar {
+  height : 90%;
+  margin-bottom : 2em;
+}
+
+.filter-container {
+  display:flex;
+  flex-flow : row wrap;
+}
+
+.filter-container .item {
+  flex: 0 0 25%;
+  display : flex;
+  flex-flow : row nowrap;
+  margin-bottom : 1em;
+}
+
+.filter-container .item span {
+  flex : 0 0 25%;
+  font-weight : bold;
+}
+
+.filter-container .item select {
+  border : 1px solid lightgray;
+  flex : 0 1 50%;
+}
+
+/* issues filter --- end */
+
+/* issue-list --- start */
+
+.issue-list { 
+  height : 100%;
+  width:100%;
+  position: relative;
+}
+
+/* issue-list --- end */
+
+/* issue-card --- start */
+
+.issue-card {
+  position:relative;
+  min-height : 200px;
+  border-radius : 10px;
+  margin: auto auto 1em auto;
+  padding : 10px 0 10px 0;
+  overflow:hidden;
+  width:100%;
+}
+
+.issue-card .title {
+  font-weight : bold;
+  text-transform: capitalize;
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  background-color:rgb(60, 136, 146);
+  height:1em;
+  padding:15px;
+  color:whitesmoke;
+}
+
+.issue-card .details {
+  margin-top : 3em;
+  list-style :none;
+  display:flex;
+  flex-flow : row wrap;
+}
+
+.issue-card .details li:nth-of-type(1) {
+  flex : 1 1 100%;
+  word-break: break-all;
+}
+
+.issue-card .details li {
+  flex : 0 0 25%;
+  margin-top : 10px;
+  /* padding-right : 10px; */
+}
+
+.issue-card .details .type {
+  font-weight: bold;
+}
+
+.issue-card .details p {
+  margin-left : 1em;
+}
+
+.issue-card .user {
+  float:right;
+  padding-right : 10px;
+}
+
+/* issue-card --- end */
