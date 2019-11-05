@@ -66,6 +66,15 @@ const IssueCard = ({issue}) => {
                     <span className='type'>Priority</span>
                     <p>{issue.priority}</p>
                 </li>
+                {
+                    issue.distance ? 
+                    (
+                        <li>
+                            <span className='type'>Distance from Current Location</span>
+                            <p>{issue.distance} KM</p>
+                        </li>
+                    ) : null
+                }
             </ul>
             <em className='user'>Issue reported by: {issue.username}</em>
         </div>

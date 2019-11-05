@@ -111,7 +111,7 @@ const RegisterForm = ({store, history}) => {
     return (
       <div className='centered'>  
         <form className='form centered h-centered-margin shadow' onSubmit={onSubmit}>
-          <h1 className='header centered'>REGISTER</h1>
+          <h1 className='header h-centered-margin'>REGISTER</h1>
           <CSSTransitionGroup
           transitionName="error-box"
           transitionAppear={true}
@@ -134,9 +134,11 @@ const RegisterForm = ({store, history}) => {
               <InputField label={"Address"}  type={"text"} value={registerDetails.address} onChange={updateAddress}/>
               <InputField label={"Post Code"} type={"text"} value={registerDetails.postCode} onChange={updatePostCode}/>
             </div>
-            <input className="submit-button" type='submit' value='Sign me up!' />
           </div>
-          <a href='/login'>Already have an account?</a>
+          <div className='form-footer'>
+              <button className="submit-button" type='submit'>Sign Up!</button>
+              <a href='/login'>Already Have An Account?</a>
+            </div>
         </form>
       </div>
     )

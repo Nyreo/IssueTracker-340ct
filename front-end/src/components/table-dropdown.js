@@ -26,7 +26,7 @@ const TableDropDown = ({initialValue, options, changeCallback, id, defaultValue}
     }
 
     return (
-        <select value={value} onChange={setCurrentValue}>
+        <select className='' value={value} onChange={setCurrentValue}>
             {renderOptions()}
         </select>
     )

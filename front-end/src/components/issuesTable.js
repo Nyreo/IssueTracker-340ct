@@ -12,7 +12,7 @@ const IssuesTable = ({issues}) => {
     return (
         <>
             <p className='panel-header'><FontAwesomeIcon icon={faTable}/>Issues</p>
-            <div className='table-container yscroll shadow'>
+            <div className='table-container yscroll'>
                 <table className='table'>
                 <thead>
                     <tr>
