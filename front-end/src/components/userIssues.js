@@ -26,35 +26,26 @@ class UserIssues extends Component {
     }
 
     componentDidMount = () => {
-
-        // console.log(Location.distance(52.4082494,-1.5034827, 52.271126,-2.0000023))
-
         IssueHandler.fetchAllIssues()
             .then((response) => {
                 const rawIssues = response
                 this.renderIssues(rawIssues)
-                this.setState({rawIssues, loadingIssues: false})
+                this.setState({rawIssues})
             })
             .catch(err => console.log(err))
     }
 
     renderIssues = (issues) => {
+        // filter out pending issues
         issues = issues.filter(issue => issue.status !== 'pending')
-
-        const splitIssues = IssueHandler.splitIssues(issues, this.state.rpp)
-        this.setState({issues:splitIssues})
+        // calculate distance between user and all issues
+        this.calcIssueDistance()
     }
 
     filterIssues = (filter) => {
         const filteredIssues = IssueHandler.filterIssues(this.state.rawIssues, filter)
         this.setState({pagination:0})
         this.renderIssues(filteredIssues)
-    }
-
-    sortIssuesByDistance = (issues) => {
-        const sortedIssues = issues.sort(this.compareDistance)
-        console.log(sortedIssues)
-        this.renderIssues(sortedIssues)
     }
 
     compareDistance = (a, b) => {
@@ -69,14 +60,19 @@ class UserIssues extends Component {
             const distance = Location.distance(coords.latitude, coords.longitude, issue.lat, issue.lng)
             return issue = {...issue, distance: distance.toFixed(2)}
         })
-        this.setState({rawIssues: issues, loadingIssues:false})
-        this.sortIssuesByDistance(issues)
-        
+        const sortedIssues = issues.sort(this.compareDistance)
+        const splitIssues = IssueHandler.splitIssues(sortedIssues, this.state.rpp)
+        this.setState({issues:splitIssues, loadingIssues : false})
     }
 
     calcIssueDistance = () => {
-        this.setState({loadingIssues:true})
         Location.getCurrentLocation(this.success)
+    }
+
+    renderSortOptions = () => {
+        return (
+            <button className='submit-button' onClick={() => this.calcIssueDistance()}>Calculate Distance</button>
+        )
     }
 
     render() {
@@ -84,18 +80,14 @@ class UserIssues extends Component {
             <div>
                 {this.state.issues ?
                     <>
-                        <button className='submit-button' onClick={() => this.calcIssueDistance()}>Distance</button>
-                        <div className='flex'>
-                            <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
-                            <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
-                        </div>
+                        <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
                         <div>
                             <IssuesList issues={this.state.issues[this.state.pagination]}/>
                             <Pagination pagination={this.state.pagination} numberOfPages={this.state.issues.length} setPagination={(p) => {this.setState({pagination:p})}}/>
                         </div>
                     </>
                 :
-                    <p>Loading Issues   ...</p>
+                    <div className='loading-blocked'></div>
                 }
             </div>
         )

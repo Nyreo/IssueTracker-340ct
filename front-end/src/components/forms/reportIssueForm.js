@@ -165,7 +165,10 @@ const ReportIssueForm = ({store, history}) => {
                                      </select>
                                      <FontAwesomeIcon className='cust-drop-icon' icon={faCaretDown}/>
                                  </div>
-                                 <button className='submit-button' onClick={() => nextFormPage()}>Next</button>
+                                <div style={{marginTop: '2em'}}>
+                                    <button className='submit-button' onClick={() => nextFormPage()}>Next</button>
+                                </div>
+                                
                                 </>
                                 :
                                 <>
@@ -174,7 +177,7 @@ const ReportIssueForm = ({store, history}) => {
                                 {/* location - auto*/}
                                 <div className='row'>
                                     <span className='input-label'>Automatically Get Location</span>
-                                    <button className='input-button underline-input' onClick={getUserLocation}>Get Current Location</button>
+                                    <button className='input-button' onClick={getUserLocation}>Get Current Location</button>
                                 </div>
                                 {/* location - manual */}
                                 <div className='input-double'>
@@ -184,16 +187,10 @@ const ReportIssueForm = ({store, history}) => {
                                 
                                 {/* streetName */}
                                 <InputField label={"Street Name (Optional)"}  type={"text"} value={reportDetails.streetName} onChange={setStreetName} required={false}/>
-                                <div className='input-double'>
-                                    <div className='row'>
-                                        {/* back button */}
-                                        <button className='submit-button' onClick={() => previousFormPage()}>Back</button>
+                                    <div style={{marginTop: '2em'}}>
+                                        <button className='submit-button w-fill' onClick={() => previousFormPage()}>Back</button>
+                                        <button className='submit-button w-fill gap-top' type='submit'>Submit</button>
                                     </div>
-                                    <div className='row'>
-                                        {/* back button */}
-                                        <button className='submit-button' type='submit'>Submit</button>
-                                    </div>
-                                </div>
                                 </>
                             }
                         </div>

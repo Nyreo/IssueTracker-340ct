@@ -27,8 +27,6 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
     }
 
     const resetFilter = () => {
-        
-
         setFilter({})
         filterCallback({})
     }
@@ -39,7 +37,7 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
             <div className='filter-container'>
                 <div className='item'>
                     <span>Status</span>
-                    <TableDropDown 
+                    <TableDropDown
                         options={STATUS_OPTIONS}
                         id={'status'}
                         initialValue={STATUS_OPTIONS[0].value}
