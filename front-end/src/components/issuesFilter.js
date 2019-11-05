@@ -34,7 +34,7 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
     }
 
     return (
-        <div className='filter-bar h-centered-margin'>
+        <div className='filter-bar h-centered-margin flex-item-50'>
             <p className='panel-header'><FontAwesomeIcon icon={faFilter} />Filter</p>
             <div className='filter-container'>
                 <div className='item'>
@@ -58,40 +58,9 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
                     />
                 </div>
                 <div style={{width:'100%',marginTop:'1em'}}>
-                    <button onClick={() => resetFilter()}>Reset</button>
+                    <button className='submit-button' onClick={() => resetFilter()}>Reset</button>
                 </div>
-               
             </div>
-            
-            {/* <table className='filter-table'>
-                <tbody>
-                    <tr className='filter-option'>
-                    <td>Status</td>
-                    <td><TableDropDown 
-                        options={STATUS_OPTIONS}
-                        id={'status'}
-                        initialValue={STATUS_OPTIONS[0].value}
-                        changeCallback={updateFilter}
-                        defaultValue={true}
-                    /></td>
-                    </tr>
-                    <tr className='filter-option'>
-                        <td>Priority</td>
-                        <td><TableDropDown 
-                        options={PRIORITY_OPTIONS}
-                        id={'priority'}
-                        initialValue={PRIORITY_OPTIONS[0].value}
-                        changeCallback={updateFilter}
-                        defaultValue={true}
-                    /></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button>Reset Filter</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> */}
         </div>
     )
 }

@@ -6,10 +6,10 @@ class AdminPage extends Component {
 
     render () {
         return (
-            <>
+            <div className='fill shadow'>
                 <h1>Admin</h1>
                 <AdminIssues />
-            </>
+            </div>
         )
     }
 }

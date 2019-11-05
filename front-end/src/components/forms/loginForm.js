@@ -74,7 +74,7 @@ const LoginForm = ({store, history}) => {
     return (
         <div className='anim-movement centered'>
           <form className='anim-movement form centered h-centered-margin shadow' onSubmit={onSubmit}>
-            <h1 className='header centered'>LOGIN</h1>
+            <h1 className='header h-centered-margin'>LOGIN</h1>
             <CSSTransitionGroup
           transitionName="error-box"
           transitionAppear={true}
@@ -85,12 +85,11 @@ const LoginForm = ({store, history}) => {
             <div className="input-fields h-centered-margin">
               <InputField label={"Username"}  type={"text"} value={username} onChange={updateUsername}/>
               <InputField label={"Password"}  type={"password"} value={password} onChange={updatePassword}/>
-
-              <input className="submit-button" type='submit' value='Log In!' />
             </div>
-            
-            <a href='/register'>Don't have an account?</a>
-            
+            <div className='form-footer'>
+              <button className="submit-button" type='submit'>Login In!</button>
+              <a href='/register'>Don't have an account?</a>
+            </div>
           </form>
           
         </div>

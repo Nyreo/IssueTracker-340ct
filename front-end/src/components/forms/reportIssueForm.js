@@ -14,6 +14,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // module imports
 import {reportIssue} from '../../modules/issueHandler'
 
+// utils imports
+import Location from '../../utils/functional/location'
+
 const ReportIssueForm = ({store, history}) => {
 
     const initialReportDetails = {
@@ -107,9 +110,7 @@ const ReportIssueForm = ({store, history}) => {
         e.preventDefault()
         setLoading(true)
 
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(setCurrentLocation)
-        }
+        Location.getCurrentLocation(setCurrentLocation)
     }
 
     const nextFormPage = () => {
@@ -133,7 +134,7 @@ const ReportIssueForm = ({store, history}) => {
                 <div className='report'>
                     {/* form --- start */}
                     <form onSubmit={submitIssueForm} className='form shadow'>
-                        <h1 className='header centered'>Report Issue</h1>
+                        <h1 className='header h-centered-margin'>Report Issue</h1>
                         <CSSTransitionGroup
                             transitionName="error-box"
                             transitionAppear={true}
