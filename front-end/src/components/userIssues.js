@@ -87,7 +87,7 @@ class UserIssues extends Component {
                         </div>
                     </>
                 :
-                    <div className='loading-blocked'></div>
+                    <div className='loading-blocked'><span>Loading Issues...</span></div>
                 }
             </div>
         )
