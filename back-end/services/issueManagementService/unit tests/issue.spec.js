@@ -106,7 +106,8 @@ describe('reportIssue()', () => {
 					votes: 0,
 					priority: 0,
 					id: 1,
-					status: 'reported'
+					status: 'reported',
+					daysElapsed : null
 				})
 		} catch (err) {
 			done.fail(err)
@@ -132,7 +133,8 @@ describe('fetchIssue', () => {
 				status:'reported',
 				votes:0,
 				id: 1,
-				priority : 0
+				priority : 0,
+				daysElapsed : null
 			})
 		} catch(err) {
 			done.fail(err.message)
@@ -188,14 +190,16 @@ describe('fetchAllIssues()', () => {
 				id: 1,
 				votes: 0,
 				status: 'reported',
-				priority: 0
+				priority: 0,
+				daysElapsed : null
 			},
 			{
 				...baseIssue,
 				id: 2,
 				votes: 0,
 				status: 'reported',
-				priority: 0
+				priority: 0,
+				daysElapsed : null
 			}])
 		} catch(err) {
 			done.fail(err.message)
@@ -228,7 +232,7 @@ describe('fetchUserIssues()', () => {
 			await issues.reportIssue(baseIssue)
 			await issues.reportIssue(baseIssue)
 
-			const expectedIssue = {...baseIssue, votes:0, status:'reported', priority: 0}
+			const expectedIssue = {...baseIssue, votes:0, status:'reported', priority: 0, daysElapsed: null}
 
 			await expect(issues.fetchUserIssues('123'))
 				.resolves.toEqual([{...expectedIssue, id:1}, {...expectedIssue, id:2}])

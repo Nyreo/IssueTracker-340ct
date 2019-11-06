@@ -1,10 +1,15 @@
+// standard imports
 import React from 'react'
+
+// utils imports
+import DateHandler from '../utils/functional/dateHandler'
 
 const IssueCard = ({issue}) => {
 
     let dateReported = new Date(issue.dateSubmitted)
         dateReported = `${dateReported.getDate()}/${dateReported.getMonth()}/${dateReported.getFullYear()}`
     const streetName = (issue.streetName ? issue.streetName : 'N/A')
+    const timeElapsed = (issue.timeElapsed ? issue.timeElapsed : DateHandler.timestampDays(DateHandler.difference(Date.now(), issue.dateSubmitted)))
 
     let titleStyle;
 
@@ -48,6 +53,8 @@ const IssueCard = ({issue}) => {
                 <li>
                     <span className='type'>Date Reported</span>
                     <p>{dateReported}</p>
+                    <span className='type'>Time Elapsed</span>
+                    <p>{timeElapsed} day(s)</p>
                 </li>
                 <li>
                     <span className='type'>Location</span>
