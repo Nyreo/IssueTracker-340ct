@@ -18,7 +18,7 @@ module.exports = class Issue {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// eslint-disable-next-line max-len
-			const sql = `CREATE TABLE IF NOT EXISTS issues (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, type TEXT, dateSubmitted INTEGER, daysElapsed INTEGER, status TEXT DEFAULT "reported", username TEXT, priority INTEGER DEFAULT 0, votes INTEGER DEFAULT 0, lat REAL, lng REAL, streetName TEXT DEFAULT "");
+			const sql = `CREATE TABLE IF NOT EXISTS issues (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, type TEXT, dateSubmitted INTEGER, dateResolved INTEGER, status TEXT DEFAULT "reported", username TEXT, priority INTEGER DEFAULT 0, votes INTEGER DEFAULT 0, lat REAL, lng REAL, streetName TEXT DEFAULT "");
 						 CREATE TABLE IF NOT EXISTS userVotes (issueID INTEGER, username TEXT);`
 			await this.db.run(sql)
 			return this
@@ -132,10 +132,28 @@ module.exports = class Issue {
 	async updateIssueStatus(id, status) {
 		try {
 			this.checkUndefinedParams({id, status})
+
 			await this.checkIssueExists(id)
 			const sql = `UPDATE issues SET status="${status}" WHERE id=${id};`
 			this.db.run(sql)
+
+			// check if issue has been set to resolved
+			if(status==='resolved') await this.setResolutionTime(id)
+
 		} catch (err) {
+			throw err
+		}
+	}
+
+	async setResolutionTime(id) {
+		try{
+			this.checkUndefinedParams({id})
+			await this.checkIssueExists(id)
+
+			const now = Date.now()
+			const sql = `UPDATE issues SET dateResolved=${now} WHERE id=${id};`
+			this.db.run(sql)
+		} catch(err) {
 			throw err
 		}
 	}

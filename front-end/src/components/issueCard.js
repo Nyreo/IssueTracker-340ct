@@ -9,7 +9,9 @@ const IssueCard = ({issue}) => {
     let dateReported = new Date(issue.dateSubmitted)
         dateReported = `${dateReported.getDate()}/${dateReported.getMonth()}/${dateReported.getFullYear()}`
     const streetName = (issue.streetName ? issue.streetName : 'N/A')
-    const timeElapsed = (issue.timeElapsed ? issue.timeElapsed : DateHandler.timestampDays(DateHandler.difference(Date.now(), issue.dateSubmitted)))
+    //const timeElapsed = (issue.timeElapsed ? issue.timeElapsed : DateHandler.timestampDays(DateHandler.difference(Date.now(), issue.dateSubmitted)))
+    const timeElapsed = issue.dateResolved ? issue.dateResolved : Date.now()
+    const daysElapsed = DateHandler.timestampDays(DateHandler.difference(issue.dateSubmitted, timeElapsed))
 
     let titleStyle;
 
@@ -54,7 +56,7 @@ const IssueCard = ({issue}) => {
                     <span className='type'>Date Reported</span>
                     <p>{dateReported}</p>
                     <span className='type'>Time Elapsed</span>
-                    <p>{timeElapsed} day(s)</p>
+                    <p>{daysElapsed} day(s)</p>
                 </li>
                 <li>
                     <span className='type'>Location</span>
