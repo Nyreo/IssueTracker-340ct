@@ -106,7 +106,8 @@ describe('reportIssue()', () => {
 					votes: 0,
 					priority: 0,
 					id: 1,
-					status: 'reported'
+					status: 'reported',
+					dateResolved : null
 				})
 		} catch (err) {
 			done.fail(err)
@@ -132,7 +133,8 @@ describe('fetchIssue', () => {
 				status:'reported',
 				votes:0,
 				id: 1,
-				priority : 0
+				priority : 0,
+				dateResolved : null
 			})
 		} catch(err) {
 			done.fail(err.message)
@@ -188,14 +190,16 @@ describe('fetchAllIssues()', () => {
 				id: 1,
 				votes: 0,
 				status: 'reported',
-				priority: 0
+				priority: 0,
+				dateResolved : null
 			},
 			{
 				...baseIssue,
 				id: 2,
 				votes: 0,
 				status: 'reported',
-				priority: 0
+				priority: 0,
+				dateResolved : null
 			}])
 		} catch(err) {
 			done.fail(err.message)
@@ -228,7 +232,7 @@ describe('fetchUserIssues()', () => {
 			await issues.reportIssue(baseIssue)
 			await issues.reportIssue(baseIssue)
 
-			const expectedIssue = {...baseIssue, votes:0, status:'reported', priority: 0}
+			const expectedIssue = {...baseIssue, votes:0, status:'reported', priority: 0, dateResolved: null}
 
 			await expect(issues.fetchUserIssues('123'))
 				.resolves.toEqual([{...expectedIssue, id:1}, {...expectedIssue, id:2}])
@@ -348,6 +352,25 @@ describe('updateIssueStatus()', () => {
 				.rejects.toEqual(Error('issue does not exist'))
 		} catch(err) {
 			done.fail(err.message)
+		} finally {
+			done()
+		}
+	})
+
+	test('updating status of issue to resolved should change date resolved', async done => {
+		expect.assertions(2)
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
+
+			await issues.updateIssueStatus(1, 'resolved')
+
+			const issue = await issues.fetchIssue(1)
+			expect(issue.status).toEqual('resolved')
+			expect(issue.dateResolved).not.toBe(null)
+			
+		} catch(err) {
+			done.fail(err)
 		} finally {
 			done()
 		}
@@ -474,6 +497,60 @@ describe('updateIssuePriority()', () => {
 		} catch (err) {
 			done.fail(err)
 		} finally {
+			done()
+		}
+	})
+})
+
+describe('setResolutionTime', () => {
+	test('setting resolution time for valid issue', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
+
+			await issues.setResolutionTime(1)
+
+			const issue = await issues.fetchIssue(1)
+			expect(issue.dateResolved).not.toBe(null)
+		} catch (err) {
+			done.fail(err.message)
+		} finally {
+			done()
+		}
+	}) 
+
+	test('setting resolution time for invalid issue id', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.setResolutionTime(1)
+			
+			done.fail('invalid issue error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('issue does not exist'))
+			done()
+		}
+	})
+
+	test('setting resolution time for non-existing issue', async done =>{
+		try {
+			const issues = await new Issues()
+			await issues.setResolutionTime(1)
+			
+			done.fail('invalid issue error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('issue does not exist'))
+			done()
+		}
+	})
+
+	test('id must not be empty', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.setResolutionTime()
+			
+			done.fail('invalid issue error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('id must not be blank'))
 			done()
 		}
 	})

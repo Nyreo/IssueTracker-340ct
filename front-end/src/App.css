@@ -175,7 +175,7 @@ a {
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: rgb(60, 136, 146);
+  background-color:#74ebd5;
   visibility: hidden;
   transform: scaleX(0);
   transition: all 200ms ease-in-out;
@@ -649,6 +649,10 @@ textarea {
   height:1em;
   padding:15px;
   color:whitesmoke;
+}
+
+.issue-card .title svg {
+  margin-right : 15px;
 }
 
 .issue-card .details {

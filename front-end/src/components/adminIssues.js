@@ -12,6 +12,7 @@ import Pagination from './pagination'
 
 // utils imports
 import {ADMIN_STATUS_OPTIONS, PRIORITY_OPTIONS} from '../utils/constants/issueData'
+import DateHandler from '../utils/functional/dateHandler'
 
 class AdminIssues extends Component {
     
@@ -66,6 +67,10 @@ class AdminIssues extends Component {
             const description = (<div className='description'>{issue.description}</div>)
             let dateReported = new Date(issue.dateSubmitted)
                 dateReported = `${dateReported.getDate()}/${dateReported.getMonth()}/${dateReported.getFullYear()}`
+            const timeElapsed = issue.dateResolved ? issue.dateResolved : Date.now()
+            const daysElapsed = DateHandler.timestampDays(DateHandler.difference(issue.dateSubmitted, timeElapsed))
+            
+                
             const location = (`${issue.lat.toFixed(2)},${issue.lng.toFixed(2)}`)
             const streetName = issue.streetName ? issue.streetName : '-'
             
@@ -75,6 +80,7 @@ class AdminIssues extends Component {
                 <td>{issue.type}</td>
                 <td>{description}</td>
                 <td>{dateReported}</td>
+                <td>{daysElapsed}</td>
                 <td>{location}</td>
                 <td>{streetName}</td>
                 <td>{issue.username}</td>

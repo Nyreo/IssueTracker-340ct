@@ -1,12 +1,26 @@
+// standard imports
 import React from 'react'
+
+// utils imports
+import DateHandler from '../utils/functional/dateHandler'
+
+// component imports
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+// icon imports
+import { faCheckCircle, faClock, faFlag } from '@fortawesome/free-solid-svg-icons'
 
 const IssueCard = ({issue}) => {
 
     let dateReported = new Date(issue.dateSubmitted)
         dateReported = `${dateReported.getDate()}/${dateReported.getMonth()}/${dateReported.getFullYear()}`
     const streetName = (issue.streetName ? issue.streetName : 'N/A')
+    
+    const timeElapsed = issue.dateResolved ? issue.dateResolved : Date.now()
+    const daysElapsed = DateHandler.timestampDays(DateHandler.difference(issue.dateSubmitted, timeElapsed))
 
     let titleStyle;
+    let titleIcon;
 
     switch(issue.status) {
         case 'reported':
@@ -14,18 +28,21 @@ const IssueCard = ({issue}) => {
                 backgroundColor : '#eb6060',
                 color: 'whitesmoke'
             }
+            titleIcon = faFlag
             break
         case 'allocated':
             titleStyle = {
                 backgroundColor : '#f7e463',
                 color : '#222222'
             }
+            titleIcon = faClock
             break
         case 'resolved':
             titleStyle = {
                 backgroundColor : '#7cd992',
                 color : 'whitesmoke'
             }
+            titleIcon = faCheckCircle
             break
         default:
             break
@@ -34,7 +51,8 @@ const IssueCard = ({issue}) => {
     return (
         <div className='issue-card shadow'>
             <div style={titleStyle} className='title'>
-                #{issue.id}     Status - {issue.status}
+                <FontAwesomeIcon icon={titleIcon}/>
+                <span>#{issue.id} Status - {issue.status}</span>
             </div>
             <ul className='details'>
                 <li>
@@ -48,6 +66,8 @@ const IssueCard = ({issue}) => {
                 <li>
                     <span className='type'>Date Reported</span>
                     <p>{dateReported}</p>
+                    <span className='type'>Time Elapsed</span>
+                    <p>{daysElapsed} day(s)</p>
                 </li>
                 <li>
                     <span className='type'>Location</span>

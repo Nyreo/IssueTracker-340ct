@@ -40,7 +40,7 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
                     <TableDropDown
                         options={STATUS_OPTIONS}
                         id={'status'}
-                        initialValue={STATUS_OPTIONS[0].value}
+                        initialValue={filter.status}
                         changeCallback={updateFilter}
                         defaultValue={true}
                     />
@@ -50,7 +50,7 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
                     <TableDropDown 
                         options={PRIORITY_OPTIONS}
                         id={'priority'}
-                        initialValue={PRIORITY_OPTIONS[0].value}
+                        initialValue={filter.priority}
                         changeCallback={updateFilter}
                         defaultValue={true}
                     />

@@ -37,6 +37,11 @@ const IssuesTable = ({issues}) => {
                             </Tooltip>
                         </th>
                         <th>
+                            <Tooltip placement='top' title='Time Elapsed since the issue was reported or resolved.'>
+                                <span>Time Elapsed (days)</span>
+                            </Tooltip>
+                        </th>
+                        <th>
                             <Tooltip placement='top' title='Latitude and Longitude coordinates of the issue.'>
                                 <span>Location (Lat,Lng)</span>
                             </Tooltip>
