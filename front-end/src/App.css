@@ -651,6 +651,10 @@ textarea {
   color:whitesmoke;
 }
 
+.issue-card .title svg {
+  margin-right : 15px;
+}
+
 .issue-card .details {
   margin-top : 3em;
   list-style :none;

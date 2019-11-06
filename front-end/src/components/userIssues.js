@@ -28,18 +28,16 @@ class UserIssues extends Component {
     componentDidMount = () => {
         IssueHandler.fetchAllIssues()
             .then((response) => {
-                const rawIssues = response
-                this.renderIssues(rawIssues)
+                const rawIssues = response.filter(issue => issue.status !== 'pending')
                 this.setState({rawIssues})
+                this.calcIssueDistance()
             })
             .catch(err => console.log(err))
     }
 
     renderIssues = (issues) => {
-        // filter out pending issues
-        issues = issues.filter(issue => issue.status !== 'pending')
-        // calculate distance between user and all issues
-        this.calcIssueDistance()
+        const splitIssues = IssueHandler.splitIssues(issues, this.state.rpp)
+        this.setState({issues:splitIssues})
     }
 
     filterIssues = (filter) => {
@@ -61,18 +59,13 @@ class UserIssues extends Component {
             return issue = {...issue, distance: distance.toFixed(2)}
         })
         const sortedIssues = issues.sort(this.compareDistance)
-        const splitIssues = IssueHandler.splitIssues(sortedIssues, this.state.rpp)
-        this.setState({issues:splitIssues, loadingIssues : false})
+        this.setState({rawIssues:sortedIssues})
+
+        this.renderIssues(sortedIssues)
     }
 
     calcIssueDistance = () => {
         Location.getCurrentLocation(this.success)
-    }
-
-    renderSortOptions = () => {
-        return (
-            <button className='submit-button' onClick={() => this.calcIssueDistance()}>Calculate Distance</button>
-        )
     }
 
     render() {
