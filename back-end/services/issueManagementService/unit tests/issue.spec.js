@@ -1,4 +1,3 @@
-
 'use strict'
 
 const Issues = require('../issue')
@@ -403,6 +402,8 @@ describe('updateIssueStatus()', () => {
 			done()
 		}
 	})
+
+	test.todo('when status is changed back from resolve, dateResolved should be reset')
 })
 
 describe('updateIssuePriority()', () => {

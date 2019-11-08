@@ -2,7 +2,6 @@
 
 const nodemailer = require('nodemailer')
 
-
 module.exports = class EmailController {
 	constructor() {
 		this.transporter = nodemailer.createTransport({

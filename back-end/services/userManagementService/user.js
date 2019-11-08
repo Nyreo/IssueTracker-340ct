@@ -87,8 +87,8 @@ module.exports = class User {
 				subject: content.subject,
 				html: content.message
 			}
-			console.log('options: ', options)
-			this.emailController.sendEmail(options)
+			// this.emailController.sendEmail(options) --- uncomment this line to send email
+			console.log('Email has been sent... [placeholder]')
 		}
 	}
 

@@ -46,7 +46,8 @@ class AdminIssues extends Component {
             .then(() => {
                 const user = this.props.store.getState().userReducer.user.username
                 const subject = `Reported Issue Status UPDATE`
-                const message = `<p>Issue Ref. #${id} status has been updated to ${status}.</p>`
+                const message = `<p>Issue Ref. #${id} status has been updated to ${status}.
+                <a href='localhost:3000/issues'>Click Here</a> to view your updated issues </p>`
                 UserAuth.sendEmail({user, subject, message})
             })
             .catch(err => console.log(err))
@@ -98,7 +99,7 @@ class AdminIssues extends Component {
                         changeCallback={this.setIssueStatus}
                     /></td>
                 <td><TableDropDown 
-                        initialValue={issue.priority}
+                        initialValue={issue.priority ? issue.priority : undefined}
                         options={PRIORITY_OPTIONS}
                         id={issue.id}
                         changeCallback={this.setIssuePriority}

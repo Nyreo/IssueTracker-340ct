@@ -62,7 +62,7 @@ const IssuesTable = ({issues}) => {
                             </Tooltip>
                         </th>
                         <th>
-                            <Tooltip placement='top' title='Priority assigned to the issue by staff.'>
+                            <Tooltip placement='top' title='Priority assigned to the issue by staff. 0 Priority represents priority for that issue has not been assigned.'>
                                 <span>Priority</span>
                             </Tooltip>
                         </th>
