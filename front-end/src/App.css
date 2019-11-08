@@ -29,13 +29,16 @@ button {
   position : relative;
 }
 
-.gap-top { margin-top : 1em; }
-.gap-left { margin-left : 1em; }
-.gap-right { margin-right : 1em; }
-.gao-bot { margin-bottom : 1em; }
+.gap-top { margin-top : 1em !important; }
+.gap-left { margin-left : 1em !important; }
+.gap-right { margin-right : 1em !important; }
+.gao-bot { margin-bottom : 1em !important; }
 
 .w-fill { width : 100% !important; }
 .h-fill { height : 100% !important; }
+
+.padding-10 { padding: 10px !important; }
+.padding-20 { padding: 20px !important; }
 
 .loading-blocked {
   position : absolute;
@@ -434,11 +437,9 @@ textarea {
 
 .report-container .map .frame {
   /* padding : 1em; */
-  border : 3px dotted red;
-  width:95%;
-  max-height : 100%;
-  margin : 0 20px 0 20px;
-  overflow:hidden;
+  background-color : whitesmoke;
+  width:100%;
+  height : 100%;
 }
 
 .report-container .map .frame img {
@@ -605,13 +606,13 @@ textarea {
 }
 
 .filter-container .item span {
-  flex : 0 0 25%;
+  flex : 0 0 20%;
   font-weight : bold;
 }
 
 .filter-container .item select {
   border : 1px solid lightgray;
-  flex : 0 1 50%;
+  flex : 0 1 70%;
 }
 
 /* issues filter --- end */

@@ -49,7 +49,7 @@ describe('reportIssue()', () => {
 	test('reporting issue with invalid date submitted (negative)', async done => {
 		expect.assertions(1)
 
-		const issue = {...baseIssue, dateSubmitted : -1}
+		const issue = {...baseIssue, dateSubmitted: -1}
 
 		const issues = await new Issues()
 
@@ -61,8 +61,8 @@ describe('reportIssue()', () => {
 	test('reporting issue with invalid date submitted (too far in the future)', async done => {
 		expect.assertions(2)
 
-		const issue1 = {...baseIssue, dateSubmitted: Date.now() + (60*60*24) + 30}
-		const issue2 = {...baseIssue, dateSubmitted: Date.now() + (60*60*24) - 1}
+		const issue1 = {...baseIssue, dateSubmitted: Date.now() + 60*60*24 + 30}
+		const issue2 = {...baseIssue, dateSubmitted: Date.now() + 60*60*24 - 1}
 		const issues = await new Issues()
 
 		await expect(issues.reportIssue(issue1))
@@ -74,14 +74,14 @@ describe('reportIssue()', () => {
 		done()
 	})
 
-	test('reporting issue with invalid date type submitted (NaN)', async done =>{
+	test('reporting issue with invalid date type submitted (NaN)', async done => {
 		try {
 			const issues = await new Issues()
 			const issue = {
 				...baseIssue,
 				dateSubmitted: 'testing'
 			}
-			
+
 			await expect(issues.reportIssue(issue))
 				.rejects.toEqual(Error('dateSubmitted has invalid data type'))
 		} catch (err) {
@@ -107,7 +107,7 @@ describe('reportIssue()', () => {
 					priority: 0,
 					id: 1,
 					status: 'reported',
-					dateResolved : null
+					dateResolved: null
 				})
 		} catch (err) {
 			done.fail(err)
@@ -130,11 +130,11 @@ describe('fetchIssue', () => {
 
 			expect(dbIssue).toEqual({
 				...baseIssue,
-				status:'reported',
-				votes:0,
+				status: 'reported',
+				votes: 0,
 				id: 1,
-				priority : 0,
-				dateResolved : null
+				priority: 0,
+				dateResolved: null
 			})
 		} catch(err) {
 			done.fail(err.message)
@@ -159,7 +159,7 @@ describe('fetchIssue', () => {
 		}
 	})
 
-	test('id should not be blank', async done =>{
+	test('id should not be blank', async done => {
 		try {
 			const issues = await new Issues()
 
@@ -191,7 +191,7 @@ describe('fetchAllIssues()', () => {
 				votes: 0,
 				status: 'reported',
 				priority: 0,
-				dateResolved : null
+				dateResolved: null
 			},
 			{
 				...baseIssue,
@@ -199,7 +199,7 @@ describe('fetchAllIssues()', () => {
 				votes: 0,
 				status: 'reported',
 				priority: 0,
-				dateResolved : null
+				dateResolved: null
 			}])
 		} catch(err) {
 			done.fail(err.message)
@@ -228,14 +228,14 @@ describe('fetchUserIssues()', () => {
 		expect.assertions(1)
 		try {
 			const issues = await new Issues()
-			
+
 			await issues.reportIssue(baseIssue)
 			await issues.reportIssue(baseIssue)
 
-			const expectedIssue = {...baseIssue, votes:0, status:'reported', priority: 0, dateResolved: null}
+			const expectedIssue = {...baseIssue, votes: 0, status: 'reported', priority: 0, dateResolved: null}
 
 			await expect(issues.fetchUserIssues('123'))
-				.resolves.toEqual([{...expectedIssue, id:1}, {...expectedIssue, id:2}])
+				.resolves.toEqual([{...expectedIssue, id: 1}, {...expectedIssue, id: 2}])
 
 		} catch (err) {
 			done.fail(err)
@@ -244,7 +244,7 @@ describe('fetchUserIssues()', () => {
 		}
 	})
 
-	test('fetching non-existing issues reported by valid user', async done =>{
+	test('fetching non-existing issues reported by valid user', async done => {
 		try {
 			const issues = await new Issues()
 
@@ -257,7 +257,7 @@ describe('fetchUserIssues()', () => {
 		}
 	})
 
-	test('fetching issues reported by undefined/blank user', async done =>{
+	test('fetching issues reported by undefined/blank user', async done => {
 		try {
 			const issues = await new Issues()
 
@@ -295,13 +295,13 @@ describe('deleteIssue()', () => {
 		}
 	})
 	test('delete non-existing issue', async done => {
-		
+
 		try {
 			const issues = await new Issues()
 
 			await expect(issues.deleteIssue(1))
 				.rejects.toEqual(Error('issue does not exist'))
-		} catch(err){
+		} catch(err) {
 			done.fail(err)
 		} finally {
 			done()
@@ -324,9 +324,9 @@ describe('deleteIssue()', () => {
 
 describe('updateIssueStatus()', () => {
 
-	test('updating status of existing issue', async done =>{
+	test('updating status of existing issue', async done => {
 		expect.assertions(1)
-		
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -368,7 +368,7 @@ describe('updateIssueStatus()', () => {
 			const issue = await issues.fetchIssue(1)
 			expect(issue.status).toEqual('resolved')
 			expect(issue.dateResolved).not.toBe(null)
-			
+
 		} catch(err) {
 			done.fail(err)
 		} finally {
@@ -379,7 +379,7 @@ describe('updateIssueStatus()', () => {
 	test('id must not be blank', async done => {
 		try {
 			const issues = await new Issues()
-			
+
 			await expect(issues.updateIssueStatus())
 				.rejects.toEqual(Error('id must not be blank'))
 
@@ -393,10 +393,10 @@ describe('updateIssueStatus()', () => {
 	test('status must not be blank', async done => {
 		try {
 			const issues = await new Issues()
-			
+
 			await expect(issues.updateIssueStatus(1))
 				.rejects.toEqual(Error('status must not be blank'))
-				
+
 		} catch (err) {
 			done.fail(err)
 		} finally {
@@ -407,9 +407,9 @@ describe('updateIssueStatus()', () => {
 
 describe('updateIssuePriority()', () => {
 
-	test('updating priority of existing issue', async done =>{
+	test('updating priority of existing issue', async done => {
 		expect.assertions(1)
-		
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -477,7 +477,7 @@ describe('updateIssuePriority()', () => {
 			const issues = await new Issues()
 
 			await issues.reportIssue(baseIssue)
-			
+
 			await expect(issues.updateIssuePriority(1))
 				.rejects.toEqual(Error('priority must not be blank'))
 		} catch (err) {
@@ -491,7 +491,7 @@ describe('updateIssuePriority()', () => {
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
-			
+
 			await expect(issues.updateIssuePriority())
 				.rejects.toEqual(Error('id must not be blank'))
 		} catch (err) {
@@ -517,13 +517,13 @@ describe('setResolutionTime', () => {
 		} finally {
 			done()
 		}
-	}) 
+	})
 
 	test('setting resolution time for invalid issue id', async done => {
 		try {
 			const issues = await new Issues()
 			await issues.setResolutionTime(1)
-			
+
 			done.fail('invalid issue error should have been thrown')
 		} catch (err) {
 			expect(err).toEqual(Error('issue does not exist'))
@@ -531,11 +531,11 @@ describe('setResolutionTime', () => {
 		}
 	})
 
-	test('setting resolution time for non-existing issue', async done =>{
+	test('setting resolution time for non-existing issue', async done => {
 		try {
 			const issues = await new Issues()
 			await issues.setResolutionTime(1)
-			
+
 			done.fail('invalid issue error should have been thrown')
 		} catch (err) {
 			expect(err).toEqual(Error('issue does not exist'))
@@ -547,7 +547,7 @@ describe('setResolutionTime', () => {
 		try {
 			const issues = await new Issues()
 			await issues.setResolutionTime()
-			
+
 			done.fail('invalid issue error should have been thrown')
 		} catch (err) {
 			expect(err).toEqual(Error('id must not be blank'))

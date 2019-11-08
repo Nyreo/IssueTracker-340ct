@@ -36,4 +36,16 @@ export const login = async (user, pass) => {
         })
 }
 
-export default { login, register }
+export const sendEmail = async (details) => {
+    const api_endpoint = `${api_url}/message`
+    return axios   
+        .post(api_endpoint, details)
+        .then(response => {
+            return response
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
+export default { login, register, sendEmail}

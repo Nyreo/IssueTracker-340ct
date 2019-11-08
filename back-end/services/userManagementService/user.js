@@ -1,17 +1,19 @@
+/* eslint-disable max-lines */
 /* eslint-disable complexity */
 
 'use strict'
 
 const bcrypt = require('bcrypt-promise')
-// const fs = require('fs-extra')
-// const mime = require('mime-types')
 const sqlite = require('sqlite-async')
 const saltRounds = 10
 const jwt = require('jsonwebtoken')
 
+const EmailController = require('./emailController')
+
 module.exports = class User {
 	constructor(dbName = ':memory:') {
 		return (async() => {
+			this.emailController = new EmailController()
 			this.db = await sqlite.open(dbName)
 			// eslint-disable-next-line max-len
 			const sql = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, firstName TEXT, lastName TEXT, email TEXT, address TEXT, postCode TEXT, isStaff INTEGER DEFAULT 0);'
@@ -69,6 +71,25 @@ module.exports = class User {
 
 		// if all details are there check if passwords match
 		if(userDetails.password !== userDetails.confirmPassword) throw new Error('passwords must match')
+	}
+
+	async sendUserEmail(content) {
+		// fetch the user's email from db
+		const sql = `SELECT email from users WHERE username="${content.user}"`
+		const record = await this.db.get(sql)
+
+		console.log('record: ', record)
+
+		if(record.email) {
+			const email = record.email
+			const options = {
+				to: email,
+				subject: content.subject,
+				html: content.message
+			}
+			console.log('options: ', options)
+			this.emailController.sendEmail(options)
+		}
 	}
 
 	/**

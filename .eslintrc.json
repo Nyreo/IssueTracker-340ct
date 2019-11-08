@@ -8,28 +8,28 @@
     "jest": true
   },
   "parserOptions": {
-    "ecmaVersion": 8
+    "ecmaVersion": 2019
   },
   "rules": {
     "arrow-body-style": 2,
     "arrow-spacing": ["warn", {"before": true, "after": true}],
     "brace-style": 2,
     "camelcase": [2, {"properties": "never"}],
-    "complexity": ["error", 5],
+    "complexity": ["warn", 5],
     "eol-last": "warn",
     "eqeqeq": "error",
     "func-call-spacing": ["error", "never"],
     "global-require": "error",
     "handle-callback-err": "warn",
     "indent": [1, "tab", {"SwitchCase": 1}],
-    "key-spacing": ["error", {"beforeColon": false, "afterColon": true}],
+    "key-spacing": ["warn", {"beforeColon": false, "afterColon": true}],
     "linebreak-style": ["warn", "unix"],
     "max-depth": ["error", 3],
-    "max-len": ["warn", { "code": 120, "tabWidth": 4 }],
+    "max-len": ["warn", { "code": 150, "tabWidth": 4 }],
     "max-lines": ["error", 100],
-    "max-lines-per-function": ["error", 20],
-    "max-nested-callbacks": ["error", 4],
-    "max-params": ["error", 5],
+    "max-lines-per-function": ["warn", 20],
+    "max-nested-callbacks": ["warn", 4],
+    "max-params": ["warn", 5],
     "max-statements": ["error", 20],
     "no-cond-assign": 2,
     "no-dupe-args": "error",
@@ -61,7 +61,7 @@
     "yoda": 2
 	},
 	"overrides": [{
-		"files": [ "*.test.js", "*.spec.js", "sqlite-async.js" ],
+		"files": [ "*.test.js", "*.spec.js", "sqlite-async.js", "prettify/" ],
 		"rules": {
       "global-require": "off",
 			"max-lines-per-function": "off",

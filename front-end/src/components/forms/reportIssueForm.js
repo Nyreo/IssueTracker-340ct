@@ -198,9 +198,9 @@ const ReportIssueForm = ({store, history}) => {
                     {/* form --- end */}
                 </div>
                 {/* google maps frame */}
-                <div className='map h-centered-margin'>
+                <div className='map h-centered-margin fill gap-left shadow padding-20'>
                     <div className='frame'>
-                        <img src='https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg' alt='map'/>
+                        <span>Insert Map Here</span>
                     </div>
                 </div>
             </div>
