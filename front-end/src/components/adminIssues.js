@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 
 // custom module imports
 import IssueHandler from '../modules/issueHandler'
+import UserAuth from '../modules/userAuthentication'
 
 // component imports
 import IssuesTable from './issuesTable'
@@ -42,6 +43,13 @@ class AdminIssues extends Component {
     setIssueStatus = (id, status) => {
         IssueHandler.updateIssueStatus(id, status)
             .then(() => this.refreshIssueList())
+            .then(() => {
+                const user = this.props.store.getState().userReducer.user.username
+                const subject = `Reported Issue Status UPDATE`
+                const message = `<p>Issue Ref. #${id} status has been updated to ${status}.
+                <a href='localhost:3000/issues'>Click Here</a> to view your updated issues </p>`
+                UserAuth.sendEmail({user, subject, message})
+            })
             .catch(err => console.log(err))
     }
 
@@ -91,7 +99,7 @@ class AdminIssues extends Component {
                         changeCallback={this.setIssueStatus}
                     /></td>
                 <td><TableDropDown 
-                        initialValue={issue.priority}
+                        initialValue={issue.priority ? issue.priority : undefined}
                         options={PRIORITY_OPTIONS}
                         id={issue.id}
                         changeCallback={this.setIssuePriority}

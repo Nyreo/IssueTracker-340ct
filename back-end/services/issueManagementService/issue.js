@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 'use strict'
 
 const sqlite = require('sqlite-async')
@@ -41,8 +42,10 @@ module.exports = class Issue {
 		// check for -ve timestamp
 		if(timestamp < 0) throw new Error('timestamp cannot be negative')
 		// check for too advanced timestamp
-		const daySeconds = 60*60*24
-		if(timestamp > Date.now() + daySeconds) throw new Error('timestamp is too far in the future')
+		// eslint-disable-next-line no-magic-numbers
+		const daySeconds = 60*60*24,
+			advancedTimeStamp = Date.now() + daySeconds
+		if(timestamp > advancedTimeStamp) throw new Error('timestamp is too far in the future')
 	}
 
 	checkUndefinedParams(params) {
@@ -139,7 +142,6 @@ module.exports = class Issue {
 
 			// check if issue has been set to resolved
 			if(status==='resolved') await this.setResolutionTime(id)
-
 		} catch (err) {
 			throw err
 		}

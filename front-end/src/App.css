@@ -6,10 +6,10 @@
 
 html, body { height : 100%; margin : 0;}
 
-body {background: #74ebd5;  /* fallback for old browsers */
+body {
+  background: #74ebd5;  /* fallback for old browsers */
   background: -webkit-linear-gradient(-90deg, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(-90deg, #ACB6E5, #74ebd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  
 }
 
 /* general --- start */
@@ -29,13 +29,26 @@ button {
   position : relative;
 }
 
-.gap-top { margin-top : 1em; }
-.gap-left { margin-left : 1em; }
-.gap-right { margin-right : 1em; }
-.gao-bot { margin-bottom : 1em; }
+.gap-top { margin-top : 1em !important; }
+.gap-left { margin-left : 1em !important; }
+.gap-right { margin-right : 1em !important; }
+.gap-bot { margin-bottom : 1em !important; }
 
 .w-fill { width : 100% !important; }
 .h-fill { height : 100% !important; }
+
+.padding-10 { padding: 10px !important; }
+.padding-20 { padding: 20px !important; }
+
+.link {
+  font-size : 12px;
+  font-weight : normal;
+  cursor : pointer;
+}
+
+.link:hover {
+  border-bottom : 1px solid lightgray;
+}
 
 .loading-blocked {
   position : absolute;
@@ -104,7 +117,6 @@ button {
 .fill {
   background-color : white;
   padding : 10px 40px 3em 40px;
-  margin-bottom : 1em;
   box-sizing: border-box;
 }
 
@@ -244,6 +256,7 @@ a {
   font-size : 3em;
   width:75%;
   position : relative;
+  margin-top : 0;
 }
 
 .form .section-header {
@@ -412,18 +425,17 @@ textarea {
 /* report container --- start */
 
 .report-container {
-  height : 100%;
+  height : 85vh;
 }
 
 .report-container .report {
-  flex : 0 1 350px;
+  flex : 0 1 30%;
   height : 100%;
 }
 
 .report-container .map{
-  margin-top : 2em;
+  position : relative;
   flex : 1 0 50%;
-  /* background-color : lightgray; */
 }
 
 .report-container .report .form {
@@ -433,17 +445,17 @@ textarea {
 }
 
 .report-container .map .frame {
-  /* padding : 1em; */
-  border : 3px dotted red;
-  width:95%;
-  max-height : 100%;
-  margin : 0 20px 0 20px;
-  overflow:hidden;
+  background-color : whitesmoke;
+  width:100%;
+  height : 100%;
 }
 
-.report-container .map .frame img {
-  height:50%;
-  width:100%;
+.report-container .map .frame span {
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+  font-size : 32px;
 }
 
 /* report container --- end */
@@ -598,20 +610,20 @@ textarea {
 }
 
 .filter-container .item {
-  flex: 0 0 50%;
+  flex: 0 0 25%;
   display : flex;
   flex-flow : row nowrap;
   margin-bottom : 1em;
 }
 
 .filter-container .item span {
-  flex : 0 0 25%;
+  flex : 0 0 20%;
   font-weight : bold;
 }
 
 .filter-container .item select {
   border : 1px solid lightgray;
-  flex : 0 1 50%;
+  flex : 0 1 70%;
 }
 
 /* issues filter --- end */
