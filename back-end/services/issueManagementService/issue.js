@@ -1,6 +1,9 @@
 /* eslint-disable max-lines */
 'use strict'
 
+// import validation module
+const validate = require('../../../validation/validate')
+
 const sqlite = require('sqlite-async')
 
 const requiredIssueKeys=['description', 'type', 'dateSubmitted', 'username']
@@ -26,45 +29,12 @@ module.exports = class Issue {
 		})()
 	}
 
-	checkMissingData(issue) {
-		for(const key of requiredIssueKeys) {
-			if(!(key in issue)) throw new Error(`${key} missing`)
-		}
-	}
-
-	checkCorrectDataTypes(issue) {
-		for(const key of Object.keys(issue)) {
-			if(typeof issue[key] !== typeof exampleResponse[key]) throw new Error(`${key} has invalid data type`)
-		}
-	}
-
-	validateTimestamp(timestamp) {
-		// check for -ve timestamp
-		if(timestamp < 0) throw new Error('timestamp cannot be negative')
-		// check for too advanced timestamp
-		// eslint-disable-next-line no-magic-numbers
-		const daySeconds = 60*60*24,
-			advancedTimeStamp = Date.now() + daySeconds
-		if(timestamp > advancedTimeStamp) throw new Error('timestamp is too far in the future')
-	}
-
-	checkUndefinedParams(params) {
-		for(const key of Object.keys(params)) {
-			if(!params[key] || params[key]==='') throw new Error(`${key} must not be blank`)
-		}
-	}
-
 	async validateIssueCredentials(issue) {
 		try {
-			// check issue is defined
-			this.checkUndefinedParams({issue})
-			// check missing data
-			this.checkMissingData(issue)
-			// check data types
-			this.checkCorrectDataTypes(issue)
-			// check validate timestamp
-			this.validateTimestamp(issue.dateSubmitted)
-
+			validate.checkUndefinedParams({issue})
+			validate.checkMissingData(issue, requiredIssueKeys)
+			validate.checkCorrectDataTypes(issue, exampleResponse)
+			validate.validateTimestamp(issue.dateSubmitted)
 		} catch(err) {
 			throw err
 		}
@@ -97,7 +67,7 @@ module.exports = class Issue {
 	}
 
 	async fetchIssue(id) {
-		this.checkUndefinedParams({id})
+		validate.checkUndefinedParams({id})
 
 		const sql = `SELECT * FROM issues WHERE id=${id}`
 		const record = await this.db.get(sql)
@@ -113,7 +83,7 @@ module.exports = class Issue {
 	}
 
 	async fetchUserIssues(username) {
-		this.checkUndefinedParams({username})
+		validate.checkUndefinedParams({username})
 
 		const sql = `SELECT * FROM issues WHERE username="${username}"`
 		const records = await this.db.all(sql)
@@ -123,7 +93,7 @@ module.exports = class Issue {
 
 	async deleteIssue(id) {
 		try {
-			this.checkUndefinedParams({id})
+			validate.checkUndefinedParams({id})
 			await this.checkIssueExists(id)
 			const sql = `DELETE from issues WHERE id=${id}`
 			this.db.run(sql)
@@ -134,7 +104,7 @@ module.exports = class Issue {
 
 	async updateIssueStatus(id, status) {
 		try {
-			this.checkUndefinedParams({id, status})
+			validate.checkUndefinedParams({id, status})
 
 			await this.checkIssueExists(id)
 			const sql = `UPDATE issues SET status="${status}" WHERE id=${id};`
@@ -149,7 +119,7 @@ module.exports = class Issue {
 
 	async setResolutionTime(id) {
 		try{
-			this.checkUndefinedParams({id})
+			validate.checkUndefinedParams({id})
 			await this.checkIssueExists(id)
 
 			const now = Date.now()
@@ -163,7 +133,7 @@ module.exports = class Issue {
 	// eslint-disable-next-line complexity
 	async updateIssuePriority(id, priority) {
 		try {
-			this.checkUndefinedParams({id, priority})
+			validate.checkUndefinedParams({id, priority})
 			await this.checkIssueExists(id)
 
 			if(isNaN(priority)) throw new Error('priority must be a positive number')

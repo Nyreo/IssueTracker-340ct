@@ -19,7 +19,7 @@ describe('difference()', () => {
         }
     })
 
-    test('difference between invalid dates', async done => {
+    test('difference between invalid dates (date2)', async done => {
         try {
             const date1 = Date.now()
             const date2 = 'test'
@@ -34,7 +34,7 @@ describe('difference()', () => {
         } 
     })
 
-    test('difference between invalid dates', async done => {
+    test('difference between invalid dates (date1)', async done => {
         try {
             const date1 = 'test'
             const date2 = Date.now()
@@ -71,6 +71,20 @@ describe('difference()', () => {
             expect(err).toEqual(Error('date2 must not be blank'))
             done()
         } 
+    })
+    
+    test('absolute date difference', async done => {
+        try {
+            const date1 = Date.now()
+            const date2 = Date.now() + msPerDay
+
+            expect(DateHandler.difference(date1, date2) / msPerDay).toBe(1)
+
+        } catch (err) {
+            done.fail(err)
+        } finally {
+            done()
+        }
     })
 })
 
