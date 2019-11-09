@@ -3,6 +3,8 @@
 
 'use strict'
 
+const validate = require('../../../validation/validate')
+
 const bcrypt = require('bcrypt-promise')
 const sqlite = require('sqlite-async')
 const saltRounds = 10
@@ -22,18 +24,6 @@ module.exports = class User {
 			await this.db.run(sql)
 			return this
 		})()
-	}
-
-	checkUndefinedParams(params) {
-		for(const key of Object.keys(params)) {
-			if(!params[key] || params[key]==='') throw new Error(`${key} must not be blank`)
-		}
-	}
-
-	checkMissingData(issue, requiredKeys) {
-		for(const key of requiredKeys) {
-			if(!(key in issue)) throw new Error(`${key} missing`)
-		}
 	}
 
 	async generateWebToken(data) {
@@ -102,9 +92,9 @@ module.exports = class User {
 	 * @throws {Error} unable to find email address
 	 */
 	async sendUserEmail(content) {
-		this.checkUndefinedParams({content})
-		this.checkUndefinedParams(content)
-		this.checkMissingData(content, requiredEmailContentKeys)
+		validate.checkUndefinedParams({content})
+		validate.checkUndefinedParams(content)
+		validate.checkMissingData(content, requiredEmailContentKeys)
 		// fetch the user's email from db
 		const sql = `SELECT email from users WHERE username="${content.user}"`
 		const record = await this.db.get(sql)
