@@ -18,7 +18,11 @@ describe('login', () => {
             'bearer testtoken'
         )
         expect(axios.post.mock.calls.length).toBe(1)
-
+        expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/user/login')
+        expect(axios.post.mock.calls[0][1]).toEqual({
+            user:'user',
+            pass:'pass'
+        })
         done()
     })
 
@@ -95,40 +99,38 @@ describe('register', () => {
 
 describe('sendEmail', () => {
 
-	test('logging in with correct credentials', async done => {
-    
-        // mock the axios post request (api call)
-        axios.post = jest.fn(() => Promise.resolve({
-            data: {
-                token: 'bearer testtoken'
-            },
-            status: 200
+	test('making a valid request', async done => {
+        
+        axios.post = jest.fn((endpoint, data) => Promise.resolve({
+            status:200
         }))
 
-        await expect(userAuth.login('user', 'pass')).resolves.toEqual(
-            'bearer testtoken'
-        )
+        await expect(userAuth.sendEmail({}))
+            .resolves.toEqual({status: 200})
+        expect(axios.post.mock.calls.length).toBe(1)
+        expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/user/message')
+        expect(axios.post.mock.calls[0][1]).toEqual({})
 
         done()
     })
 
-    test('login with invalid credentials', async done => {
-
-        axios.post = jest.fn(() => Promise.reject({
+    test('making an invalid request', async done => {
+        
+        axios.post = jest.fn((endpoint, data) => Promise.reject({
             response : {
-                data: 'invalid password for account "username"',
-                status: 401,
-                statusText: 'invalid password for account "username"'
+                status:400,
+                message: 'email could not be found for that user'
             }
         }))
-    
-        await expect(userAuth.login('username', 'password')).rejects.toEqual(
-            {
-                data: 'invalid password for account "username"',
-                status: 401,
-                statusText: 'invalid password for account "username"'
-            }
-        )
+
+        await expect(userAuth.sendEmail({}))
+            .rejects.toEqual({
+                status:400,
+                message: 'email could not be found for that user'
+            })
+        expect(axios.post.mock.calls.length).toBe(1)
+        expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/user/message')
+        expect(axios.post.mock.calls[0][1]).toEqual({})
 
         done()
     })
