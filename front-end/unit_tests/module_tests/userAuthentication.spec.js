@@ -7,7 +7,7 @@ describe('login', () => {
 	test('logging in with correct credentials', async done => {
     
         // mock the axios post request (api call)
-        axios.post = jest.fn(() => Promise.resolve({
+        axios.post = jest.fn((endpoint, data) => Promise.resolve({
             data: {
                 token: 'bearer testtoken'
             },
@@ -17,6 +17,7 @@ describe('login', () => {
         await expect(userAuth.login('user', 'pass')).resolves.toEqual(
             'bearer testtoken'
         )
+        expect(axios.post.mock.calls.length).toBe(1)
 
         done()
     })
@@ -88,6 +89,47 @@ describe('register', () => {
                 statusText: 'passwords must match'
             }
         )
+        done()
+    })
+})
+
+describe('sendEmail', () => {
+
+	test('logging in with correct credentials', async done => {
+    
+        // mock the axios post request (api call)
+        axios.post = jest.fn(() => Promise.resolve({
+            data: {
+                token: 'bearer testtoken'
+            },
+            status: 200
+        }))
+
+        await expect(userAuth.login('user', 'pass')).resolves.toEqual(
+            'bearer testtoken'
+        )
+
+        done()
+    })
+
+    test('login with invalid credentials', async done => {
+
+        axios.post = jest.fn(() => Promise.reject({
+            response : {
+                data: 'invalid password for account "username"',
+                status: 401,
+                statusText: 'invalid password for account "username"'
+            }
+        }))
+    
+        await expect(userAuth.login('username', 'password')).rejects.toEqual(
+            {
+                data: 'invalid password for account "username"',
+                status: 401,
+                statusText: 'invalid password for account "username"'
+            }
+        )
+
         done()
     })
 })
