@@ -10,6 +10,8 @@ const jwt = require('jsonwebtoken')
 
 const EmailController = require('./emailController')
 
+const requiredEmailContentKeys = ['user', 'subject', 'message']
+
 module.exports = class User {
 	constructor(dbName = ':memory:') {
 		return (async() => {
@@ -20,6 +22,18 @@ module.exports = class User {
 			await this.db.run(sql)
 			return this
 		})()
+	}
+
+	checkUndefinedParams(params) {
+		for(const key of Object.keys(params)) {
+			if(!params[key] || params[key]==='') throw new Error(`${key} must not be blank`)
+		}
+	}
+
+	checkMissingData(issue, requiredKeys) {
+		for(const key of requiredKeys) {
+			if(!(key in issue)) throw new Error(`${key} missing`)
+		}
 	}
 
 	async generateWebToken(data) {
@@ -35,7 +49,14 @@ module.exports = class User {
 
 		return record.isStaff
 	}
-
+	/**
+	 * Function to check whether the email submitted is in the correct format
+	 *
+	 * @name validateEmailAddress Script
+	 * @param {string} email - Consists of the user's email
+	 * @returns {boolean} success of the validation
+	 * @throws {Error} invalid email format
+	 */
 	async validateEmailAddress(email) {
 		// check if the email address contains the @ symbol
 		const atIndex = email.indexOf('@')
@@ -73,22 +94,31 @@ module.exports = class User {
 		if(userDetails.password !== userDetails.confirmPassword) throw new Error('passwords must match')
 	}
 
+	/**
+	 * Function to check the credentials object submitted by the user
+	 *
+	 * @name sendUserEmail Script
+	 * @param {object} content - Consists of the user, message subject and content
+	 * @throws {Error} unable to find email address
+	 */
 	async sendUserEmail(content) {
+		this.checkUndefinedParams({content})
+		this.checkUndefinedParams(content)
+		this.checkMissingData(content, requiredEmailContentKeys)
 		// fetch the user's email from db
 		const sql = `SELECT email from users WHERE username="${content.user}"`
 		const record = await this.db.get(sql)
 
-		console.log('record: ', record)
-
-		if(record.email) {
-			const email = record.email
+		if(record) {
 			const options = {
-				to: email,
+				to: record.email,
 				subject: content.subject,
 				html: content.message
 			}
-			// this.emailController.sendEmail(options) --- uncomment this line to send email
+			this.emailController.sendEmail(options)
 			console.log('Email has been sent... [placeholder]')
+		} else {
+			throw new Error('an email address for that user could not be found.')
 		}
 	}
 

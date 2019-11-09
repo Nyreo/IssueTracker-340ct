@@ -14,15 +14,14 @@ module.exports = class EmailController {
 	}
 
 	async sendEmail(options) {
-		console.log(`sending email to ${options.to}`)
+		// console.log(`sending email to ${options.to}`)
 		const mailOptions = {
 			...options,
 			from: 'sender@gmail.com',
 		}
 
-		this.transporter.sendMail(mailOptions, (err, info) => {
-			if(err) console.log(err)
-			else console.log(info)
+		this.transporter.sendMail(mailOptions, (err) => {
+			if(err) throw err
 		 })
 	}
 }
