@@ -1,4 +1,4 @@
-const validate = require('../../../../validation/validate')
+import validate from '@mitch137/validation'
 
 const msPerDay = 1000 * 60 * 60 * 24
 

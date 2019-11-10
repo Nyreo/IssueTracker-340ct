@@ -3,7 +3,7 @@
 
 'use strict'
 
-const validate = require('../../../validation/validate')
+const validate = require('@mitch137/validation')
 
 const bcrypt = require('bcrypt-promise')
 const sqlite = require('sqlite-async')

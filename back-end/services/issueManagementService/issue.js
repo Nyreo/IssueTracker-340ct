@@ -2,7 +2,7 @@
 'use strict'
 
 // import validation module
-const validate = require('../../../validation/validate')
+const validate = require('@mitch137/validation')
 
 const sqlite = require('sqlite-async')
 

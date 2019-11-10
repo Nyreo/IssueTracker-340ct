@@ -1,0 +1,11 @@
+{
+  "name": "@mitch137/validation",
+  "version": "1.0.0",
+  "description": "validation package for 340ct",
+  "main": "validate.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joe Mitchell",
+  "license": "ISC"
+}
