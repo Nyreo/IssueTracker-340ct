@@ -22,6 +22,7 @@ const difference = (date1, date2) => {
 const timestampDays = (timestamp) => { 
 
     validate.checkUndefinedParams({timestamp})
+    validate.validateTimestamp(timestamp)
     return Math.floor(timestamp / msPerDay) 
 }
 

@@ -1,5 +1,4 @@
 import DateHandler from '../../src/utils/functional/dateHandler'
-import dateHandler from '../../src/utils/functional/dateHandler'
 
 const msPerDay = (1000*60*60*24)
 
@@ -79,7 +78,6 @@ describe('difference()', () => {
             const date2 = Date.now() + msPerDay
 
             expect(DateHandler.difference(date1, date2) / msPerDay).toBe(1)
-
         } catch (err) {
             done.fail(err)
         } finally {
@@ -91,14 +89,34 @@ describe('difference()', () => {
 describe('timestampdays()', () => {
 
     test('converting valid timestamp', async done => {
-        expect(dateHandler.timestampDays(msPerDay)).toBe(1)
+        expect(DateHandler.timestampDays(msPerDay)).toBe(1)
 
         done()
     })
 
+    test('converting invalid timestamp (negative)', async done => {
+        try {
+            DateHandler.timestampDays(-1)
+            done.fail('error should have been thrown')
+        } catch (err) {
+            expect(err).toEqual(Error('timestamp cannot be negative'))
+            done()
+        }
+    })
+
+    test('converting invalid timestamp (NaN)', async done => {
+        try {
+            DateHandler.timestampDays('test')
+            done.fail('error should have been thrown')
+        } catch (err) {
+            expect(err).toEqual(Error('value is not a number'))
+            done()
+        }
+    })
+
     test('timestamp param should not be empty', async done => {
         try{
-            dateHandler.timestampDays()
+            DateHandler.timestampDays()
 
             done.fail('error should have been thrown')
         } catch(err) {

@@ -1,9 +1,9 @@
-// haversine formula for calculating distance between two lat,lng coordinates
 
 const deg2rad = (value) => {
     return value * (Math.PI/180)
 }
 
+// haversine formula for calculating distance between two lat,lng coordinates
 // calculates 'as the flow flys' distance between points, not complete accuracy
 const distance = (lat1,lon1,lat2,lon2) => {
     const R = 6371; // radius of earth
@@ -37,5 +37,5 @@ const getCurrentLocation = (success, fail=getLocationFailure) => {
 
 export default {
     distance,
-    getCurrentLocation
+	getCurrentLocation
 }
