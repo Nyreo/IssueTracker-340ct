@@ -31,6 +31,8 @@ module.exports = class Issue {
 
 	async validateIssueCredentials(issue) {
 		try {
+			console.log(issue)
+
 			validate.checkUndefinedParams({issue})
 			validate.checkMissingData(issue, requiredIssueKeys)
 			validate.checkCorrectDataTypes(issue, exampleResponse)

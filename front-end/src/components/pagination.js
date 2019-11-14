@@ -7,8 +7,9 @@ const Pagination = ({pagination, numberOfPages, setPagination}) => {
         let max = (pagination + 1 >= numberOfPages ? numberOfPages - 1 : pagination + 1)
 
         for(let i = min; i <= max; i++) {
+            const cn = (i===pagination ? 'item active' : 'item')
             paginationDOM.push(
-                (<button className='item' key={`btn_page${i}`} onClick={() => setPagination(i)}>{i}</button>)
+                (<button className={cn} key={`btn_page${i}`} onClick={() => setPagination(i)}>{i}</button>)
             )
         }
 

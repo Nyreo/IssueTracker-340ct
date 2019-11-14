@@ -2,6 +2,10 @@
 
 'use strict'
 
+const validateNumber = num => {
+	if(isNaN(num)) throw new Error('value is not a number')
+}
+
 const validateDate = (date) => {
 	if(isNaN(date)) throw new Error('invalid date type')
 }
@@ -19,6 +23,7 @@ const checkCorrectDataTypes = (data, example) => {
 }
 
 const validateTimestamp = (timestamp) => {
+	validateNumber(timestamp)
 	// check for -ve timestamp
 	if(timestamp < 0) throw new Error('timestamp cannot be negative')
 	// check for too advanced timestamp
@@ -30,7 +35,7 @@ const validateTimestamp = (timestamp) => {
 
 const checkUndefinedParams = params => {
 	for(const key of Object.keys(params)) {
-		if(!params[key] || params[key]==='') throw new Error(`${key} must not be blank`)
+		if(params[key] === undefined || params[key] === null || params[key]==='') throw new Error(`${key} must not be blank`)
 	}
 }
 
@@ -39,5 +44,6 @@ module.exports = {
 	checkMissingData,
 	checkCorrectDataTypes,
 	checkUndefinedParams,
-	validateTimestamp
+	validateTimestamp,
+	validateNumber
 }

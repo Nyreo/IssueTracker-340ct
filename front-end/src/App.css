@@ -595,6 +595,10 @@ textarea {
   transition : .2s ease-in;
 }
 
+.pagination .item.active {
+  font-weight : bold;
+}
+
 /* table --- end */
 
 /* issues filter --- start */

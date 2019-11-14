@@ -33,7 +33,7 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
 
     return (
         <div className='filter-bar h-centered-margin flex-item-50'>
-            <p className='panel-header'><FontAwesomeIcon icon={faFilter} />Filter - <span class='link' onClick={() => resetFilter()}>Reset Filter</span></p>
+            <p className='panel-header'><FontAwesomeIcon icon={faFilter} />Filter - <span className='link' onClick={() => resetFilter()}>Reset Filter</span></p>
             <div className='filter-container'>
                 <div className='item'>
                     <span>Status</span>
