@@ -40,6 +40,8 @@ button {
 .padding-10 { padding: 10px !important; }
 .padding-20 { padding: 20px !important; }
 
+.abs-right { position : absolute; right : 0;}
+
 .link {
   font-size : 12px;
   font-weight : normal;
@@ -134,6 +136,11 @@ button {
 .panel-header svg {
   padding-right : 5px;
   font-size : .8em;
+}
+
+.panel-header .sub {
+  font-size : 12px;
+  font-weight : normal;
 }
 
 select {
@@ -530,6 +537,7 @@ textarea {
   width:100%;
   border-collapse: collapse;
   text-align : center;
+  table-layout: fixed;
 }
 
 .table thead {
@@ -574,10 +582,27 @@ textarea {
   background-color : none;
   outline : none;
   border : 0;
-  margin-right : 10px;
   padding : 5px;
+  border : 2px solid whitesmoke;
+  border-right : 0;
+  width : 25px;
+  transition: 150ms ease-in-out;
 }
 
+.pagination .item:last-child {
+  border-right : 2px solid whitesmoke;
+  border-radius : 0 10px 10px 0;
+}
+
+.pagination .item:first-child {
+  border-radius : 10px 0 0 10px;
+}
+
+.pagination .item:hover {
+  background-color : rgb(249, 249, 249);
+}
+
+/* 
 .pagination .item:before {
   content: '';
   position : absolute;
@@ -593,7 +618,7 @@ textarea {
 .pagination .item:hover:before { 
   width : 80%;
   transition : .2s ease-in;
-}
+} */
 
 .pagination .item.active {
   font-weight : bold;

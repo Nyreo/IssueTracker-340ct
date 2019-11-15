@@ -55,9 +55,6 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
                         defaultValue={true}
                     />
                 </div>
-                {/* <div style={{width:'100%',marginTop:'1em'}}>
-                    <button className='submit-button' onClick={() => resetFilter()}>Reset</button>
-                </div> */}
             </div>
         </div>
     )

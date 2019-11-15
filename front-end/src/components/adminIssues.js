@@ -23,6 +23,7 @@ class AdminIssues extends Component {
         this.state = {
             issues : null,
             rawIssues : null,
+            numIssues : 0,
             rpp : 15,
             pagination : 0,
             currentFilter : {}
@@ -63,7 +64,7 @@ class AdminIssues extends Component {
         IssueHandler.fetchAllIssues()
             .then((response) => {
                 const rawIssues = response
-                this.setState({rawIssues})
+                this.setState({rawIssues, numIssues : rawIssues.length})
                 this.filterIssues(this.state.currentFilter)
             })
             .catch(err => console.log(err))
@@ -122,7 +123,7 @@ class AdminIssues extends Component {
                     <>
                         <IssuesFilter filterCallback={this.filterIssues} isAdmin={true}/>
                         <div> 
-                            <IssuesTable issues={this.state.issues[this.state.pagination]}/>
+                            <IssuesTable issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues}/>
                             <Pagination pagination={this.state.pagination} numberOfPages={this.state.issues.length} setPagination={(p) => {this.setState({pagination:p})}}/>
                         </div>
                     </>

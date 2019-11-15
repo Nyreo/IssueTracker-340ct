@@ -7,11 +7,14 @@ import { faTable } from '@fortawesome/free-solid-svg-icons'
 
 import Tooltip from '@material-ui/core/Tooltip'
 
-const IssuesTable = ({issues}) => {
+const IssuesTable = ({issues, numIssues}) => {
 
     return (
         <>
-            <p className='panel-header'><FontAwesomeIcon icon={faTable}/>Issues</p>
+            <p className='panel-header relative'><FontAwesomeIcon icon={faTable}/>
+                Issues
+                <span className='sub abs-right'>Found {numIssues} results</span>
+            </p>
             <div className='table-container yscroll'>
                 <table className='table'>
                 <thead>

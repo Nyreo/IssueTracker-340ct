@@ -8,7 +8,7 @@ import { faList } from '@fortawesome/free-solid-svg-icons'
 // component imports
 import IssueCard from './issueCard'
 
-const IssueList = ({issues}) => {
+const IssueList = ({issues, numIssues}) => {
 
     const renderIssues = () => {
         // console.log('issuesList: ', issues)
@@ -23,7 +23,9 @@ const IssueList = ({issues}) => {
 
     return (
         <>
-        <p className='panel-header'><FontAwesomeIcon icon={faList}/>Issues</p>
+        <p className='panel-header relative'><FontAwesomeIcon icon={faList}/>Issues
+            <span className='sub abs-right'>Displaying {numIssues} Issues</span>
+        </p>
         {
             issues ? <div className='issue-list'>{renderIssues()}</div> : null
         }

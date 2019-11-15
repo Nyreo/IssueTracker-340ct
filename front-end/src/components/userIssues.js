@@ -19,6 +19,7 @@ class UserIssues extends Component {
         this.state = {
             issues : null,
             rawIssues : null,
+            numIssues : 0,
             rpp : 5,
             pagination : 0,
             loadingIssues : true
@@ -29,7 +30,7 @@ class UserIssues extends Component {
         IssueHandler.fetchAllIssues()
             .then((response) => {
                 const rawIssues = response.filter(issue => issue.status !== 'pending')
-                this.setState({rawIssues})
+                this.setState({rawIssues, numIssues : rawIssues.length})
                 this.calcIssueDistance()
             })
             .catch(err => console.log(err))
@@ -75,7 +76,7 @@ class UserIssues extends Component {
                     <>
                         <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
                         <div>
-                            <IssuesList issues={this.state.issues[this.state.pagination]}/>
+                            <IssuesList issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues}/>
                             <Pagination pagination={this.state.pagination} numberOfPages={this.state.issues.length} setPagination={(p) => {this.setState({pagination:p})}}/>
                         </div>
                     </>
