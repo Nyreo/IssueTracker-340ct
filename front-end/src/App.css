@@ -21,6 +21,10 @@ body {
   text-align : center;
 }
 
+.ccentered {
+  margin : auto;
+}
+
 button {
   cursor : pointer;
 }
@@ -41,6 +45,13 @@ button {
 .padding-20 { padding: 20px !important; }
 
 .abs-right { position : absolute; right : 0;}
+
+.fadeIn {
+  transition : 200ms ease-in;
+}
+
+.opacity0 { opacity : 0}
+.opacity100 { opacity: 100}
 
 .link {
   font-size : 12px;
@@ -227,12 +238,13 @@ a {
 /* section --- start */
 
 .section {
+  vertical-align: middle;
   width : 90%;
-  padding : 10px 0 10px 20px;
   margin-bottom : 1em;
   text-align : center;
   background-color : white;
-  /* border-left : 5px solid black; */
+  height : auto;
+  padding-bottom : 2em;
 }
 
 .section:nth-of-type(1) {
@@ -600,6 +612,31 @@ textarea {
 
 .pagination .item:hover {
   background-color : rgb(249, 249, 249);
+}
+
+.page-circles {
+  position : absolute;
+  /* border : 1px solid red; */
+  height : 20px;
+  left : 50%;
+  bottom : 0;
+  transform : translate(-50%)
+}
+
+.page-circles  svg {
+  color : rgb(69, 69, 69);
+  opacity : 50%;
+  font-size : 12px;
+  margin-right : 10px;
+  transition : opacity 200ms ease-in;
+}
+
+.page-circles svg.active {
+  opacity : 100%;
+}
+
+.page-circles .arrow {
+  cursor : pointer;
 }
 
 /* 

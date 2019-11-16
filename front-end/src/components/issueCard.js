@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // icon imports
 import { faCheckCircle, faClock, faFlag } from '@fortawesome/free-solid-svg-icons'
 
+import Fade from 'react-reveal/Fade'
+
 const IssueCard = ({issue}) => {
 
     let dateReported = new Date(issue.dateSubmitted)
@@ -49,55 +51,58 @@ const IssueCard = ({issue}) => {
     }
     
     return (
-        <div className='issue-card shadow'>
-            <div style={titleStyle} className='title'>
-                <FontAwesomeIcon icon={titleIcon}/>
-                <span>#{issue.id} Status - {issue.status}</span>
+        <Fade>
+            <div key={issue.id} className='issue-card shadow'>
+                <div style={titleStyle} className='title'>
+                    <FontAwesomeIcon icon={titleIcon}/>
+                    <span>#{issue.id} Status - {issue.status}</span>
+                </div>
+                <ul className='details'>
+                    <li>
+                        <span className='type'>Description</span>
+                        <p>{issue.description}</p>
+                    </li>
+                    <li>
+                        <span className='type'>Type</span>
+                        <p>{issue.type}</p>
+                    </li>
+                    <li>
+                        <span className='type'>Date Reported</span>
+                        <p>{dateReported}</p>
+                        <span className='type'>Time Elapsed</span>
+                        <p>{daysElapsed} day(s)</p>
+                    </li>
+                    <li>
+                        <span className='type'>Location</span>
+                        <p>Lat: {issue.lat.toFixed(5)}</p>
+                        <p>Lng: {issue.lng.toFixed(5)}</p>
+                    </li>
+                    <li>
+                        <span className='type'>Street Name</span>
+                        <p>{streetName}</p>
+                    </li>
+                    <li>
+                        <span className='type'>Status</span>
+                        <p>{issue.status}</p>
+                    </li>
+                    <li>
+                        <span className='type'>Priority</span>
+                        <p>{issue.priority}</p>
+                    </li>
+                    {
+                        issue.distance ? 
+                        (
+                            <li>
+                                <span className='type'>Distance from Current Location</span>
+                                <p>{issue.distance} KM</p>
+                            </li>
+                        ) : null
+                    }
+                </ul>
+                <em className='user'>Issue reported by: {issue.username}</em>
             </div>
-            <ul className='details'>
-                <li>
-                    <span className='type'>Description</span>
-                    <p>{issue.description}</p>
-                </li>
-                <li>
-                    <span className='type'>Type</span>
-                    <p>{issue.type}</p>
-                </li>
-                <li>
-                    <span className='type'>Date Reported</span>
-                    <p>{dateReported}</p>
-                    <span className='type'>Time Elapsed</span>
-                    <p>{daysElapsed} day(s)</p>
-                </li>
-                <li>
-                    <span className='type'>Location</span>
-                    <p>Lat: {issue.lat.toFixed(5)}</p>
-                    <p>Lng: {issue.lng.toFixed(5)}</p>
-                </li>
-                <li>
-                    <span className='type'>Street Name</span>
-                    <p>{streetName}</p>
-                </li>
-                <li>
-                    <span className='type'>Status</span>
-                    <p>{issue.status}</p>
-                </li>
-                <li>
-                    <span className='type'>Priority</span>
-                    <p>{issue.priority}</p>
-                </li>
-                {
-                    issue.distance ? 
-                    (
-                        <li>
-                            <span className='type'>Distance from Current Location</span>
-                            <p>{issue.distance} KM</p>
-                        </li>
-                    ) : null
-                }
-            </ul>
-            <em className='user'>Issue reported by: {issue.username}</em>
-        </div>
+        </Fade>
+        
     )
 }
 

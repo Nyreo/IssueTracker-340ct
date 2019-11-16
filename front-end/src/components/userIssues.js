@@ -22,11 +22,12 @@ class UserIssues extends Component {
             numIssues : 0,
             rpp : 5,
             pagination : 0,
-            loadingIssues : true
+            loadMessage : 'Loading...'
         }
     }
 
     componentDidMount = () => {
+        this.setState({loadMessage : 'Fetching issues...'})
         IssueHandler.fetchAllIssues()
             .then((response) => {
                 const rawIssues = response.filter(issue => issue.status !== 'pending')
@@ -66,6 +67,7 @@ class UserIssues extends Component {
     }
 
     calcIssueDistance = () => {
+        this.setState({loadMessage : 'Calculating distance from location...'})
         Location.getCurrentLocation(this.success)
     }
 
@@ -81,7 +83,7 @@ class UserIssues extends Component {
                         </div>
                     </>
                 :
-                    <div className='loading-blocked'><span>Loading Issues...</span></div>
+                    <div className='loading-blocked'><span>{this.state.loadMessage}</span></div>
                 }
             </div>
         )

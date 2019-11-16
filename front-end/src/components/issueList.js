@@ -2,6 +2,7 @@ import React from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+
 /* Icon imports */
 import { faList } from '@fortawesome/free-solid-svg-icons'
 
