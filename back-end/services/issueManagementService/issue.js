@@ -169,4 +169,8 @@ module.exports = class Issue {
 			throw err
 		}
 	}
+
+	async voteIssue(id, username, value) {
+		console.log(`User [${username}] Voting for issue: ${id} VALUE : ${value}`)
+	}
 }

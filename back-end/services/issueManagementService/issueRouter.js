@@ -141,11 +141,10 @@ router.delete('/issues/delete/:id', async ctx => {
  */
 router.post('/issues/upvote', async ctx => {
 	try {
-		const id = ctx.request.body.id
-		console.log(`Voting FOR the issue ${id}`)
+		const data = ctx.request.body
 		const issues = await new Issue(dbName)
 
-		await issues.voteForIssue()
+		await issues.voteIssue(data.id, data.username, 1)
 
 		ctx.status = status.OK
 	} catch (err) {
@@ -162,11 +161,10 @@ router.post('/issues/upvote', async ctx => {
  */
 router.post('/issues/downvote', async ctx => {
 	try {
-		const id = ctx.request.body.id
-		console.log(`Voting AGAINST the issue ${id}`)
+		const data = ctx.request.body
 		const issues = await new Issue(dbName)
 
-		await issues.voteAgainstIssue()
+		await issues.voteIssue(data.id, data.username, -1)
 
 		ctx.status = status.OK
 	} catch (err) {

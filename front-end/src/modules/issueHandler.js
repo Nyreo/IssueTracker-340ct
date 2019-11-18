@@ -63,11 +63,12 @@ export const updateIssueStatus = (id, status) => {
         })
 }
 
-export const voteForIssue = (id) => {
+export const voteForIssue = (id, username) => {
     // vote for issue
-    const api_endpoint = `${api_url}/vote`
+    const api_endpoint = `${api_url}/upvote`
+    const data = { id, username }
     return axios
-        .post(api_endpoint, {id})
+        .post(api_endpoint, data)
         .then(response => {
             return response
         })
@@ -76,11 +77,12 @@ export const voteForIssue = (id) => {
         })
 }
 
-export const voteAgainstIssue = (id) => {
-    // downvote an issue
+export const voteAgainstIssue = (id, username) => {
+    // vote for issue
     const api_endpoint = `${api_url}/downvote`
+    const data = { id, username }
     return axios
-        .put(api_endpoint, {id})
+        .post(api_endpoint, data)
         .then(response => {
             return response
         })

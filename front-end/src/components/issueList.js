@@ -9,13 +9,12 @@ import { faList } from '@fortawesome/free-solid-svg-icons'
 // component imports
 import IssueCard from './issueCard'
 
-const IssueList = ({issues, numIssues}) => {
+const IssueList = ({issues, numIssues, store}) => {
 
     const renderIssues = () => {
-        // console.log('issuesList: ', issues)
         const issueCards = issues.map((issue,i) => {
             return (
-                <IssueCard key={`issue${i}`} issue={issue}/>
+                <IssueCard key={`issue${i}`} issue={issue} store={store}/>
             )
         })
 

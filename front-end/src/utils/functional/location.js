@@ -29,7 +29,6 @@ const getCurrentLocation = (success, fail=getLocationFailure) => {
         timeout: 5000,
         maximumAge: 0
     }
-
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(success, fail, options)
     }

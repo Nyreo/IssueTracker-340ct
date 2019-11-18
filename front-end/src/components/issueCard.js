@@ -15,7 +15,7 @@ import { faCheckCircle, faClock, faFlag} from '@fortawesome/free-solid-svg-icons
 
 import Fade from 'react-reveal/Fade'
 
-const IssueCard = ({issue}) => {
+const IssueCard = ({issue, store}) => {
 
     let dateReported = new Date(issue.dateSubmitted)
         dateReported = `${dateReported.getDate()}/${dateReported.getMonth()}/${dateReported.getFullYear()}`
@@ -104,7 +104,7 @@ const IssueCard = ({issue}) => {
                 </ul>
                 <div className='gap-left inline vote w-100'>
                     {issue.status !== 'resolved' ?
-                        <VotePanel id={issue.id}/>
+                        <VotePanel id={issue.id} store={store}/>
                         :
                         <span>Voting for this issue has been <b>closed.</b></span>
                     }

@@ -10,16 +10,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons'
 
 
-const VotePanel = (props) => {
-
+const VotePanel = ({id, store})=> {
 	const forVote = () => {
-		voteForIssue(props.id)
+		voteForIssue(id, store.getState().userReducer.user.username)
 			.then(() => alert('Thank you for voting!'))
 			.catch(() => console.log('internal server error'))
     }
 
     const againstVote = () => {
-		voteAgainstIssue(props.id)
+		voteAgainstIssue(id, store.getState().userReducer.user.username)
 			.then(() => alert('Thank you for voting!'))
 			.catch(() => console.log('internal server error'))
 	}

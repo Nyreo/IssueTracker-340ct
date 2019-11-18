@@ -9,7 +9,7 @@ class IssuesPage extends Component {
         return (
             <div className='fill gap-bot shadow'>
                 <h1>Reported Issues</h1>
-                <UserIssues/>
+                <UserIssues store={this.props.store}/>
             </div>
         )
     }
