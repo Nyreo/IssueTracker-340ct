@@ -764,31 +764,47 @@ textarea {
 
 /* voting --- start */
 
-.vote button {
-  position : relative;
-  font-size : 18px;
-  border : 2px solid whitesmoke;
-  /* border : 0; */
-  border-radius : 5px 0 5px 0;
-  margin-right : 3px;
-  outline : none;
-  z-index : 1
+.vote button{
+  position: relative;
+  padding: 5px 5px;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 5px 0 5px 0;
+  border : 1px solid whitesmoke;
+  outline: none;
+  background: none;
+  z-index: 1;
+  transition: 0.2s ease-in-out;
+  background-color : white;
+  margin-right : 5px;
+  overflow : hidden;
 }
 
-.upvote {
-  transition: 200ms ease-in-out;
+.vote button:hover {
+  color: white;
+  border-color : white;
 }
 
-.upvote:hover {
-  color : rgb(143, 218, 78);
+.vote button:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: -1;
+  transition: top 0.2s ease-in;
+}
+.vote button:hover:before {
+  top: 0;
 }
 
-.downvote {
-  transition: 200ms ease-in-out;
+.upvote:before {
+  background : #7cd992;
 }
 
-.downvote:hover {
-  color : rgb(255, 57, 57);
+.downvote:before {
+  background : #eb6060;
 }
 
 /* voting --- end */

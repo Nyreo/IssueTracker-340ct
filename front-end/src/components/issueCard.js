@@ -58,7 +58,7 @@ const IssueCard = ({issue, store}) => {
             <div key={issue.id} className='issue-card shadow'>
                 <div style={titleStyle} className='title'>
                     <FontAwesomeIcon icon={titleIcon}/>
-                    <span>#{issue.id} Status - {issue.status}</span>
+                    <span>#{issue.id} Status: {issue.status} - Votes: {issue.votes}</span>
                 </div>
                 <ul className='details'>
                     <li>
