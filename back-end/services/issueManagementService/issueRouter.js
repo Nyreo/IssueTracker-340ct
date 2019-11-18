@@ -138,15 +138,17 @@ router.delete('/issues/delete/:id', async ctx => {
  *
  * @name VoteFor Script
  * @route {POST} /issues/upvote
+ * @returns new vote count
  */
 router.post('/issues/upvote', async ctx => {
 	try {
 		const data = ctx.request.body
 		const issues = await new Issue(dbName)
 
-		await issues.voteIssue(data.id, data.username, 1)
-
+		const votes = await issues.voteIssue(data.id, data.username, 1)
+		// console.log(`[${data.id}] New votes for issue: ${votes}`)
 		ctx.status = status.OK
+		ctx.body = votes
 	} catch (err) {
 		ctx.status = status.BAD_REQUEST
 		ctx.message = err.message
@@ -158,15 +160,17 @@ router.post('/issues/upvote', async ctx => {
  *
  * @name VoteAgainst Script
  * @route {POST} /issues/downvote
+ * @returns new vote count
  */
 router.post('/issues/downvote', async ctx => {
 	try {
 		const data = ctx.request.body
 		const issues = await new Issue(dbName)
 
-		await issues.voteIssue(data.id, data.username, -1)
-
+		const votes = await issues.voteIssue(data.id, data.username, -1)
+		// console.log(`[${data.id}] New votes for issue: ${votes}`)
 		ctx.status = status.OK
+		ctx.body = votes
 	} catch (err) {
 		ctx.status = status.BAD_REQUEST
 		ctx.message = err.message

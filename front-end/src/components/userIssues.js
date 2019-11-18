@@ -44,7 +44,7 @@ class UserIssues extends Component {
 
     filterIssues = (filter) => {
         const filteredIssues = IssueHandler.filterIssues(this.state.rawIssues, filter)
-        this.setState({pagination:0})
+        this.setState({pagination:0, numIssues:filteredIssues.length})
         this.renderIssues(filteredIssues)
     }
 

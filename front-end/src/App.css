@@ -743,7 +743,6 @@ textarea {
 .issue-card .details li {
   flex : 0 0 25%;
   margin-top : 10px;
-  /* padding-right : 10px; */
 }
 
 .issue-card .details .type {

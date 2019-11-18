@@ -10,17 +10,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons'
 
 
-const VotePanel = ({id, store})=> {
+const VotePanel = ({store, stateIssue, setStateIssue})=> {
+
+	const thankyouAlert = () => {
+		alert(`Thank you for voting for the issue #${stateIssue.id}!`)
+	}
+
+	const failedVoteAlert = () => {
+		alert(`Sorry, you cannot vote for issue #${stateIssue.id}... 
+If you wish to change your vote, simply vote for the other option.`)
+	}
+
 	const forVote = () => {
-		voteForIssue(id, store.getState().userReducer.user.username)
-			.then(() => alert('Thank you for voting!'))
-			.catch(() => console.log('internal server error'))
+		voteForIssue(stateIssue.id, store.getState().userReducer.user.username)
+			.then((response) => response.data)
+			.then((newVotes) => setStateIssue({...stateIssue, votes : newVotes}))
+			.then(() => thankyouAlert())
+			.catch(() => failedVoteAlert())
     }
 
     const againstVote = () => {
-		voteAgainstIssue(id, store.getState().userReducer.user.username)
-			.then(() => alert('Thank you for voting!'))
-			.catch(() => console.log('internal server error'))
+		voteAgainstIssue(stateIssue.id, store.getState().userReducer.user.username)
+			.then((response) => response.data)
+			.then((newVotes) => setStateIssue({...stateIssue, votes : newVotes}))	
+			.then(() => thankyouAlert())
+			.catch(() => failedVoteAlert())
 	}
 	
 	return (
