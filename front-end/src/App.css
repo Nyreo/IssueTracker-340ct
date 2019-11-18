@@ -46,12 +46,7 @@ button {
 
 .abs-right { position : absolute; right : 0;}
 
-.fadeIn {
-  transition : 200ms ease-in;
-}
-
-.opacity0 { opacity : 0}
-.opacity100 { opacity: 100}
+.inline { display : inline; }
 
 .link {
   font-size : 12px;
@@ -760,8 +755,40 @@ textarea {
 }
 
 .issue-card .user {
-  float:right;
-  padding-right : 10px;
+  position : absolute;
+  right : 10px;
+  bottom : 15px;
 }
 
 /* issue-card --- end */
+
+/* voting --- start */
+
+.vote button {
+  position : relative;
+  font-size : 18px;
+  border : 2px solid whitesmoke;
+  /* border : 0; */
+  border-radius : 5px 0 5px 0;
+  margin-right : 3px;
+  outline : none;
+  z-index : 1
+}
+
+.upvote {
+  transition: 200ms ease-in-out;
+}
+
+.upvote:hover {
+  color : rgb(143, 218, 78);
+}
+
+.downvote {
+  transition: 200ms ease-in-out;
+}
+
+.downvote:hover {
+  color : rgb(255, 57, 57);
+}
+
+/* voting --- end */

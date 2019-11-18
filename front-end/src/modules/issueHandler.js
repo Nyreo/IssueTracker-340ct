@@ -10,7 +10,6 @@ export const fetchAllIssues = () => {
     return axios
         .get(api_endpoint)
         .then(response => {
-            console.log(response.data)
             return response.data
         })
         .catch(err => {
@@ -63,6 +62,32 @@ export const updateIssueStatus = (id, status) => {
         })
 }
 
+export const voteForIssue = (id) => {
+    // vote for issue
+    const api_endpoint = `${api_url}/vote`
+    return axios
+        .post(api_endpoint, {id})
+        .then(response => {
+            return response
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
+export const voteAgainstIssue = (id) => {
+    // downvote an issue
+    const api_endpoint = `${api_url}/downvote`
+    return axios
+        .put(api_endpoint, {id})
+        .then(response => {
+            return response
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
 export const filterIssues = (issues, filter) => {
     
     if(!issues.length) throw new Error('No issues available')
@@ -97,6 +122,8 @@ export default {
     reportIssue,
     updateIssuePriority,
     updateIssueStatus,
+    voteForIssue,
+    voteAgainstIssue,
     filterIssues,
     splitIssues
 }

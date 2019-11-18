@@ -4,11 +4,14 @@ import React from 'react'
 // utils imports
 import DateHandler from '../utils/functional/dateHandler'
 
-// component imports
+// custom component imports
+import VotePanel from './votePanel'
+
+// standard component imports
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // icon imports
-import { faCheckCircle, faClock, faFlag } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faClock, faFlag} from '@fortawesome/free-solid-svg-icons'
 
 import Fade from 'react-reveal/Fade'
 
@@ -99,7 +102,17 @@ const IssueCard = ({issue}) => {
                         ) : null
                     }
                 </ul>
-                <em className='user'>Issue reported by: {issue.username}</em>
+                <div className='gap-left inline vote w-100'>
+                    {issue.status !== 'resolved' ?
+                        <VotePanel id={issue.id}/>
+                        :
+                        <span>Voting for this issue has been <b>closed.</b></span>
+                    }
+                    
+                </div>
+                <div className='inline user'>
+                    <em>Issue reported by: {issue.username}</em>
+                </div>
             </div>
         </Fade>
         
