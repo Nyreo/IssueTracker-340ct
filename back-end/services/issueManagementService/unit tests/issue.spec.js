@@ -363,10 +363,11 @@ describe('updateIssueStatus()', () => {
 			await issues.reportIssue(baseIssue)
 
 			await issues.updateIssueStatus(1, 'resolved')
+			await issues.updateIssueStatus(1, 'allocated')
 
 			const issue = await issues.fetchIssue(1)
-			expect(issue.status).toEqual('resolved')
-			expect(issue.dateResolved).not.toBe(null)
+			expect(issue.status).toEqual('allocated')
+			expect(issue.dateResolved).toBe(null)
 
 		} catch(err) {
 			done.fail(err)
@@ -403,7 +404,23 @@ describe('updateIssueStatus()', () => {
 		}
 	})
 
-	test.todo('when status is changed back from resolve, dateResolved should be reset')
+	test('when status is changed back from resolved, dateResolved should be reset', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
+
+			await issues.updateIssueStatus(1, 'resolved')
+
+			const issue = await issues.fetchIssue(1)
+			expect(issue.status).toEqual('resolved')
+			expect(issue.dateResolved).not.toBe(null)
+
+		} catch(err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
 })
 
 describe('updateIssuePriority()', () => {
@@ -557,42 +574,182 @@ describe('setResolutionTime', () => {
 	})
 })
 
-describe('voteForIssue()', () => {
-	test.todo('voting for existing issue')
+describe('voteIssue()', () => {
+	test('voting for existing issue', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
 
-	test.todo('voting for non-existing issue')
+			await issues.voteIssue(1, 'test', 1)
 
-	test.todo('voting for same issue twice')
+			const issue = await issues.fetchIssue(1)
+			expect(issue.votes).toEqual(1)
+		} catch (err) {
+			done.fail(err.message)
+		} finally {
+			done()
+		}
+	})
 
-	test.todo('voting for non-pending issue')
+	test('voting for non-existing issue', async done => {
+		try {
+			const issues = await new Issues()
 
-	test.todo('id must not be blank')
+			await issues.voteIssue(1, 'test', 1)
 
-	test.todo('username should not be blank')
-})
+			done.fail('error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('issue does not exist'))
+			done()
+		}
+	})
 
-describe('voteAgainstIssue()', () => {
+	test('voting for same issue twice', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
 
-	test.todo('voting against existing issue')
+			await issues.voteIssue(1, 'test', 1)
+			await issues.voteIssue(1, 'test', 1)
 
-	test.todo('voting against non-existing issue')
+			done.fail('error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('You cannot vote multiple times for the same issue.'))
+			done()
+		}
+	})
 
-	test.todo('voting against existing issue twice')
+	test('voting an issue from multiple users', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
 
-	test.todo('id should not be blank')
+			await issues.voteIssue(1, 'test1', 1)
+			await issues.voteIssue(1, 'test2', 1)
 
-	test.todo('username should not be blank')
-})
+			const issue = await issues.fetchIssue(1)
 
-describe('cancelVote()', () => {
+			expect(issue.votes).toBe(2)
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
 
-	test.todo('cancelling vote against existing issue')
+	test('downvoting an existing issue', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
 
-	test.todo('cancelling vote against non-existing issue')
+			await issues.voteIssue(1, 'test', -1)
 
-	test.todo('cancelling vote against existing issue user has not voted for')
+			const issue = await issues.fetchIssue(1)
+			expect(issue.votes).toEqual(-1)
+		} catch (err) {
+			done.fail(err.message)
+		} finally {
+			done()
+		}
+	})
 
-	test.todo('id should not be blank')
+	test('downvoting a non existing issue', async done => {
+		try {
+			const issues = await new Issues()
 
-	test.todo('username should not be blank')
+			await issues.voteIssue(1, 'test', -1)
+
+			done.fail('error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('issue does not exist'))
+			done()
+		}
+	})
+
+	test('downvoting for same issue twice', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
+
+			await issues.voteIssue(1, 'test', -1)
+			await issues.voteIssue(1, 'test', -1)
+
+			done.fail('error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('You cannot vote multiple times for the same issue.'))
+			done()
+		}
+	})
+
+	test('downvoting an issue from multiple users', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
+
+			await issues.voteIssue(1, 'test1', -1)
+			await issues.voteIssue(1, 'test2', -1)
+
+			const issue = await issues.fetchIssue(1)
+
+			expect(issue.votes).toBe(-2)
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('changing user vote', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
+
+			await issues.voteIssue(1, 'test', -1)
+			await issues.voteIssue(1, 'test', 1)
+
+			const issue = await issues.fetchIssue(1)
+
+			expect(issue.votes).toBe(1)
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('id must not be blank', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.voteIssue()
+
+			done.fail('error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('id must not be blank'))
+			done()
+		}
+	})
+
+	test('username should not be blank', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.voteIssue(1)
+
+			done.fail('error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('username must not be blank'))
+			done()
+		}
+	})
+
+	test('value should not be blank', async done => {
+		try {
+			const issues = await new Issues()
+			await issues.voteIssue(1, 'test')
+
+			done.fail('error should have been thrown')
+		} catch (err) {
+			expect(err).toEqual(Error('value must not be blank'))
+			done()
+		}
+	})
 })

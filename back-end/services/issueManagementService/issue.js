@@ -191,8 +191,11 @@ module.exports = class Issue {
 	async updateIssueStatus(id, status) {
 		try {
 			validate.checkUndefinedParams({id, status})
-
 			await this.checkIssueExists(id)
+			// get original status - if was resolved, remove data resolved
+			const issue = await this.fetchIssue(id)
+			if(issue.status === 'resolved' && status !== 'resolved') await this.removeResolutionTime(id)
+
 			const sql = `UPDATE issues SET status="${status}" WHERE id=${id};`
 			this.db.run(sql)
 
@@ -201,6 +204,19 @@ module.exports = class Issue {
 		} catch (err) {
 			throw err
 		}
+	}
+
+	/**
+	 * The script to remove the resolution time
+	 *
+	 * @name removeResolutionTime Script
+	 * @param {integer} id
+	 * @throws {Error} validation error
+	 * @async
+	 */
+	async removeResolutionTime(id) {
+		const sql = `UPDATE issues SET dateResolved=${null} WHERE id=${id};`
+		this.db.run(sql)
 	}
 
 	/**
@@ -303,6 +319,8 @@ module.exports = class Issue {
 	 */
 	async voteIssue(id, username, value) {
 		try {
+			await validate.checkUndefinedParams({id, username, value})
+			await this.checkIssueExists(id)
 			await this.validateUserVote(id, username, value)
 			let sql = `INSERT INTO votes(issueID, username, value) 
 			VALUES(${id}, "${username}", ${value});`
