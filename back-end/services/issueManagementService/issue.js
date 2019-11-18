@@ -22,8 +22,14 @@ module.exports = class Issue {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// eslint-disable-next-line max-len
-			const sql = `CREATE TABLE IF NOT EXISTS issues (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, type TEXT, dateSubmitted INTEGER, dateResolved INTEGER, status TEXT DEFAULT "reported", username TEXT, priority INTEGER DEFAULT 0, votes INTEGER DEFAULT 0, lat REAL, lng REAL, streetName TEXT DEFAULT "");
-						 CREATE TABLE IF NOT EXISTS userVotes (issueID INTEGER, username TEXT);`
+			let sql = 'CREATE TABLE IF NOT EXISTS issues (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, type TEXT, dateSubmitted INTEGER, dateResolved INTEGER, status TEXT DEFAULT "reported", username TEXT, priority INTEGER DEFAULT 0, votes INTEGER DEFAULT 0, lat REAL, lng REAL, streetName TEXT DEFAULT "");'
+			await this.db.run(sql)
+			sql = `CREATE TABLE IF NOT EXISTS votes (
+				issueID	INTEGER NOT NULL,
+				username	TEXT NOT NULL,
+				value	INTEGER NOT NULL,
+				PRIMARY KEY(issueID,username)
+			);`
 			await this.db.run(sql)
 			return this
 		})()
@@ -71,14 +77,30 @@ module.exports = class Issue {
 	async fetchIssue(id) {
 		validate.checkUndefinedParams({id})
 
-		const sql = `SELECT * FROM issues WHERE id=${id}`
+		const sql = `SELECT *,
+						coalesce((
+							SELECT SUM(value)
+							FROM votes
+							WHERE id = issueID
+						), 0)
+						votes
+					FROM issues
+					WHERE id=${id}`
 		const record = await this.db.get(sql)
 
 		return record ? record : {}
 	}
 
 	async fetchAllIssues() {
-		const sql = 'SELECT * FROM issues'
+		// select sum of votes from votes table in addition to data
+		const sql = `SELECT *,
+						coalesce((
+							SELECT SUM(value)
+							FROM votes
+							WHERE id = issueID
+						), 0)
+						votes
+					FROM issues`
 		const records = await this.db.all(sql)
 
 		return records
