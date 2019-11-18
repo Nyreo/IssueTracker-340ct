@@ -1,11 +1,10 @@
+/* Standard component imports */
 import React from 'react'
-
+import Tooltip from '@material-ui/core/Tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 /* Icon imports */
 import { faTable } from '@fortawesome/free-solid-svg-icons'
-
-import Tooltip from '@material-ui/core/Tooltip'
 
 const IssuesTable = ({issues, numIssues}) => {
 
@@ -35,18 +34,23 @@ const IssuesTable = ({issues, numIssues}) => {
                             </Tooltip>
                         </th>
                         <th>
+                            <Tooltip placement='top' title='Number of relative votes this issue has received.'>
+                                <span>Votes Received</span>
+                            </Tooltip>
+                        </th>
+                        <th>
                             <Tooltip placement='top' title='The date the issue was reported.'>
                                 <span>Date Reported</span>
                             </Tooltip>
                         </th>
                         <th>
                             <Tooltip placement='top' title='Time Elapsed since the issue was reported or resolved.'>
-                                <span>Time Elapsed (days)</span>
+                                <span>Days Elapsed</span>
                             </Tooltip>
                         </th>
                         <th>
                             <Tooltip placement='top' title='Latitude and Longitude coordinates of the issue.'>
-                                <span>Location (Lat,Lng)</span>
+                                <span> (Lat,Lng)</span>
                             </Tooltip>
                         </th>
                         <th>
