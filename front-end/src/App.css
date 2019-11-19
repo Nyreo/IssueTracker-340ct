@@ -920,12 +920,24 @@ textarea {
 
 /* suggestion --- end */
 
-/* animation */
+.notification {
+  position : fixed;
+  top : 10px;
+  left : 50%;
+  transform : translate(-50%);
+  text-align : center;
+  vertical-align: middle;
+  z-index : 100;
+  
+}
 
-.fade {
-  animation: fade-in-keyframes 1s;
+.notification div {
+  display:inline-block;
+  background : #ACB6E5;
+  color : white;
+  border-radius : 5px;
+  box-sizing: border-box;
+  padding : 15px 10px;
 }
-@keyframes fade-in-keyframes {
-  from {opacity: 0}
-  to {opacity: 1}
-}
+
+.notification svg { margin-right : 10px;}

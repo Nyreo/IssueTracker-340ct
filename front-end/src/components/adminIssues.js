@@ -69,6 +69,7 @@ class AdminIssues extends Component {
                 <a href='localhost:3000/issues'>Click Here</a> to view your updated issues </p>`
                 UserAuth.sendEmail({user, subject, message})
             })
+            .then(() => this.props.createNotification(`Issue ${id} has been updated to ${status}.`))
             .catch(err => console.log(err))
     }
 
