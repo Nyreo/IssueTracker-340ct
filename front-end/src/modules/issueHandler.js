@@ -70,7 +70,7 @@ export const voteForIssue = (id, username) => {
     return axios
         .post(api_endpoint, data)
         .then(response => {
-            return response
+            return response.data
         })
         .catch(err => {
             throw err.response
@@ -84,7 +84,7 @@ export const voteAgainstIssue = (id, username) => {
     return axios
         .post(api_endpoint, data)
         .then(response => {
-            return response
+            return response.data
         })
         .catch(err => {
             throw err.response

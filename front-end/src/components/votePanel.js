@@ -23,7 +23,6 @@ If you wish to change your vote, simply vote for the other option.`)
 
 	const forVote = () => {
 		voteForIssue(stateIssue.id, store.getState().userReducer.user.username)
-			.then((response) => response.data)
 			.then((newVotes) => setStateIssue({...stateIssue, votes : newVotes}))
 			.then(() => thankyouAlert())
 			.catch(() => failedVoteAlert())
@@ -31,7 +30,6 @@ If you wish to change your vote, simply vote for the other option.`)
 
     const againstVote = () => {
 		voteAgainstIssue(stateIssue.id, store.getState().userReducer.user.username)
-			.then((response) => response.data)
 			.then((newVotes) => setStateIssue({...stateIssue, votes : newVotes}))	
 			.then(() => thankyouAlert())
 			.catch(() => failedVoteAlert())
