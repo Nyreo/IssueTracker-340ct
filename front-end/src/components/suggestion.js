@@ -15,7 +15,7 @@ const Suggestion = ({issue, allocateClick}) => {
 						<li><b>Type</b>: {issue.type}</li>
 						<li><b>Status</b>: {issue.status}</li>
 						<li><b>Date Reported</b>: {dateReported}</li>
-						<li><b>Distance</b>: {'1km'}</li>
+						<li><b>Distance</b>: {issue.distance.toFixed(2)}KM</li>
 					</ul>
 					<button onClick={allocateClick}>Allocate</button>
 				</div>

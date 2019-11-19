@@ -862,7 +862,7 @@ textarea {
 
 .suggestion-box .suggestion {
   position: relative;
-  flex : 1 0 23%;
+  flex : 0 1 25%;
   height : 95%;
   background : white;
   border-radius : 10px;
@@ -870,7 +870,7 @@ textarea {
   box-sizing: border-box;
   overflow : hidden;
   transition : 200ms ease-in-out;
-  margin: 5px;
+  margin: 10px;
 }
 
 .suggestion-box .suggestion .head {
@@ -902,16 +902,15 @@ textarea {
 
 .suggestion-box .suggestion .content button {
   position : absolute;
-  bottom : 5px;
-  left : 50%;
+  bottom : 0px;
+  left : 0;
   border : 0;
   padding : 5px;
   background: #f7e463;
   outline : 0;
   font-size : 1em;
-  width : 95%;
+  width : 100%;
   text-align : center;
-  transform:translate(-50%);
   transition : background 200ms ease-in-out;
 }
 
@@ -920,3 +919,13 @@ textarea {
 }
 
 /* suggestion --- end */
+
+/* animation */
+
+.fade {
+  animation: fade-in-keyframes 1s;
+}
+@keyframes fade-in-keyframes {
+  from {opacity: 0}
+  to {opacity: 1}
+}

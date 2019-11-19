@@ -16,6 +16,7 @@ import Suggestion from './suggestion'
 // utils imports
 import {ADMIN_STATUS_OPTIONS, PRIORITY_OPTIONS} from '../utils/constants/issueData'
 import DateHandler from '../utils/functional/dateHandler'
+import Location from '../utils/functional/location'
 
 class AdminIssues extends Component {
     
@@ -54,7 +55,7 @@ class AdminIssues extends Component {
     tableSetIssueStatus = (id, status) => {
         // pseudo function to ensure that suggestions are only made when table status is changed
         this.setIssueStatus(id, status)
-        if(status === 'allocated') this.makeIssueSuggestion()
+        if(status === 'allocated') this.makeIssueSuggestion(id)
     }
 
     setIssueStatus = (id, status) => {
@@ -85,10 +86,6 @@ class AdminIssues extends Component {
                 this.filterIssues(this.state.currentFilter)
             })
             .catch(err => console.log(err))
-    }
-
-    makeIssueSuggestion = () => {
-        this.setState({suggestions: this.state.rawIssues.slice(0, 4)})
     }
 
     sortByUserVotes = (issues) => {
@@ -164,6 +161,24 @@ class AdminIssues extends Component {
         this.setState({issues:splitIssues})
     }
 
+    makeIssueSuggestion = (id) => {
+        // fetch issue id
+        const target = this.state.rawIssues.filter(issue => issue.id === id)[0]
+        // get array of items by distance from selected issue
+        const issuesByDistance = this.state.rawIssues.map(issue => {
+            const distance = Location.distance(target.lat, target.lng, issue.lat, issue.lng)
+            return {...issue, distance}
+        })
+        // filter out target and issues that are already resolved / allocated
+        const filteredIssuesByDistance = issuesByDistance.filter(issue => {
+            return (issue.id !== target.id && issue.status === 'reported' && issue.distance <= this.state.suggestionRange)
+        })
+        if(filteredIssuesByDistance.length !== 0) {
+            this.setState({suggestions: filteredIssuesByDistance})
+        } else alert('There were no suggestions to be made.') // change this (kinda annoying)
+        
+    }
+
     suggestionAllocation = (id) => 
     {
         // remove issue from suggestions
@@ -177,17 +192,14 @@ class AdminIssues extends Component {
 
 
     renderSuggestions = () => {
-        console.log(this.state.suggestions)
+        // console.log(this.state.suggestions)
         let suggestions = []
-        for(let i = 0; i < this.state.suggestions.length; i++) {
+        const length = this.state.suggestions.length < 4 ? this.state.suggestions.length : 4
+        for(let i = 0; i < length; i++) {
             suggestions.push(
                 <Suggestion key={`suggestion${i}`} issue={this.state.suggestions[i]} allocateClick={() => this.suggestionAllocation(this.state.suggestions[i].id)}/>)
         }
         return suggestions
-    }
-
-    clearSuggestions = () => {
-        this.setState({suggestions: []})
     }
 
     render() {

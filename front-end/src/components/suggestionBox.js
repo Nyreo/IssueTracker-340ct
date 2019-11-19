@@ -26,7 +26,7 @@ const SuggestionBox = ({suggestions}) => {
 	return (
 		<div className='suggestion-box' style={{height : suggestionHeight}}>
 			<p className='title panel-header'>Issue Suggestions
-				<span style={{fontWeight : 'normal'}}> - These issues are recommened to be allocated based on the last selected issue.</span>
+				<span style={{fontWeight : 'normal'}}> - These issues are recommened to be allocated based on the distance from the last selected issue.</span>
 				<FontAwesomeIcon icon={toggleIcon} onClick={() => toggleShow()}/>
 			</p>
 			{showSuggestions ? suggestions: null}
