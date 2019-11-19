@@ -56,6 +56,7 @@ class AdminIssues extends Component {
         // pseudo function to ensure that suggestions are only made when table status is changed
         this.setIssueStatus(id, status)
         if(status === 'allocated') this.makeIssueSuggestion(id)
+        else this.setState({suggestions: []})
     }
 
     setIssueStatus = (id, status) => {
@@ -174,9 +175,14 @@ class AdminIssues extends Component {
         const filteredIssuesByDistance = issuesByDistance.filter(issue => {
             return (issue.id !== target.id && issue.status === 'reported' && issue.distance <= this.state.suggestionRange)
         })
-        if(filteredIssuesByDistance.length !== 0) {
-            this.setState({suggestions: filteredIssuesByDistance})
-        } else alert('There were no suggestions to be made.') // change this (kinda annoying)
+        if(filteredIssuesByDistance.length > 0) {
+            // order by user votes
+            const issuesByVotes = filteredIssuesByDistance.sort(this.compareUserVotes)
+            this.setState({suggestions: issuesByVotes})
+        } else {
+            this.setState({suggestions: []})
+            alert('There were no suggestions to be made.') // change this (kinda annoying)
+        }
         
     }
 
@@ -198,7 +204,7 @@ class AdminIssues extends Component {
         const length = this.state.suggestions.length < 4 ? this.state.suggestions.length : 4
         for(let i = 0; i < length; i++) {
             suggestions.push(
-                <Suggestion key={`suggestion${i}`} issue={this.state.suggestions[i]} allocateClick={() => this.suggestionAllocation(this.state.suggestions[i].id)}/>)
+                <Suggestion mostImportant={i === 0}key={`suggestion${i}`} issue={this.state.suggestions[i]} allocateClick={() => this.suggestionAllocation(this.state.suggestions[i].id)}/>)
         }
         return suggestions
     }
