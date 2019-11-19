@@ -11,6 +11,7 @@ import IssueCard from './issueCard'
 const IssueList = ({issues}) => {
 
     const renderIssues = () => {
+        // console.log('issuesList: ', issues)
         const issueCards = issues.map((issue,i) => {
             return (
                 <IssueCard key={`issue${i}`} issue={issue}/>

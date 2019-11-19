@@ -38,7 +38,7 @@ function App(props) {
   return (
     <div>
       <Router>
-      <div className='nav'>
+      <div className='nav shadow'>
             <div className='fl-left h-centered-margin'>
               <Link className='link' to='/'><FontAwesomeIcon icon={faHome}/>Home</Link>
               {

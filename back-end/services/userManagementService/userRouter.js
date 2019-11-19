@@ -61,4 +61,23 @@ router.post('/user/login', async ctx => {
 	}
 })
 
+/**
+ * The script to email a specific user with content
+ *
+ * @name Message Script
+ * @route {POST} /users/message
+ */
+router.post('/user/message', async ctx => {
+	try {
+		const content = ctx.request.body
+		const user = await new User(dbName)
+		user.sendUserEmail(content)
+
+		ctx.status = status.OK
+	} catch(err) {
+		ctx.status = status. BAD_REQUEST
+		ctx.message = err.message
+	}
+})
+
 module.exports = router

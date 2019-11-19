@@ -1,4 +1,8 @@
+/* eslint-disable max-lines */
 'use strict'
+
+// import validation module
+const validate = require('@mitch137/validation')
 
 const sqlite = require('sqlite-async')
 
@@ -18,50 +22,21 @@ module.exports = class Issue {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// eslint-disable-next-line max-len
-			const sql = `CREATE TABLE IF NOT EXISTS issues (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, type TEXT, dateSubmitted INTEGER, status TEXT DEFAULT "reported", username TEXT, priority INTEGER DEFAULT 0, votes INTEGER DEFAULT 0, lat REAL, lng REAL, streetName TEXT DEFAULT "");
+			const sql = `CREATE TABLE IF NOT EXISTS issues (id INTEGER PRIMARY KEY AUTOINCREMENT, description TEXT, type TEXT, dateSubmitted INTEGER, dateResolved INTEGER, status TEXT DEFAULT "reported", username TEXT, priority INTEGER DEFAULT 0, votes INTEGER DEFAULT 0, lat REAL, lng REAL, streetName TEXT DEFAULT "");
 						 CREATE TABLE IF NOT EXISTS userVotes (issueID INTEGER, username TEXT);`
 			await this.db.run(sql)
 			return this
 		})()
 	}
 
-	checkMissingData(issue) {
-		for(const key of requiredIssueKeys) {
-			if(!(key in issue)) throw new Error(`${key} missing`)
-		}
-	}
-
-	checkCorrectDataTypes(issue) {
-		for(const key of Object.keys(issue)) {
-			if(typeof issue[key] !== typeof exampleResponse[key]) throw new Error(`${key} has invalid data type`)
-		}
-	}
-
-	validateTimestamp(timestamp) {
-		// check for -ve timestamp
-		if(timestamp < 0) throw new Error('timestamp cannot be negative')
-		// check for too advanced timestamp
-		const daySeconds = 60*60*24
-		if(timestamp > Date.now() + daySeconds) throw new Error('timestamp is too far in the future')
-	}
-
-	checkUndefinedParams(params) {
-		for(const key of Object.keys(params)) {
-			if(!params[key] || params[key]==='') throw new Error(`${key} must not be blank`)
-		}
-	}
-
 	async validateIssueCredentials(issue) {
 		try {
-			// check issue is defined
-			this.checkUndefinedParams({issue})
-			// check missing data
-			this.checkMissingData(issue)
-			// check data types
-			this.checkCorrectDataTypes(issue)
-			// check validate timestamp
-			this.validateTimestamp(issue.dateSubmitted)
+			console.log(issue)
 
+			validate.checkUndefinedParams({issue})
+			validate.checkMissingData(issue, requiredIssueKeys)
+			validate.checkCorrectDataTypes(issue, exampleResponse)
+			validate.validateTimestamp(issue.dateSubmitted)
 		} catch(err) {
 			throw err
 		}
@@ -94,7 +69,7 @@ module.exports = class Issue {
 	}
 
 	async fetchIssue(id) {
-		this.checkUndefinedParams({id})
+		validate.checkUndefinedParams({id})
 
 		const sql = `SELECT * FROM issues WHERE id=${id}`
 		const record = await this.db.get(sql)
@@ -110,7 +85,7 @@ module.exports = class Issue {
 	}
 
 	async fetchUserIssues(username) {
-		this.checkUndefinedParams({username})
+		validate.checkUndefinedParams({username})
 
 		const sql = `SELECT * FROM issues WHERE username="${username}"`
 		const records = await this.db.all(sql)
@@ -120,7 +95,7 @@ module.exports = class Issue {
 
 	async deleteIssue(id) {
 		try {
-			this.checkUndefinedParams({id})
+			validate.checkUndefinedParams({id})
 			await this.checkIssueExists(id)
 			const sql = `DELETE from issues WHERE id=${id}`
 			this.db.run(sql)
@@ -131,11 +106,28 @@ module.exports = class Issue {
 
 	async updateIssueStatus(id, status) {
 		try {
-			this.checkUndefinedParams({id, status})
+			validate.checkUndefinedParams({id, status})
+
 			await this.checkIssueExists(id)
 			const sql = `UPDATE issues SET status="${status}" WHERE id=${id};`
 			this.db.run(sql)
+
+			// check if issue has been set to resolved
+			if(status==='resolved') await this.setResolutionTime(id)
 		} catch (err) {
+			throw err
+		}
+	}
+
+	async setResolutionTime(id) {
+		try{
+			validate.checkUndefinedParams({id})
+			await this.checkIssueExists(id)
+
+			const now = Date.now()
+			const sql = `UPDATE issues SET dateResolved=${now} WHERE id=${id};`
+			this.db.run(sql)
+		} catch(err) {
 			throw err
 		}
 	}
@@ -143,7 +135,7 @@ module.exports = class Issue {
 	// eslint-disable-next-line complexity
 	async updateIssuePriority(id, priority) {
 		try {
-			this.checkUndefinedParams({id, priority})
+			validate.checkUndefinedParams({id, priority})
 			await this.checkIssueExists(id)
 
 			if(isNaN(priority)) throw new Error('priority must be a positive number')

@@ -4,6 +4,9 @@ import React, {Component} from 'react'
 // custom module imports
 import IssueHandler from '../modules/issueHandler'
 
+// utlls imports
+import Location from '../utils/functional/location'
+
 // component imports
 import IssuesFilter from './issuesFilter'
 import IssuesList from './issueList'
@@ -17,23 +20,22 @@ class UserIssues extends Component {
             issues : null,
             rawIssues : null,
             rpp : 5,
-            pagination : 0
+            pagination : 0,
+            loadingIssues : true
         }
     }
 
     componentDidMount = () => {
         IssueHandler.fetchAllIssues()
             .then((response) => {
-                const rawIssues = response
-                this.renderIssues(rawIssues)
+                const rawIssues = response.filter(issue => issue.status !== 'pending')
                 this.setState({rawIssues})
+                this.calcIssueDistance()
             })
             .catch(err => console.log(err))
     }
 
     renderIssues = (issues) => {
-        issues = issues.filter(issue => issue.status !== 'pending')
-
         const splitIssues = IssueHandler.splitIssues(issues, this.state.rpp)
         this.setState({issues:splitIssues})
     }
@@ -44,19 +46,41 @@ class UserIssues extends Component {
         this.renderIssues(filteredIssues)
     }
 
+    compareDistance = (a, b) => {
+        if(a.distance < b.distance) return -1
+        if(a.distance > b.distance) return 1
+        return 0
+    }
+
+    success = (position) => {
+        const coords = position.coords
+        const issues = this.state.rawIssues.map(issue => {
+            const distance = Location.distance(coords.latitude, coords.longitude, issue.lat, issue.lng)
+            return issue = {...issue, distance: distance.toFixed(2)}
+        })
+        const sortedIssues = issues.sort(this.compareDistance)
+        this.setState({rawIssues:sortedIssues})
+
+        this.renderIssues(sortedIssues)
+    }
+
+    calcIssueDistance = () => {
+        Location.getCurrentLocation(this.success)
+    }
+
     render() {
         return (
-            <div className=''>
+            <div>
                 {this.state.issues ?
                     <>
                         <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
-                        <div >
+                        <div>
                             <IssuesList issues={this.state.issues[this.state.pagination]}/>
                             <Pagination pagination={this.state.pagination} numberOfPages={this.state.issues.length} setPagination={(p) => {this.setState({pagination:p})}}/>
                         </div>
                     </>
                 :
-                    <p>Loading Issues   ...</p>
+                    <div className='loading-blocked'><span>Loading Issues...</span></div>
                 }
             </div>
         )

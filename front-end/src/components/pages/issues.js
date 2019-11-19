@@ -7,10 +7,10 @@ class IssuesPage extends Component {
     
     render () {
         return (
-            <>
+            <div className='fill gap-bot shadow'>
                 <h1>Reported Issues</h1>
                 <UserIssues/>
-            </>
+            </div>
         )
     }
     

@@ -14,6 +14,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // module imports
 import {reportIssue} from '../../modules/issueHandler'
 
+// utils imports
+import Location from '../../utils/functional/location'
+
 const ReportIssueForm = ({store, history}) => {
 
     const initialReportDetails = {
@@ -107,9 +110,7 @@ const ReportIssueForm = ({store, history}) => {
         e.preventDefault()
         setLoading(true)
 
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(setCurrentLocation)
-        }
+        Location.getCurrentLocation(setCurrentLocation)
     }
 
     const nextFormPage = () => {
@@ -133,7 +134,7 @@ const ReportIssueForm = ({store, history}) => {
                 <div className='report'>
                     {/* form --- start */}
                     <form onSubmit={submitIssueForm} className='form shadow'>
-                        <h1 className='header centered'>Report Issue</h1>
+                        <h1 className='header h-centered-margin'>Report Issue</h1>
                         <CSSTransitionGroup
                             transitionName="error-box"
                             transitionAppear={true}
@@ -164,7 +165,10 @@ const ReportIssueForm = ({store, history}) => {
                                      </select>
                                      <FontAwesomeIcon className='cust-drop-icon' icon={faCaretDown}/>
                                  </div>
-                                 <button className='submit-button' onClick={() => nextFormPage()}>Next</button>
+                                <div style={{marginTop: '2em'}}>
+                                    <button className='submit-button' onClick={() => nextFormPage()}>Next</button>
+                                </div>
+                                
                                 </>
                                 :
                                 <>
@@ -173,7 +177,7 @@ const ReportIssueForm = ({store, history}) => {
                                 {/* location - auto*/}
                                 <div className='row'>
                                     <span className='input-label'>Automatically Get Location</span>
-                                    <button className='input-button underline-input' onClick={getUserLocation}>Get Current Location</button>
+                                    <button className='input-button' onClick={getUserLocation}>Get Current Location</button>
                                 </div>
                                 {/* location - manual */}
                                 <div className='input-double'>
@@ -183,16 +187,10 @@ const ReportIssueForm = ({store, history}) => {
                                 
                                 {/* streetName */}
                                 <InputField label={"Street Name (Optional)"}  type={"text"} value={reportDetails.streetName} onChange={setStreetName} required={false}/>
-                                <div className='input-double'>
-                                    <div className='row'>
-                                        {/* back button */}
-                                        <button className='submit-button' onClick={() => previousFormPage()}>Back</button>
+                                    <div style={{marginTop: '2em'}}>
+                                        <button className='submit-button w-fill' onClick={() => previousFormPage()}>Back</button>
+                                        <button className='submit-button w-fill gap-top' type='submit'>Submit</button>
                                     </div>
-                                    <div className='row'>
-                                        {/* back button */}
-                                        <button className='submit-button' type='submit'>Submit</button>
-                                    </div>
-                                </div>
                                 </>
                             }
                         </div>
@@ -200,9 +198,9 @@ const ReportIssueForm = ({store, history}) => {
                     {/* form --- end */}
                 </div>
                 {/* google maps frame */}
-                <div className='map h-centered-margin'>
+                <div className='map h-centered-margin fill gap-left shadow padding-20'>
                     <div className='frame'>
-                        <img src='https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/pass/GoogleMapTA.jpg' alt='map'/>
+                        <span>Insert Map Here</span>
                     </div>
                 </div>
             </div>

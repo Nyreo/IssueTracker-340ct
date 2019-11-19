@@ -7,7 +7,7 @@ describe('login', () => {
 	test('logging in with correct credentials', async done => {
     
         // mock the axios post request (api call)
-        axios.post = jest.fn(() => Promise.resolve({
+        axios.post = jest.fn((endpoint, data) => Promise.resolve({
             data: {
                 token: 'bearer testtoken'
             },
@@ -17,7 +17,12 @@ describe('login', () => {
         await expect(userAuth.login('user', 'pass')).resolves.toEqual(
             'bearer testtoken'
         )
-
+        expect(axios.post.mock.calls.length).toBe(1)
+        expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/user/login')
+        expect(axios.post.mock.calls[0][1]).toEqual({
+            user:'user',
+            pass:'pass'
+        })
         done()
     })
 
@@ -88,6 +93,45 @@ describe('register', () => {
                 statusText: 'passwords must match'
             }
         )
+        done()
+    })
+})
+
+describe('sendEmail', () => {
+
+	test('making a valid request', async done => {
+        
+        axios.post = jest.fn((endpoint, data) => Promise.resolve({
+            status:200
+        }))
+
+        await expect(userAuth.sendEmail({}))
+            .resolves.toEqual({status: 200})
+        expect(axios.post.mock.calls.length).toBe(1)
+        expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/user/message')
+        expect(axios.post.mock.calls[0][1]).toEqual({})
+
+        done()
+    })
+
+    test('making an invalid request', async done => {
+        
+        axios.post = jest.fn((endpoint, data) => Promise.reject({
+            response : {
+                status:400,
+                message: 'email could not be found for that user'
+            }
+        }))
+
+        await expect(userAuth.sendEmail({}))
+            .rejects.toEqual({
+                status:400,
+                message: 'email could not be found for that user'
+            })
+        expect(axios.post.mock.calls.length).toBe(1)
+        expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/user/message')
+        expect(axios.post.mock.calls[0][1]).toEqual({})
+
         done()
     })
 })

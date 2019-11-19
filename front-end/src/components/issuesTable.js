@@ -12,7 +12,7 @@ const IssuesTable = ({issues}) => {
     return (
         <>
             <p className='panel-header'><FontAwesomeIcon icon={faTable}/>Issues</p>
-            <div className='table-container yscroll shadow'>
+            <div className='table-container yscroll'>
                 <table className='table'>
                 <thead>
                     <tr>
@@ -37,6 +37,11 @@ const IssuesTable = ({issues}) => {
                             </Tooltip>
                         </th>
                         <th>
+                            <Tooltip placement='top' title='Time Elapsed since the issue was reported or resolved.'>
+                                <span>Time Elapsed (days)</span>
+                            </Tooltip>
+                        </th>
+                        <th>
                             <Tooltip placement='top' title='Latitude and Longitude coordinates of the issue.'>
                                 <span>Location (Lat,Lng)</span>
                             </Tooltip>
@@ -57,7 +62,7 @@ const IssuesTable = ({issues}) => {
                             </Tooltip>
                         </th>
                         <th>
-                            <Tooltip placement='top' title='Priority assigned to the issue by staff.'>
+                            <Tooltip placement='top' title='Priority assigned to the issue by staff. 0 Priority represents priority for that issue has not been assigned.'>
                                 <span>Priority</span>
                             </Tooltip>
                         </th>

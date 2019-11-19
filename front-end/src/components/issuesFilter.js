@@ -27,22 +27,20 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
     }
 
     const resetFilter = () => {
-        
-
         setFilter({})
         filterCallback({})
     }
 
     return (
-        <div className='filter-bar h-centered-margin'>
-            <p className='panel-header'><FontAwesomeIcon icon={faFilter} />Filter</p>
+        <div className='filter-bar h-centered-margin flex-item-50'>
+            <p className='panel-header'><FontAwesomeIcon icon={faFilter} />Filter - <span className='link' onClick={() => resetFilter()}>Reset Filter</span></p>
             <div className='filter-container'>
                 <div className='item'>
                     <span>Status</span>
-                    <TableDropDown 
+                    <TableDropDown
                         options={STATUS_OPTIONS}
                         id={'status'}
-                        initialValue={STATUS_OPTIONS[0].value}
+                        initialValue={filter.status}
                         changeCallback={updateFilter}
                         defaultValue={true}
                     />
@@ -52,46 +50,15 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
                     <TableDropDown 
                         options={PRIORITY_OPTIONS}
                         id={'priority'}
-                        initialValue={PRIORITY_OPTIONS[0].value}
+                        initialValue={filter.priority}
                         changeCallback={updateFilter}
                         defaultValue={true}
                     />
                 </div>
-                <div style={{width:'100%',marginTop:'1em'}}>
-                    <button onClick={() => resetFilter()}>Reset</button>
-                </div>
-               
+                {/* <div style={{width:'100%',marginTop:'1em'}}>
+                    <button className='submit-button' onClick={() => resetFilter()}>Reset</button>
+                </div> */}
             </div>
-            
-            {/* <table className='filter-table'>
-                <tbody>
-                    <tr className='filter-option'>
-                    <td>Status</td>
-                    <td><TableDropDown 
-                        options={STATUS_OPTIONS}
-                        id={'status'}
-                        initialValue={STATUS_OPTIONS[0].value}
-                        changeCallback={updateFilter}
-                        defaultValue={true}
-                    /></td>
-                    </tr>
-                    <tr className='filter-option'>
-                        <td>Priority</td>
-                        <td><TableDropDown 
-                        options={PRIORITY_OPTIONS}
-                        id={'priority'}
-                        initialValue={PRIORITY_OPTIONS[0].value}
-                        changeCallback={updateFilter}
-                        defaultValue={true}
-                    /></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button>Reset Filter</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> */}
         </div>
     )
 }

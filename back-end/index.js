@@ -2,14 +2,13 @@
 
 'use strict'
 
+// dot env
+require('dotenv').config({path: __dirname + '/.env'})
+
 /* STANDARD MODULE IMPORTS */
-//const bcrypt = require('bcrypt-promise')
 const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
-const session = require('koa-session')
 const cors = require('@koa/cors')
-// const fs = require('fs-extra')
-// const mime = require('mime-types')
 
 // router imports
 const userRouter = require('./services/userManagementService/userRouter')
@@ -20,7 +19,6 @@ const app = new Koa()
 /* CONFIGURING MIDDLEWARE */
 app.keys = ['darkSecret']
 app.use(bodyParser())
-app.use(session(app))
 
 /* ALLOWING CORS */
 app.use(cors())
