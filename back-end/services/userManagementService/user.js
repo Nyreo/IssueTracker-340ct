@@ -105,7 +105,7 @@ module.exports = class User {
 				subject: content.subject,
 				html: content.message
 			}
-			this.emailController.sendEmail(options)
+			// this.emailController.sendEmail(options)
 			console.log('Email has been sent... [placeholder]')
 		} else {
 			throw new Error('an email address for that user could not be found.')

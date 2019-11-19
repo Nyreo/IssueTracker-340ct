@@ -10,7 +10,7 @@ export const fetchAllIssues = () => {
     return axios
         .get(api_endpoint)
         .then(response => {
-            console.log(response.data)
+            // console.log(response.data)
             return response.data
         })
         .catch(err => {
