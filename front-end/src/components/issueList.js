@@ -2,20 +2,18 @@ import React from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
 /* Icon imports */
 import { faList } from '@fortawesome/free-solid-svg-icons'
 
 // component imports
 import IssueCard from './issueCard'
 
-const IssueList = ({issues, numIssues}) => {
+const IssueList = ({issues, numIssues, store}) => {
 
     const renderIssues = () => {
-        // console.log('issuesList: ', issues)
         const issueCards = issues.map((issue,i) => {
             return (
-                <IssueCard key={`issue${i}`} issue={issue}/>
+                <IssueCard key={issue.id} store={store} issue={issue}/>
             )
         })
 

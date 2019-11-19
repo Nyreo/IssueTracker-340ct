@@ -63,6 +63,34 @@ export const updateIssueStatus = (id, status) => {
         })
 }
 
+export const voteForIssue = (id, username) => {
+    // vote for issue
+    const api_endpoint = `${api_url}/upvote`
+    const data = { id, username }
+    return axios
+        .post(api_endpoint, data)
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
+export const voteAgainstIssue = (id, username) => {
+    // vote for issue
+    const api_endpoint = `${api_url}/downvote`
+    const data = { id, username }
+    return axios
+        .post(api_endpoint, data)
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
 export const filterIssues = (issues, filter) => {
     
     if(!issues.length) throw new Error('No issues available')
@@ -97,6 +125,8 @@ export default {
     reportIssue,
     updateIssuePriority,
     updateIssueStatus,
+    voteForIssue,
+    voteAgainstIssue,
     filterIssues,
     splitIssues
 }

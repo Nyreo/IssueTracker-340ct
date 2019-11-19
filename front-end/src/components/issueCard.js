@@ -1,25 +1,31 @@
 // standard imports
-import React from 'react'
+import React, {useState} from 'react'
 
 // utils imports
 import DateHandler from '../utils/functional/dateHandler'
 
-// component imports
+// custom component imports
+import VotePanel from './votePanel'
+
+// standard component imports
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // icon imports
-import { faCheckCircle, faClock, faFlag } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faClock, faFlag} from '@fortawesome/free-solid-svg-icons'
 
+// animation imports
 import Fade from 'react-reveal/Fade'
 
-const IssueCard = ({issue}) => {
+const IssueCard = ({issue, store}) => {
 
-    let dateReported = new Date(issue.dateSubmitted)
+    const [stateIssue, setStateIssue] = useState(issue)
+
+    let dateReported = new Date(stateIssue.dateSubmitted)
         dateReported = `${dateReported.getDate()}/${dateReported.getMonth()}/${dateReported.getFullYear()}`
-    const streetName = (issue.streetName ? issue.streetName : 'N/A')
+    const streetName = (stateIssue.streetName ? stateIssue.streetName : 'N/A')
     
-    const timeElapsed = issue.dateResolved ? issue.dateResolved : Date.now()
-    const daysElapsed = DateHandler.timestampDays(DateHandler.difference(issue.dateSubmitted, timeElapsed))
+    const timeElapsed = stateIssue.dateResolved ? stateIssue.dateResolved : Date.now()
+    const daysElapsed = DateHandler.timestampDays(DateHandler.difference(stateIssue.dateSubmitted, timeElapsed))
 
     let titleStyle;
     let titleIcon;
@@ -52,19 +58,19 @@ const IssueCard = ({issue}) => {
     
     return (
         <Fade>
-            <div key={issue.id} className='issue-card shadow'>
+            <div key={stateIssue.id} className='issue-card shadow'>
                 <div style={titleStyle} className='title'>
                     <FontAwesomeIcon icon={titleIcon}/>
-                    <span>#{issue.id} Status - {issue.status}</span>
+                    <span>#{stateIssue.id} Status: {stateIssue.status} - Votes: {stateIssue.votes}</span>
                 </div>
                 <ul className='details'>
                     <li>
                         <span className='type'>Description</span>
-                        <p>{issue.description}</p>
+                        <p>{stateIssue.description}</p>
                     </li>
                     <li>
                         <span className='type'>Type</span>
-                        <p>{issue.type}</p>
+                        <p>{stateIssue.type}</p>
                     </li>
                     <li>
                         <span className='type'>Date Reported</span>
@@ -74,8 +80,8 @@ const IssueCard = ({issue}) => {
                     </li>
                     <li>
                         <span className='type'>Location</span>
-                        <p>Lat: {issue.lat.toFixed(5)}</p>
-                        <p>Lng: {issue.lng.toFixed(5)}</p>
+                        <p>Lat: {stateIssue.lat.toFixed(5)}</p>
+                        <p>Lng: {stateIssue.lng.toFixed(5)}</p>
                     </li>
                     <li>
                         <span className='type'>Street Name</span>
@@ -83,23 +89,32 @@ const IssueCard = ({issue}) => {
                     </li>
                     <li>
                         <span className='type'>Status</span>
-                        <p>{issue.status}</p>
+                        <p>{stateIssue.status}</p>
                     </li>
                     <li>
                         <span className='type'>Priority</span>
-                        <p>{issue.priority}</p>
+                        <p>{stateIssue.priority}</p>
                     </li>
                     {
-                        issue.distance ? 
+                        stateIssue.distance ? 
                         (
                             <li>
                                 <span className='type'>Distance from Current Location</span>
-                                <p>{issue.distance} KM</p>
+                                <p>{stateIssue.distance} KM</p>
                             </li>
                         ) : null
                     }
                 </ul>
-                <em className='user'>Issue reported by: {issue.username}</em>
+                <div className='gap-left inline vote w-100'>
+                    {stateIssue.status === 'reported' ?
+                        <VotePanel store={store} setStateIssue={setStateIssue} stateIssue={stateIssue}/>
+                        :
+                        <span>Voting for this issue has been <b>closed.</b></span>
+                    }
+                </div>
+                <div className='inline user'>
+                    <em>Issue reported by: {stateIssue.username}</em>
+                </div>
             </div>
         </Fade>
         

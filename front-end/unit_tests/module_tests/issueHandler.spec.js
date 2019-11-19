@@ -454,3 +454,102 @@ describe('splitIssues', () => {
         } 
     })
 })
+
+describe('voteForIssue', () => {
+    test('voting for a valid and existing issue', async done => {
+        axios.post = jest.fn((endpoint, data) => Promise.resolve({
+            data : 1,
+            status: 200
+        }))
+
+        try {
+            await expect(IssueHandler.voteForIssue(1, 'username'))
+                .resolves.toEqual(1)
+            expect(axios.post.mock.calls.length).toBe(1)
+            expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/issues/upvote')
+            expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
+
+        } catch (err) {
+            done.fail(err.message)
+        } finally {
+            done()
+        }
+    })
+
+    test('voting for an invalid issue', async done => {
+        axios.post = jest.fn((endpoint, data) => Promise.reject(
+            {
+                response : {
+                    status: 400,
+                    message: 'you cannot vote for an issue multiple times'
+                }
+            }
+        ))
+
+        try {
+            await expect(IssueHandler.voteForIssue(1, 'username'))
+                .rejects.toEqual({
+                    status: 400,
+                    message: 'you cannot vote for an issue multiple times'
+                })
+            expect(axios.post.mock.calls.length).toBe(1)
+            expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/issues/upvote')
+            expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
+
+        } catch (err) {
+            done.fail(err.message)
+        } finally {
+            done()
+        }
+    })
+})
+
+describe('voteAgainstIssue', () => {
+
+    test('voting against a valid and existing issue', async done => {
+        axios.post = jest.fn((endpoint, data) => Promise.resolve({
+            data : 1,
+            status: 200
+        }))
+
+        try {
+            await expect(IssueHandler.voteAgainstIssue(1, 'username'))
+                .resolves.toEqual(1)
+            expect(axios.post.mock.calls.length).toBe(1)
+            expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/issues/downvote')
+            expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
+
+        } catch (err) {
+            done.fail(err.message)
+        } finally {
+            done()
+        }
+    })
+
+    test('voting against an invalid issue', async done => {
+        axios.post = jest.fn((endpoint, data) => Promise.reject(
+            {
+                response : {
+                    status: 400,
+                    message: 'you cannot vote for an issue multiple times'
+                }
+            }
+        ))
+
+        try {
+            await expect(IssueHandler.voteAgainstIssue(1, 'username'))
+                .rejects.toEqual({
+                    status: 400,
+                    message: 'you cannot vote for an issue multiple times'
+                })
+            expect(axios.post.mock.calls.length).toBe(1)
+            expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/issues/downvote')
+            expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
+
+        } catch (err) {
+            done.fail(err.message)
+        } finally {
+            done()
+        }
+    })
+})

@@ -44,7 +44,7 @@ class UserIssues extends Component {
 
     filterIssues = (filter) => {
         const filteredIssues = IssueHandler.filterIssues(this.state.rawIssues, filter)
-        this.setState({pagination:0})
+        this.setState({pagination:0, numIssues:filteredIssues.length})
         this.renderIssues(filteredIssues)
     }
 
@@ -78,7 +78,7 @@ class UserIssues extends Component {
                     <>
                         <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
                         <div>
-                            <IssuesList issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues}/>
+                            <IssuesList issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues} store={this.props.store}/>
                             <Pagination pagination={this.state.pagination} numberOfPages={this.state.issues.length} setPagination={(p) => {this.setState({pagination:p})}}/>
                         </div>
                     </>

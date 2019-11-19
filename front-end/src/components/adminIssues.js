@@ -35,6 +35,12 @@ class AdminIssues extends Component {
         this.refreshIssueList()
     }
 
+    compareUserVotes = (a, b) => {
+        if(a.votes > b.votes) return -1
+        if(a.votes < b.votes) return 1
+        return 0
+    }
+
     setIssuePriority = (id, priority) => {
         IssueHandler.updateIssuePriority(id, priority)
             .then(() => this.refreshIssueList())
@@ -56,8 +62,8 @@ class AdminIssues extends Component {
 
     filterIssues = (filter) => {
         const filteredIssues = IssueHandler.filterIssues(this.state.rawIssues, filter)
-        this.setState({currentFilter:filter, pagination:0})
-        this.renderIssues(filteredIssues)
+        this.setState({currentFilter:filter, pagination:0, numIssues: filteredIssues.length})
+        this.sortByUserVotes(filteredIssues)
     }
 
     refreshIssueList = () => {
@@ -68,6 +74,11 @@ class AdminIssues extends Component {
                 this.filterIssues(this.state.currentFilter)
             })
             .catch(err => console.log(err))
+    }
+
+    sortByUserVotes = (issues) => {
+        const sortedIssues = issues.sort(this.compareUserVotes)
+        this.renderIssues(sortedIssues)
     }
 
     renderIssues = (issues) => {
@@ -88,6 +99,7 @@ class AdminIssues extends Component {
                 <td>{issue.id}</td>
                 <td>{issue.type}</td>
                 <td>{description}</td>
+                <td>{issue.votes}</td>
                 <td>{dateReported}</td>
                 <td>{daysElapsed}</td>
                 <td>{location}</td>
@@ -114,7 +126,6 @@ class AdminIssues extends Component {
         this.setState({issues:splitIssues})
     }
 
-    
 
     render() {
         return (

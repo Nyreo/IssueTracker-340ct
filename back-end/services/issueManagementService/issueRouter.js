@@ -133,5 +133,70 @@ router.delete('/issues/delete/:id', async ctx => {
 	}
 })
 
+/**
+ * The script to process the voting FOR a specified issue
+ *
+ * @name VoteFor Script
+ * @route {POST} /issues/upvote
+ * @returns new vote count
+ */
+router.post('/issues/upvote', async ctx => {
+	try {
+		const data = ctx.request.body
+		const issues = await new Issue(dbName)
+
+		const votes = await issues.voteIssue(data.id, data.username, 1)
+		// console.log(`[${data.id}] New votes for issue: ${votes}`)
+		ctx.status = status.OK
+		ctx.body = votes
+	} catch (err) {
+		ctx.status = status.BAD_REQUEST
+		ctx.message = err.message
+	}
+})
+
+/**
+ * The script to process the voting AGAINST a specified issue
+ *
+ * @name VoteAgainst Script
+ * @route {POST} /issues/downvote
+ * @returns new vote count
+ */
+router.post('/issues/downvote', async ctx => {
+	try {
+		const data = ctx.request.body
+		const issues = await new Issue(dbName)
+
+		const votes = await issues.voteIssue(data.id, data.username, -1)
+		// console.log(`[${data.id}] New votes for issue: ${votes}`)
+		ctx.status = status.OK
+		ctx.body = votes
+	} catch (err) {
+		ctx.status = status.BAD_REQUEST
+		ctx.message = err.message
+	}
+})
+
+/**
+ * The script to process creating a new issue.
+ *
+ * @name Report Script
+ * @route {POST} /issues/report
+ */
+router.post('/issues/report', async ctx => {
+	try {
+		const data = ctx.request.body
+		// console.log(data)
+		const issues = await new Issue(dbName)
+
+		await issues.reportIssue(data)
+
+		ctx.status = status.OK
+	} catch (err) {
+		ctx.status = status.BAD_REQUEST
+		ctx.message = err.message
+	}
+})
+
 module.exports = router
 
