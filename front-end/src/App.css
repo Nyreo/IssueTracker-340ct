@@ -65,7 +65,33 @@ button {
   height : 100%;
   top : 0;
   left : 0;
+  bottom : 0;
+  right : 0;
+  padding-bottom : 35%;
   background-color : rgba(0, 0, 0, 0.418);
+}
+
+
+.popup {
+  position : absolute;
+  left : 50%;
+  top : 50%;
+  width : 300px;
+  height : 400px;
+  z-index : 100;
+  background : white;
+  color : #222222;
+  transform : translate(-50%, -50%);
+  box-sizing: border-box;
+  padding : 10px;
+  line-break: strict;
+  overflow : scroll;
+}
+
+.popup .close {
+  position : absolute;
+  bottom : 10px;
+  right : 10px
 }
 
 .loading-blocked span {
@@ -807,3 +833,90 @@ textarea {
 }
 
 /* voting --- end */
+
+/* suggestion --- start */
+.suggestion-box {
+  position : relative;
+  display : flex;
+  flex-flow : row nowrap;
+  /* justify-content: space-between; */
+  /* background : #f7f7f7; */
+  width : 100%;
+  border-radius : 10px;
+  padding : 60px 10px 10px 10px;
+  box-sizing: border-box;
+  transition : height 300ms ease-in-out;
+}
+
+.suggestion-box .title {
+  position : absolute;
+  left : 0;
+  top : 0;
+  font-weight: bold;
+  width: 100%;
+}
+
+.suggestion-box .title svg {
+  float : right;
+}
+
+.suggestion-box .suggestion {
+  position: relative;
+  flex : 1 0 23%;
+  height : 95%;
+  background : white;
+  border-radius : 10px;
+  padding : 10px;
+  box-sizing: border-box;
+  overflow : hidden;
+  transition : 200ms ease-in-out;
+  margin: 5px;
+}
+
+.suggestion-box .suggestion .head {
+  position : absolute;
+  left : 0;
+  top : 0;
+  padding-left : 10px;
+  padding-top : 6px;
+  height : 15%;
+  width : 100%;
+  background : #74ebd5;
+  color : white;
+  font-weight : bold;
+}
+
+.suggestion-box .suggestion .content {
+  padding-top : 10px;
+  overflow-y : scroll;
+}
+
+.suggestion-box .suggestion .content ul {
+  list-style : none;
+  padding-left : 0;
+}
+
+.suggestion-box .suggestion .content ul li {
+  padding-top : 5px;
+}
+
+.suggestion-box .suggestion .content button {
+  position : absolute;
+  bottom : 5px;
+  left : 50%;
+  border : 0;
+  padding : 5px;
+  background: #f7e463;
+  outline : 0;
+  font-size : 1em;
+  width : 95%;
+  text-align : center;
+  transform:translate(-50%);
+  transition : background 200ms ease-in-out;
+}
+
+.suggestion-box .suggestion .content button:hover {
+  background: #ecda61;
+}
+
+/* suggestion --- end */
