@@ -941,3 +941,12 @@ textarea {
 }
 
 .notification svg { margin-right : 10px;}
+
+/* map --- start */
+
+.map-marker {
+  /* background-color : white; */
+  /* border-radius : 50%; */
+}
+
+/* map --- end */

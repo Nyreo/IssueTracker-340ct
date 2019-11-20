@@ -11,6 +11,7 @@ import Location from '../utils/functional/location'
 import IssuesFilter from './issuesFilter'
 import IssuesList from './issueList'
 import Pagination from './pagination'
+import Map from './map'
 
 
 class UserIssues extends Component {
@@ -22,7 +23,8 @@ class UserIssues extends Component {
             numIssues : 0,
             rpp : 5,
             pagination : 0,
-            loadMessage : 'Loading...'
+            loadMessage : 'Loading...',
+            userLocation : {}
         }
     }
 
@@ -61,7 +63,8 @@ class UserIssues extends Component {
             return issue = {...issue, distance: distance.toFixed(2)}
         })
         const sortedIssues = issues.sort(this.compareDistance)
-        this.setState({rawIssues:sortedIssues})
+        console.log(coords)
+        this.setState({rawIssues:sortedIssues, userLocation: coords})
 
         this.renderIssues(sortedIssues)
     }
@@ -76,6 +79,7 @@ class UserIssues extends Component {
             <div>
                 {this.state.issues ?
                     <>
+                        <Map center={[this.state.userLocation.latitude, this.state.userLocation.longitude]} zoom={7} issues={this.state.rawIssues}/>
                         <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
                         <div>
                             <IssuesList issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues} store={this.props.store}/>
