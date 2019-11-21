@@ -12,7 +12,7 @@ import IssuesFilter from './issuesFilter'
 import IssuesList from './issueList'
 import Pagination from './pagination'
 import Map from './map'
-
+import IssuePanel from './issuePanel'
 
 class UserIssues extends Component {
     constructor(props) {
@@ -24,7 +24,8 @@ class UserIssues extends Component {
             rpp : 5,
             pagination : 0,
             loadMessage : 'Loading...',
-            userLocation : {}
+            userLocation : {},
+            mapIssue : {}
         }
     }
 
@@ -63,7 +64,7 @@ class UserIssues extends Component {
             return issue = {...issue, distance: distance.toFixed(2)}
         })
         const sortedIssues = issues.sort(this.compareDistance)
-        console.log(coords)
+        // console.log(coords)
         this.setState({rawIssues:sortedIssues, userLocation: coords})
 
         this.renderIssues(sortedIssues)
@@ -74,12 +75,31 @@ class UserIssues extends Component {
         Location.getCurrentLocation(this.success)
     }
 
+    onMapClick = (issue) => {
+        this.setState({mapIssue : issue})
+    }
+
+    closeIssuePanel = () => {
+        this.setState({mapIssue: {}})
+    }
+
     render() {
         return (
             <div>
                 {this.state.issues ?
                     <>
-                        <Map userLocation={[this.state.userLocation.latitude, this.state.userLocation.longitude]} zoom={9} issues={this.state.rawIssues}/>
+                        <div className='flex'>
+                            <div className='flex-70 flex-no-shrink anim-all-200'>
+                                <Map onMapClick={(issue) => this.onMapClick(issue)} userLocation={[this.state.userLocation.latitude, this.state.userLocation.longitude]} zoom={9} issues={this.state.rawIssues}/>
+                            </div>
+                            { this.state.mapIssue.id ? 
+                                <IssuePanel issue={this.state.mapIssue} close={() => this.closeIssuePanel()}/>
+                                :
+                                null
+                            }
+                            
+                        </div>
+                        
                         <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
                         <div>
                             <IssuesList issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues} store={this.props.store}/>

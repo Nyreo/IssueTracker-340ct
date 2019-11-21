@@ -9,10 +9,10 @@ const InfoBox = (props) => {
 
 	return (
 		<div className='info-box shadow'>
-			<div><b>Description</b>: {props.issue.description}</div>
+			{/* <div><b>Description</b>: {props.issue.description}</div> */}
 			<div><b>Status</b>: {props.issue.status}</div>
 			<div><b>Date Reported</b>: {dateReported}</div>
-			<div>Click for more details!</div>
+			<div style={{display:'block', paddingTop:'10px'}}>Click for more details!</div>
 		</div>
 		)
   }
@@ -81,6 +81,7 @@ class Map extends Component {
 		  this.setState({
 			  clicked: !this.state.clicked
 		  })
+		  this.props.onMapClick(this.state.issue)
 	  }
 
 	render() {

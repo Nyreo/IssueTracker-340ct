@@ -48,6 +48,18 @@ button {
 
 .inline { display : inline; }
 
+.anim-all-200 { transition : 200ms ease-in-out}
+
+.flex-70 { flex : 1 1 70%; }
+.flex-25 { flex : 1 1 25%; }
+
+.border-box { box-sizing: border-box;}
+
+.flex-no-grow { flex-grow : 0}
+.flex-no-shrink { flex-shrink: 0;}
+
+.border-test { border : 1px dotted red; }
+
 .link {
   font-size : 12px;
   font-weight : normal;
@@ -56,6 +68,12 @@ button {
 
 .link:hover {
   border-bottom : 1px solid lightgray;
+}
+
+.close {
+  position : absolute;
+  top : 10px;
+  right : 10px
 }
 
 .loading-blocked {
@@ -70,7 +88,6 @@ button {
   padding-bottom : 35%;
   background-color : rgba(0, 0, 0, 0.418);
 }
-
 
 .popup {
   position : absolute;
@@ -951,4 +968,31 @@ textarea {
   color : #222222;
   border-radius : 0 0 5px 5px;
   padding : 5px;
+}
+
+.issue-panel {
+  position : relative;
+  /* background:  whitesmoke; */
+  border-radius : 10px;
+  overflow-x : hidden;
+  overflow-y : scroll;
+}
+
+.issue-panel h1 {
+  position : absolute;
+  left : 0;
+  top : 0;
+  margin-top : 0;
+  text-align : center;
+  background-color : #74ebd5;
+  color : white;
+  width : 100%;
+}
+
+.issue-panel ul {
+  margin-top : 3rem;
+}
+
+.issue-panel ul li {
+  padding-bottom : 5px;
 }
