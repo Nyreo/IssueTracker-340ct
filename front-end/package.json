@@ -1,6 +1,6 @@
 {
   "name": "front-end",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "dependencies": {
     "@babel/polyfill": "^7.6.0",
@@ -11,6 +11,7 @@
     "@mitch137/validation": "file:../validation",
     "animate.css": "^3.7.2",
     "axios": "^0.19.0",
+    "google-map-react": "^1.1.5",
     "jsonwebtoken": "^8.5.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -24,7 +25,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest --coverage --detectOpenHandles",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "acceptance": "./test.sh",
+    "profiler": "./node_modules/.bin/0x -o index.js"
   },
   "eslintConfig": {
     "extends": "react-app"

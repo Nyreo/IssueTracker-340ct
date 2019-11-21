@@ -48,6 +48,21 @@ button {
 
 .inline { display : inline; }
 
+.anim-all-200 { transition : 200ms ease-in-out}
+.anim-all-400 { transition : 400ms ease-in-out}
+
+.flex-70 { flex : 1 1 70%; }
+.flex-25 { flex : 1 1 25%; }
+
+.border-box { box-sizing: border-box;}
+
+.flex-no-grow { flex-grow : 0 !important;}
+.flex-grow { flex-grow : 1 !important;}
+.flex-no-shrink { flex-shrink: 0 !important;}
+.flex-shrink { flex-shrink : 1 !important;}
+
+.border-test { border : 1px dotted red; }
+
 .link {
   font-size : 12px;
   font-weight : normal;
@@ -58,19 +73,30 @@ button {
   border-bottom : 1px solid lightgray;
 }
 
-.loading-blocked {
+.close {
   position : absolute;
+  top : 5px;
+  right : 5px;
+  color : white;
+  opacity : 50%;
+  transition : opacity 200ms ease-in;
+  cursor : pointer;
+}
+
+.close:hover {
+  opacity : 100%;
+}
+
+.loading-blocked {
+  position : fixed;
   z-index : 100;
   width : 100%;
   height : 100%;
   top : 0;
   left : 0;
-  bottom : 0;
-  right : 0;
-  padding-bottom : 35%;
   background-color : rgba(0, 0, 0, 0.418);
 }
-
+.hidden { visibility: hidden; display:none !important;}
 
 .popup {
   position : absolute;
@@ -489,15 +515,6 @@ textarea {
   width:100%;
   height : 100%;
 }
-
-.report-container .map .frame span {
-  position: absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%, -50%);
-  font-size : 32px;
-}
-
 /* report container --- end */
 
 /* error-box --- start */
@@ -941,3 +958,86 @@ textarea {
 }
 
 .notification svg { margin-right : 10px;}
+
+
+.info-box {
+  position : absolute;
+  top : -30px;
+  left : 30px;
+  background-color : white;
+  color : #222222;
+  border-radius : 0 0 5px 5px;
+  padding : 5px;
+}
+
+.issue-panel {
+  position : relative;
+  /* background:  whitesmoke; */
+  border-radius : 10px;
+  overflow-x : hidden;
+  overflow-y : scroll;
+}
+
+.issue-panel h1 {
+  position : absolute;
+  left : 0;
+  top : 0;
+  margin-top : 0;
+  text-align : center;
+  background-color : #74ebd5;
+  color : white;
+  width : 100%;
+}
+
+.issue-panel ul {
+  list-style : none;
+  border-left : 5px solid whitesmoke;
+  margin-top : 3rem;
+  padding-left : 20px;
+}
+
+.issue-panel ul li {
+  padding-bottom : 5px;
+}
+
+.pin {
+  position : absolute;
+  width : 30px;
+  height : 30px;
+  left : -15px;
+  top : -15px;
+  line-height : 30px;
+
+  border-radius: 30px;
+  background-color : red;
+  text-align: center;
+  color : #222222;
+  font-size : 16px;
+  font-weight : bold;
+  padding : 4px;
+  cursor:pointer;
+
+  transition: 300ms ease-in-out;
+}
+
+.pin:hover {
+  transform: scale(1.3);
+}
+
+.reported-marker {
+  position : absolute;
+  width : 20px;
+  height : 20px;
+  left : -10px;
+  top : -10px;
+  text-align: center;
+  vertical-align: middle;
+  font-size : 18px;
+  color : red;
+}
+
+.hint {
+  font-size : 11px;
+  color : gray;
+  padding-bottom : 5px;
+}

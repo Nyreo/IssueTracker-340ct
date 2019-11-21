@@ -8,7 +8,7 @@ import { faList } from '@fortawesome/free-solid-svg-icons'
 // component imports
 import IssueCard from './issueCard'
 
-const IssueList = ({issues, numIssues, store}) => {
+const IssueList = ({issues, numIssues, store, toggleMap}) => {
 
     const renderIssues = () => {
         const issueCards = issues.map((issue,i) => {
@@ -22,7 +22,8 @@ const IssueList = ({issues, numIssues, store}) => {
 
     return (
         <>
-        <p className='panel-header relative'><FontAwesomeIcon icon={faList}/>Issues
+        <p className='panel-header relative'><FontAwesomeIcon icon={faList}/>Issues -
+            <span className='link' onClick={toggleMap}> View on Map</span>
             <span className='sub abs-right'>Displaying {numIssues} Issues</span>
         </p>
         {
