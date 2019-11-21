@@ -3,7 +3,7 @@ import React from 'react'
 // import style
 import {markerStyle} from '../markerstyle'
 
-const Marker = ({issue}) => {
+const Marker = ({issue, onClick}) => {
 
 	let backgroundColor;
 	switch(issue.status) {
@@ -23,7 +23,7 @@ const Marker = ({issue}) => {
 	const style={...markerStyle, backgroundColor}
 
 	return (
-		<div className='shadow' style={style}>
+		<div onClick={onClick} className='shadow' style={style}>
 			{issue.id}
 		</div>
 	)

@@ -12,7 +12,7 @@ const InfoBox = (props) => {
 			<div><b>Description</b>: {props.issue.description}</div>
 			<div><b>Status</b>: {props.issue.status}</div>
 			<div><b>Date Reported</b>: {dateReported}</div>
-			<div><b>Community Votes</b>: {props.issue.votes}</div>
+			<div>Click for more details!</div>
 		</div>
 		)
   }
@@ -30,6 +30,7 @@ class Map extends Component {
 		lng: '',
 		zoom: this.props.zoom,
 		hover: false,
+		clicked:  false,
 		currentPosition: false,
 		infoBox: false
 	}
@@ -44,6 +45,7 @@ class Map extends Component {
 					lng={issue.lng} 
 					issue={issue}
 					hover={this.state.hover}
+					onClick={() => this.onClick()}
 					/>
 			)
 		})
@@ -72,6 +74,13 @@ class Map extends Component {
 			hover: false
 		  })
 		}
+	  }
+
+	  onClick = () => {
+		  console.log(this.state.issue)
+		  this.setState({
+			  clicked: !this.state.clicked
+		  })
 	  }
 
 	render() {
