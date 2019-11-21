@@ -25,7 +25,8 @@ class UserIssues extends Component {
             pagination : 0,
             loadMessage : 'Loading...',
             userLocation : {},
-            mapIssue : {}
+            mapIssue : {},
+            showMap : false
         }
     }
 
@@ -83,28 +84,33 @@ class UserIssues extends Component {
         this.setState({mapIssue: {}})
     }
 
+    toggleMap = () => {
+        document.getElementById('map').classList.toggle('hidden')
+    }
+
     render() {
+
         return (
             <div>
                 {this.state.issues ?
                     <>
-                        <div className='flex'>
-                            <div className='flex-70 flex-no-shrink anim-all-200'>
-                                <Map onMapClick={(issue) => this.onMapClick(issue)} userLocation={[this.state.userLocation.latitude, this.state.userLocation.longitude]} zoom={9} issues={this.state.rawIssues}/>
-                            </div>
-                            { this.state.mapIssue.id ? 
-                                <IssuePanel issue={this.state.mapIssue} close={() => this.closeIssuePanel()}/>
-                                :
-                                null
-                            }
-                            
+                    <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
+                    <div id='map' className='flex hidden'>
+                        <div className='flex-70 flex-no-shrink anim-all-200'>
+                            <Map onMapClick={(issue) => this.onMapClick(issue)} userLocation={[this.state.userLocation.latitude, this.state.userLocation.longitude]} zoom={9} issues={this.state.rawIssues}/>
                         </div>
+                        { this.state.mapIssue.id ? 
+                            <IssuePanel issue={this.state.mapIssue} close={() => this.closeIssuePanel()}/>
+                            :
+                            null
+                        }
+                    </div>
+                    <div>
+                        <IssuesList toggleMap={() => this.toggleMap()} issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues} store={this.props.store}/>
+                        <Pagination pagination={this.state.pagination} numberOfPages={this.state.issues.length} setPagination={(p) => {this.setState({pagination:p})}}/>
+                    </div>
                         
-                        <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
-                        <div>
-                            <IssuesList issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues} store={this.props.store}/>
-                            <Pagination pagination={this.state.pagination} numberOfPages={this.state.issues.length} setPagination={(p) => {this.setState({pagination:p})}}/>
-                        </div>
+                        
                     </>
                 :
                     <div className='loading-blocked'><span>{this.state.loadMessage}</span></div>

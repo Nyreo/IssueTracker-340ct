@@ -24,7 +24,7 @@ const IssuePanel = ({issue, close}) => {
 					</ul></li>
 				<li>Reported By: {issue.username}</li>
 			</ul>
-			<span class='close' onClick={close}>X</span>
+			<span className='close' onClick={close}>X</span>
 		</div>
 	)
 }

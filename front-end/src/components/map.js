@@ -77,7 +77,7 @@ class Map extends Component {
 	  }
 
 	  onClick = () => {
-		  console.log(this.state.issue)
+		//   console.log(this.state.issue)
 		  this.setState({
 			  clicked: !this.state.clicked
 		  })
