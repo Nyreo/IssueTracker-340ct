@@ -32,7 +32,8 @@ class Map extends Component {
 		hover: false,
 		clicked:  false,
 		currentPosition: false,
-		infoBox: false
+		infoBox: false,
+		height : this.props.height ? this.props.height : '350px'
 	}
 
 	renderMarkers = () => {
@@ -86,10 +87,13 @@ class Map extends Component {
 
 	render() {
 
+		// console.log(this.props.issues)
+
 		const infoBox = this.state.hover ? <InfoBox lat={this.state.lat} lng={this.state.lng} issue={this.state.issue}/> : null
 
+		// const currentPin = this.state.currentPin ? <CurrentPin lat={this.props.}
 		return (
-			<div style={{ height: '350px', width: '100%' }}>
+			<div style={{ height: this.state.height, width: '100%' }}>
 				<GoogleMapReact
 					bootstrapURLKeys={{ key: 'AIzaSyAjld9X9LpHG8qabXQAG95iwU_YWTQ9ej0' }}
 					defaultCenter={this.props.center}
@@ -97,9 +101,12 @@ class Map extends Component {
 					center={this.props.userLocation}
 					onChildMouseEnter={this.onChildMouseEnter}
 					onChildMouseLeave={this.onChildMouseLeave}
+					onClick={this.props.onClick}
 				>
-				{this.renderMarkers()}
+				{this.props.issues ? this.renderMarkers() : null}
 				{infoBox}
+				{this.props.singleMarker}
+				{this.props.currentMarker}
 				</GoogleMapReact>
 			</div>
 		)

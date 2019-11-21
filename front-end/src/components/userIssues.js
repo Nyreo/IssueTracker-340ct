@@ -96,7 +96,7 @@ class UserIssues extends Component {
                     <>
                     <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
                     <div id='map' className='flex hidden'>
-                        <div className='flex-70 flex-no-shrink anim-all-200'>
+                        <div className={this.state.mapIssue.id ? 'flex-70 flex-no-grow anim-all-400' : 'flex-70 flex-grow anim-all-400'}>
                             <Map onMapClick={(issue) => this.onMapClick(issue)} userLocation={[this.state.userLocation.latitude, this.state.userLocation.longitude]} zoom={9} issues={this.state.rawIssues}/>
                         </div>
                         { this.state.mapIssue.id ? 

@@ -2,20 +2,32 @@ import React, {useState} from 'react'
 import { CSSTransitionGroup } from 'react-transition-group'
 
 /* Icon imports */
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faMapMarker } from '@fortawesome/free-solid-svg-icons'
 
 // component imports
 import InputField from '../inputField'
 import ErrorBox from '../utility/errorBox'
+import Map from '../map'
 
+// out sourced ui imports
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Fade from 'react-reveal/Fade'
 
 // module imports
 import {reportIssue} from '../../modules/issueHandler'
 
 // utils imports
 import Location from '../../utils/functional/location'
+
+
+const ReportedMarker = () => {
+    return (
+        <Fade down>
+            <FontAwesomeIcon className='reported-marker' icon={faMapMarker}/>
+        </Fade>
+    )
+}
 
 const ReportIssueForm = ({store, history}) => {
 
@@ -33,6 +45,7 @@ const ReportIssueForm = ({store, history}) => {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const [pagination, setPagination] = useState(0)
+    const [userLocation, setUserLocation] = useState([])
 
     const RenderErrorBox = () => {
         return (
@@ -102,28 +115,39 @@ const ReportIssueForm = ({store, history}) => {
         const lat = position.coords.latitude
         const lng = position.coords.longitude
 
-        setReportDetails({...reportDetails, lat, lng})
+        setUserLocation([lat, lng])
+
+        // setReportDetails({...reportDetails, lat, lng})
         setLoading(false)
     }
 
     const getUserLocation = (e) => {
-        e.preventDefault()
+        if(e) e.preventDefault()
         setLoading(true)
 
         Location.getCurrentLocation(setCurrentLocation)
     }
 
-    const nextFormPage = () => {
+    const nextFormPage = (e) => {
+        e.preventDefault()
         if(JSON.stringify(initialReportDetails) === JSON.stringify(reportDetails) || reportDetails.description === '') {
             setNewError('please fill in the required fields...')
             return false
         } else {
+            getUserLocation()
             setPagination(1)
         }
     }
 
-    const previousFormPage = () => {
+    const previousFormPage = (e) => {
+        e.preventDefault()
         setPagination(0)
+    }
+
+    const mapClick = (e) => {
+        
+        const {lat, lng} = e
+        setReportDetails({...reportDetails, lat, lng})
     }
 
     return (
@@ -131,7 +155,7 @@ const ReportIssueForm = ({store, history}) => {
             {loading ? (<div className='loading-blocked'><span><CircularProgress color='inherit'/></span></div>) : null}
             <div className='flex report-container'>
                 {/* manual report */}
-                <div className='report'>
+                <div className={pagination ? 'report flex-no-grow anim-all-400' : 'report flex-grow anim-all-400'}>
                     {/* form --- start */}
                     <form onSubmit={submitIssueForm} className='form shadow'>
                         <h1 className='header h-centered-margin'>Report Issue</h1>
@@ -166,7 +190,7 @@ const ReportIssueForm = ({store, history}) => {
                                      <FontAwesomeIcon className='cust-drop-icon' icon={faCaretDown}/>
                                  </div>
                                 <div style={{marginTop: '2em'}}>
-                                    <button className='submit-button' onClick={() => nextFormPage()}>Next</button>
+                                    <button className='submit-button' onClick={nextFormPage}>Next</button>
                                 </div>
                                 
                                 </>
@@ -174,11 +198,7 @@ const ReportIssueForm = ({store, history}) => {
                                 <>
                                 {/* location details */}
                                 <h2 className='section-header'>Issue Location</h2>
-                                {/* location - auto*/}
-                                <div className='row'>
-                                    <span className='input-label'>Automatically Get Location</span>
-                                    <button className='input-button' onClick={getUserLocation}>Get Current Location</button>
-                                </div>
+                                <p className='hint'>** Click on the map to select the location of your issue or input the location manually.</p>
                                 {/* location - manual */}
                                 <div className='input-double'>
                                             <InputField label={"Latitude"}  type={"text"} value={reportDetails.lat} onChange={setReportLat} required={true}/>
@@ -188,7 +208,7 @@ const ReportIssueForm = ({store, history}) => {
                                 {/* streetName */}
                                 <InputField label={"Street Name (Optional)"}  type={"text"} value={reportDetails.streetName} onChange={setStreetName} required={false}/>
                                     <div style={{marginTop: '2em'}}>
-                                        <button className='submit-button w-fill' onClick={() => previousFormPage()}>Back</button>
+                                        <button className='submit-button w-fill' onClick={previousFormPage}>Back</button>
                                         <button className='submit-button w-fill gap-top' type='submit'>Submit</button>
                                     </div>
                                 </>
@@ -198,11 +218,24 @@ const ReportIssueForm = ({store, history}) => {
                     {/* form --- end */}
                 </div>
                 {/* google maps frame */}
-                <div className='map h-centered-margin fill gap-left shadow padding-20'>
+                { pagination === 1 && userLocation.length > 0 ? 
+                    <div className='map h-centered-margin fill gap-left shadow padding-20 anim-all-400'>
                     <div className='frame'>
-                        <span>Insert Map Here</span>
+                    <Map 
+                        onClick={mapClick} 
+                        singleMarker={reportDetails.lat && reportDetails.lng ?
+                            <ReportedMarker lat={reportDetails.lat} lng={reportDetails.lng} /> : null} 
+                        height={'100%'} 
+                        userLocation={userLocation} 
+                        zoom={9} 
+                        hoverDistance={30}
+                    />
                     </div>
                 </div>
+                :
+                null
+                }
+                
             </div>
             
         </>
