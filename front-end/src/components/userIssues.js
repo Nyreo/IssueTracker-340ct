@@ -79,7 +79,7 @@ class UserIssues extends Component {
             <div>
                 {this.state.issues ?
                     <>
-                        <Map center={[this.state.userLocation.latitude, this.state.userLocation.longitude]} zoom={7} issues={this.state.rawIssues}/>
+                        <Map userLocation={[this.state.userLocation.latitude, this.state.userLocation.longitude]} zoom={9} issues={this.state.rawIssues}/>
                         <IssuesFilter filterCallback={this.filterIssues} isAdmin={false}/>
                         <div>
                             <IssuesList issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues} store={this.props.store}/>

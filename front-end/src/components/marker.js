@@ -1,9 +1,30 @@
 import React from 'react'
 
-const Marker = ({text}) => {
+// import style
+import {markerStyle} from '../markerstyle'
+
+const Marker = ({issue}) => {
+
+	let backgroundColor;
+	switch(issue.status) {
+        case 'reported':
+            backgroundColor = '#eb6060'
+            break
+        case 'allocated':
+			backgroundColor = '#f7e463'
+            break
+        case 'resolved':
+            backgroundColor = '#7cd992'
+            break
+        default:
+            break
+	}
+	
+	const style={...markerStyle, backgroundColor}
+
 	return (
-		<div className='map-marker'>
-			{text}
+		<div className='shadow' style={style}>
+			{issue.id}
 		</div>
 	)
 }

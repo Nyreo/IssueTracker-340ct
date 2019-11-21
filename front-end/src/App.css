@@ -942,11 +942,13 @@ textarea {
 
 .notification svg { margin-right : 10px;}
 
-/* map --- start */
 
-.map-marker {
-  /* background-color : white; */
-  /* border-radius : 50%; */
+.info-box {
+  position : absolute;
+  top : -30px;
+  left : 30px;
+  background-color : white;
+  color : #222222;
+  border-radius : 0 0 5px 5px;
+  padding : 5px;
 }
-
-/* map --- end */
