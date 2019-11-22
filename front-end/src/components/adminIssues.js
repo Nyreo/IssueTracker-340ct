@@ -213,9 +213,12 @@ class AdminIssues extends Component {
         return (
             <div>
                 {this.state.issues ?
-                    <>
+                    <>  
                         {/* <button onClick={() => this.createIssuePopUp(this.state.rawIssues[0])}>Create Popup</button> */}
-                        <IssuesFilter filterCallback={this.filterIssues} isAdmin={true}/>
+                        <div className='flex'>
+                            <IssuesFilter filterCallback={this.filterIssues} isAdmin={true}/>
+                            <IssuesFilter filterCallback={this.filterIssues} isAdmin={true}/>
+                        </div>
                         { this.state.suggestions.length > 0 ? <SuggestionBox suggestions={this.renderSuggestions()}/> : null}
                         <div> 
                             <IssuesTable issues={this.state.issues[this.state.pagination]} numIssues={this.state.numIssues}/>
