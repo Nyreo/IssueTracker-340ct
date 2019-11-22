@@ -4,7 +4,6 @@
 // STANDARD IMPORTS
 const Router = require('koa-router')
 const status = require('http-status-codes')
-const fs = require('fs')
 const send = require('koa-send')
 
 // CUSTOM IMPORTS
