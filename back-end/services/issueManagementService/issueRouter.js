@@ -4,12 +4,35 @@
 // STANDARD IMPORTS
 const Router = require('koa-router')
 const status = require('http-status-codes')
+const send = require('koa-send')
 
 // CUSTOM IMPORTS
 const Issue = require('./issue')
+const PdfManager = require('./pdfManager')
 
 const router = new Router()
+const pdfManager = new PdfManager()
 const dbName = 'issues.db'
+
+/**
+ * The script to process the generation of a pdf job list for all allocated jobs.
+ *
+ * @name FetchAll Script
+ * @route {GET} /issues/joblist
+ */
+router.get('/issues/joblist', async ctx => {
+
+	const issues = await new Issue(dbName)
+	const data = await issues.fetchAllIssues()
+	const allocatedJobs = data.filter(issue => issue.status === 'allocated')
+
+	await pdfManager.JobReport(allocatedJobs)
+
+	// ctx.type = '.pdf'
+	ctx.set('Content-disposition', 'attachment; filename=joblist.pdf')
+
+	await send(ctx, './pdfs/output.pdf')
+})
 
 /**
  * The script to process retrieval of ALL issues

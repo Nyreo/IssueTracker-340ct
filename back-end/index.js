@@ -8,6 +8,7 @@ require('dotenv').config({path: __dirname + '/.env'})
 /* STANDARD MODULE IMPORTS */
 const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
+// const serve = require('koa-static')
 const cors = require('@koa/cors')
 
 // router imports

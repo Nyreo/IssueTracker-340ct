@@ -507,6 +507,8 @@ describe('voteForIssue', () => {
 describe('voteAgainstIssue', () => {
 
     test('voting against a valid and existing issue', async done => {
+        expect.assertions(4)
+
         axios.post = jest.fn((endpoint, data) => Promise.resolve({
             data : 1,
             status: 200
@@ -527,6 +529,8 @@ describe('voteAgainstIssue', () => {
     })
 
     test('voting against an invalid issue', async done => {
+        expect.assertions(4)
+
         axios.post = jest.fn((endpoint, data) => Promise.reject(
             {
                 response : {
@@ -550,6 +554,61 @@ describe('voteAgainstIssue', () => {
             done.fail(err.message)
         } finally {
             done()
+        }
+    })
+})
+
+describe('fetchJobSheet', () => {
+
+    test('fetching an avaialble job sheet', async done => {
+        expect.assertions(4)
+        
+        axios.get = jest.fn((endpoint, options) => Promise.resolve({
+            data : {},
+            status: 200
+        }))
+
+        try {
+            await expect(IssueHandler.fetchJobSheet())
+                .resolves.toEqual({
+                    data : {},
+                    status: 200
+                })
+
+            expect(axios.get.mock.calls.length).toBe(1)
+            expect(axios.get.mock.calls[0][0]).toBe('http://localhost:8080/issues/joblist')
+            expect(axios.get.mock.calls[0][1]).toEqual({responseType: 'blob'})
+
+            done()
+        } catch(err) {
+            done.fail(err)
+        }
+    })
+
+    test('fetching invalid job sheet', async done => {
+        expect.assertions(4)
+        
+        axios.get = jest.fn((endpoint, options) => Promise.reject({
+            response : {
+                status: 400,
+                message: 'invalid request'
+            }
+        }))
+
+        try {
+            await expect(IssueHandler.fetchJobSheet())
+                .rejects.toEqual({
+                    status: 400,
+                    message: 'invalid request'
+                })
+
+            expect(axios.get.mock.calls.length).toBe(1)
+            expect(axios.get.mock.calls[0][0]).toBe('http://localhost:8080/issues/joblist')
+            expect(axios.get.mock.calls[0][1]).toEqual({responseType: 'blob'})
+
+            done()
+        } catch(err) {
+            done.fail(err)
         }
     })
 })
