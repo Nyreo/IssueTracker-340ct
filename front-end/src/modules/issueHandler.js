@@ -91,6 +91,20 @@ export const voteAgainstIssue = (id, username) => {
         })
 }
 
+export const fetchJobSheet = () => {
+    // fetch the job sheet for all issues that have been allocated
+    const api_endpoint = `${api_url}/joblist`
+
+    return axios
+        .get(api_endpoint, {responseType: 'blob'})
+        .then(response => {
+            return response
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
 export const filterIssues = (issues, filter) => {
     
     if(!issues.length) throw new Error('No issues available')
@@ -127,6 +141,7 @@ export default {
     updateIssueStatus,
     voteForIssue,
     voteAgainstIssue,
+    fetchJobSheet,
     filterIssues,
     splitIssues
 }

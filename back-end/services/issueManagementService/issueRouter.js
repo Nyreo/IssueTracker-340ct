@@ -5,6 +5,7 @@
 const Router = require('koa-router')
 const status = require('http-status-codes')
 const fs = require('fs')
+const send = require('koa-send')
 
 // CUSTOM IMPORTS
 const Issue = require('./issue')
@@ -26,14 +27,12 @@ router.get('/issues/joblist', async ctx => {
 	const data = await issues.fetchAllIssues()
 	const allocatedJobs = data.filter(issue => issue.status === 'allocated')
 
-	// console.log(allocatedJobs)
-	pdfManager.JobReport(allocatedJobs)
+	await pdfManager.JobReport(allocatedJobs)
 
-	ctx.type = '.pdf'
+	// ctx.type = '.pdf'
 	ctx.set('Content-disposition', 'attachment; filename=joblist.pdf')
 
-	ctx.body = fs.createReadStream('./pdfs/output.pdf')
-	ctx.status = status.OK
+	await send(ctx, './pdfs/output.pdf')
 })
 
 /**

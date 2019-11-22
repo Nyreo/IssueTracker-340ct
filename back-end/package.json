@@ -36,6 +36,8 @@
     "koa-body": "^4.0.8",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
+    "koa-send": "^5.0.0",
+    "koa-static": "^5.0.0",
     "mime-types": "^2.1.22",
     "nodemailer": "^6.3.1",
     "pdfkit": "^0.10.0",

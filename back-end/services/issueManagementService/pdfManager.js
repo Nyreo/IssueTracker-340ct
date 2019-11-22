@@ -1,11 +1,13 @@
 'use strict'
 
 const PDFDocument = require('pdfkit')
+// const blobStream = require('blob-stream')
 const fs = require('fs')
 
 module.exports = class PDFManager {
 
-	JobReport(allocatedJobs) {
+	// eslint-disable-next-line max-lines-per-function
+	async JobReport(allocatedJobs) {
 		const doc = new PDFDocument
 		const jobListTop = 175
 		const offset = 25
@@ -24,6 +26,8 @@ module.exports = class PDFManager {
 		}
 		doc.pipe(fs.createWriteStream('./pdfs/output.pdf'))
 		doc.end()
+
+		return 1
 	}
 
 	GenerateIntroduction(doc) {

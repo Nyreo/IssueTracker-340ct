@@ -9,6 +9,7 @@ import UserAuth from '../modules/userAuthentication'
 import IssuesTable from './issuesTable'
 import TableDropDown from './table-dropdown'
 import IssuesFilter from './issuesFilter'
+import AdminPanel from './adminPanel'
 import Pagination from './pagination'
 import SuggestionBox from './suggestionBox'
 import Suggestion from './suggestion'
@@ -217,7 +218,7 @@ class AdminIssues extends Component {
                         {/* <button onClick={() => this.createIssuePopUp(this.state.rawIssues[0])}>Create Popup</button> */}
                         <div className='flex'>
                             <IssuesFilter filterCallback={this.filterIssues} isAdmin={true}/>
-                            <IssuesFilter filterCallback={this.filterIssues} isAdmin={true}/>
+                            <AdminPanel/>
                         </div>
                         { this.state.suggestions.length > 0 ? <SuggestionBox suggestions={this.renderSuggestions()}/> : null}
                         <div> 
