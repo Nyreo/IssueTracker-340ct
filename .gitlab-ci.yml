@@ -5,31 +5,37 @@ stages:
   - unit-tests
   - acceptance-tests
 
-lint-backEnd:
-  stage: code-tests
-  script:
-    - cd back-end/
-    - npm install
-    - npm run linter
+# lint-backEnd:
+#   stage: code-tests
+#   script:
+#     - cd back-end/
+#     - npm install
+#     - npm run linter
 
-lint-frontEnd:
-  stage: code-tests
-  script:
-    - cd front-end/
-    - npm install
-    - npm run linter
+# lint-frontEnd:
+#   stage: code-tests
+#   script:
+#     - cd front-end/
+#     - npm install
+#     - npm run linter
 
-test-backEnd:
-  stage: unit-tests
-  script:
-    - cd back-end/
-    - npm install
-    - npm test
+# test-backEnd:
+#   stage: unit-tests
+#   script:
+#     - cd back-end/
+#     - npm install
+#     - npm test
 
-test-frontEnd:
-  stage: unit-tests
-  script:
-    - cd front-end/
-    - npm install
-    - npm test
+# test-frontEnd:
+#   stage: unit-tests
+#   script:
+#     - cd front-end/
+#     - npm install
+#     - npm test
 
+ui-test-frontEnd:
+    stage: acceptance-tests
+    script:
+        - cd front-end/
+        - npm install --only=dev
+        - npm run acceptance
