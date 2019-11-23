@@ -8,8 +8,7 @@
     "jest": true
   },
   "parserOptions": {
-    "ecmaVersion": 2019,
-    "sourceType": "module"
+    "ecmaVersion": 2019
   },
   "rules": {
     "arrow-body-style": 2,
