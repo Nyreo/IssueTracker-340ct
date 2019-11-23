@@ -6,11 +6,13 @@ stages:
 lint:
   stage: test
   script:
+    - cd back-end/
     - npm install
     - npm run linter
 
 test:
   stage: test
   script:
+    - cd back-end/
     - npm install
     - npm test
