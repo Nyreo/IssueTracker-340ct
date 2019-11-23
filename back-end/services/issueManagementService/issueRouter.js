@@ -58,9 +58,7 @@ router.get('/issues/fetch', async ctx => {
 router.get('/issues/fetch/:id', async ctx => {
 	try {
 		const id = ctx.params.id
-
 		const issues = await new Issue(dbName)
-
 		const record = await issues.fetchIssue(id)
 
 		ctx.body = record
@@ -81,7 +79,6 @@ router.put('/issues/update/status/:id', async ctx => {
 	try {
 		const issueStatus = ctx.request.body.status
 		const id = ctx.params.id
-
 		const issues = await new Issue(dbName)
 
 		await issues.updateIssueStatus(id, issueStatus)
@@ -102,9 +99,6 @@ router.put('/issues/update/priority/:id', async ctx => {
 	try {
 		const priority = ctx.request.body.priority
 		const id = ctx.params.id
-
-		console.log(`\tupdating issue: ${id} to priority: ${priority}`)
-
 		const issues = await new Issue(dbName)
 
 		await issues.updateIssuePriority(id, priority)
@@ -124,7 +118,6 @@ router.put('/issues/update/priority/:id', async ctx => {
 router.post('/issues/report', async ctx => {
 	try {
 		const data = ctx.request.body
-		// console.log(data)
 		const issues = await new Issue(dbName)
 
 		await issues.reportIssue(data)
@@ -146,7 +139,6 @@ router.delete('/issues/delete/:id', async ctx => {
 	try {
 		const issues = await new Issue(dbName)
 		const id = ctx.params.id
-
 		await issues.deleteIssue(id)
 
 		ctx.status = status.OK
@@ -169,7 +161,6 @@ router.post('/issues/upvote', async ctx => {
 		const issues = await new Issue(dbName)
 
 		const votes = await issues.voteIssue(data.id, data.username, 1)
-		// console.log(`[${data.id}] New votes for issue: ${votes}`)
 		ctx.status = status.OK
 		ctx.body = votes
 	} catch (err) {
@@ -191,7 +182,6 @@ router.post('/issues/downvote', async ctx => {
 		const issues = await new Issue(dbName)
 
 		const votes = await issues.voteIssue(data.id, data.username, -1)
-		// console.log(`[${data.id}] New votes for issue: ${votes}`)
 		ctx.status = status.OK
 		ctx.body = votes
 	} catch (err) {
@@ -209,9 +199,7 @@ router.post('/issues/downvote', async ctx => {
 router.post('/issues/report', async ctx => {
 	try {
 		const data = ctx.request.body
-		// console.log(data)
 		const issues = await new Issue(dbName)
-
 		await issues.reportIssue(data)
 
 		ctx.status = status.OK
