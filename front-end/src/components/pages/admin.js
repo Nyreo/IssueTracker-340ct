@@ -16,6 +16,10 @@ class AdminPage extends Component {
         }
     }
 
+    componentDidMount() {
+        document.title = this.props.title
+    }
+
     createPopUp = (content) => {
         this.setState({popupContent:content})
     }

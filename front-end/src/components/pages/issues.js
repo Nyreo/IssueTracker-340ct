@@ -4,6 +4,10 @@ import React, {Component} from 'react'
 import UserIssues from '../userIssues'
 
 class IssuesPage extends Component {
+
+    componentDidMount() {
+        document.title = this.props.title
+    }
     
     render () {
         return (

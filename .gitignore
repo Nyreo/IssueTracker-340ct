@@ -4,6 +4,8 @@ node_modules/
 coverage/
 *.db
 screenshots/*
+screenshots/
 docs/
 pdfs/
+trace/
 .env
