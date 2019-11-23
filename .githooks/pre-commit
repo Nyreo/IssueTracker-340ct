@@ -2,10 +2,10 @@
 
 set -e # using the options command to abort script at first error
 echo "Running the 'pre-commit' script"
-echo -e "\tRunning Back-end Linter..."
+echo "\tRunning Back-end Linter..."
 cd ./back-end
 npm run linter
-echo -e "\tRunning Front-end Linter..."
+echo "\tRunning Front-end Linter..."
 cd ../front-end
 npm run linter
 echo "Success! No linter errors detected"
