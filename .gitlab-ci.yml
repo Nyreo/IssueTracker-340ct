@@ -36,6 +36,8 @@ stages:
 ui-test-frontEnd:
     stage: acceptance-tests
     script:
-        - cd front-end/
+        - cd back-end/
+        - npm install
+        - cd ../front-end/
         - npm install
         - npm run acceptance
