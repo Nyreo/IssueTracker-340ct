@@ -21,13 +21,12 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-transition-group": "^1.2.1",
-    "redux": "^4.0.4",
-    "serve": "^11.2.0"
+    "redux": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest --coverage --detectOpenHandles",
+    "test": "jest --coverage --detectOpenHandles --testPathIgnorePatterns=acceptance_tests/",
     "eject": "react-scripts eject",
     "acceptance": "./test.sh",
     "profiler": "./node_modules/.bin/0x -o index.js",
@@ -60,6 +59,7 @@
     "transform": {
       ".*": "<rootDir>/node_modules/babel-jest"
     }
+
   },
   "devDependencies": {
     "@babel/core": "^7.6.4",
@@ -69,6 +69,7 @@
     "jest": "^24.9.0",
     "jest-image-snapshot": "^2.11.1",
     "puppeteer": "^2.0.0",
-    "puppeteer-har": "^1.1.1"
+    "puppeteer-har": "^1.1.1",
+    "serve": "^11.2.0"
   }
 }
