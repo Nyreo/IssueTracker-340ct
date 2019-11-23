@@ -1,18 +1,35 @@
 image: node:latest
 
 stages:
-  - test
+  - code-tests
+  - unit-tests
+  - acceptance-tests
 
-lint:
-  stage: test
+lint-backEnd:
+  stage: code-tests
   script:
     - cd back-end/
     - npm install
     - npm run linter
 
-test:
-  stage: test
+lint-frontEnd:
+  stage: code-tests
+  script:
+    - cd front-end/
+    - npm install
+    - npm run linter
+
+test-backEnd:
+  stage: unit-tests
   script:
     - cd back-end/
     - npm install
     - npm test
+
+test-frontEnd:
+  stage: unit-tests
+  script:
+    - cd front-end/
+    - npm install
+    - npm test
+

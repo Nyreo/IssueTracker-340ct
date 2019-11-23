@@ -67,16 +67,6 @@ describe('register', () => {
 
     test('register with invalid credentials', async done => {
 
-        const userAccount = {
-			firstName: 'joe',
-			lastName: 'mitchell',
-			username: 'joe',
-			password: 'testing',
-			confirmPassword: 'test',
-			email: 'joe@testing.com',
-			address: '123 test lane',
-			postCode: '123 456'
-		}
         // instantly reject request
         axios.post = jest.fn(() => Promise.reject({
             response : {

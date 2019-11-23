@@ -33,70 +33,70 @@ beforeAll( async() => {
 
 afterAll( () => browser.close() )
 
-// describe('home_page', () => {
-// 	test('original not logged in', async done => {
-// 		//ARRANGE
-// 		await page.tracing.start({path: 'trace/original_heading_har.json',screenshots: true})
-// 		await har.start({ path: 'trace/original_heading_trace.har' })
+describe('home_page', () => {
+	test('original not logged in', async done => {
+		//ARRANGE
+		await page.tracing.start({path: 'trace/original_heading_har.json',screenshots: true})
+		await har.start({ path: 'trace/original_heading_trace.har' })
 
-// 		await page.goto(`${appUrl}`)
-// 		// take a screenshot and save to the file system
-// 		await page.screenshot({ path: 'screenshots/home_page_no_login.png' })
+		await page.goto(`${appUrl}`)
+		// take a screenshot and save to the file system
+		await page.screenshot({ path: 'screenshots/home_page_no_login.png' })
 
-// 		await page.waitForSelector('h1')
+		await page.waitForSelector('h1')
 
-// 		// check title
-// 		expect( await page.title() ).toBe('Home')
+		// check title
+		expect( await page.title() ).toBe('Home')
 
-// 		// check first header
-// 		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Introduction')
+		// check first header
+		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Introduction')
 
-// 		const BACK_PAGINATION = '#root > div > div.container.h-centered-margin > div > div > div.page-circles > svg.svg-inline--fa.fa-chevron-left.fa-w-10.arrow'
-// 		const FRONT_PAGINATION = '#root > div > div.container.h-centered-margin > div > div > div.page-circles > svg.svg-inline--fa.fa-chevron-right.fa-w-10.arrow'
+		const BACK_PAGINATION = '#root > div > div.container.h-centered-margin > div > div > div.page-circles > svg.svg-inline--fa.fa-chevron-left.fa-w-10.arrow'
+		const FRONT_PAGINATION = '#root > div > div.container.h-centered-margin > div > div > div.page-circles > svg.svg-inline--fa.fa-chevron-right.fa-w-10.arrow'
 		
-// 		// clicking on front page option
-// 		await page.click(FRONT_PAGINATION)
-// 		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Found an Issue?')
-// 		// go back
-// 		await page.click(BACK_PAGINATION)
-// 		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Introduction')
-// 		// go back again
-// 		await page.click(BACK_PAGINATION)
-// 		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Looking for local issues?')
+		// clicking on front page option
+		await page.click(FRONT_PAGINATION)
+		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Found an Issue?')
+		// go back
+		await page.click(BACK_PAGINATION)
+		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Introduction')
+		// go back again
+		await page.click(BACK_PAGINATION)
+		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Looking for local issues?')
 
-// 		// take a screenshot
-// 		const image = await page.screenshot()
-// 		expect(image).toMatchImageSnapshot()
+		// take a screenshot
+		const image = await page.screenshot()
+		expect(image).toMatchImageSnapshot()
 
-// 		await page.tracing.stop()
-// 		await har.stop()
-// 		done()
-// 	}, 16000)
-// })
+		await page.tracing.stop()
+		await har.stop()
+		done()
+	}, 16000)
+})
 
-// describe('navbar', () => {
-// 	test('checking for working links', async done => {
-// 		// check navbar
-// 		expect( await page.evaluate( () => {
-// 			return document.querySelectorAll('.nav div a').length
-// 		})).toBe(3)
+describe('navbar', () => {
+	test('checking for working links', async done => {
+		// check navbar
+		expect( await page.evaluate( () => {
+			return document.querySelectorAll('.nav div a').length
+		})).toBe(3)
 
-// 		const HOME_BUTTON = '#root > div > div.nav.shadow > div.fl-left.h-centered-margin > a'
-// 		const REGISTER_BUTTON = '#root > div > div.nav.shadow > div.fl-right > a:nth-child(1)'
-// 		const LOGIN_BUTTON = '#root > div > div.nav.shadow > div.fl-right > a:nth-child(2)'
+		const HOME_BUTTON = '#root > div > div.nav.shadow > div.fl-left.h-centered-margin > a'
+		const REGISTER_BUTTON = '#root > div > div.nav.shadow > div.fl-right > a:nth-child(1)'
+		const LOGIN_BUTTON = '#root > div > div.nav.shadow > div.fl-right > a:nth-child(2)'
 
-// 		await page.click(HOME_BUTTON)
-// 		expect( await page.title()).toBe('Home')
+		await page.click(HOME_BUTTON)
+		expect( await page.title()).toBe('Home')
 
-// 		await page.click(LOGIN_BUTTON)
-// 		expect ( await page.title()).toBe('Login')
+		await page.click(LOGIN_BUTTON)
+		expect ( await page.title()).toBe('Login')
 
-// 		await page.click(REGISTER_BUTTON)
-// 		expect ( await page.title()).toBe('Register')
+		await page.click(REGISTER_BUTTON)
+		expect ( await page.title()).toBe('Register')
 		
-// 		done()
-// 	}, 16000)
-// })
+		done()
+	}, 16000)
+})
 
 describe('register', () => {
 
@@ -400,8 +400,8 @@ describe('report issue', () => {
 	test('report issue (location selection)', async done => {
 
 		const MAP = '#root > div > div.container.h-centered-margin > div > div.map.h-centered-margin.fill.gap-left.shadow.padding-20.anim-all-400 > div > div > div > div > div > div > div:nth-child(1) > div:nth-child(3)'
-		const LAT_INPUT = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div.input-double > div:nth-child(1) > input[type=text]'
-		const LNG_INPUT = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div.input-double > div:nth-child(2) > input[type=text]'
+		// const LAT_INPUT = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div.input-double > div:nth-child(1) > input[type=text]'
+		// const LNG_INPUT = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div.input-double > div:nth-child(2) > input[type=text]'
 		const BACK = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div:nth-child(5) > button:nth-child(1)'
 		const NEXT = '#root > div > div.container.h-centered-margin > div > div > form > div > div:nth-child(4) > button'
 		const SUBMIT = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div:nth-child(5) > button.submit-button.w-fill.gap-top'

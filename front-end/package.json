@@ -30,7 +30,8 @@
     "test": "jest --coverage --detectOpenHandles",
     "eject": "react-scripts eject",
     "acceptance": "./test.sh",
-    "profiler": "./node_modules/.bin/0x -o index.js"
+    "profiler": "./node_modules/.bin/0x -o index.js",
+    "linter": "node_modules/.bin/eslint --ignore-path ./.eslintignore ."
   },
   "eslintConfig": {
     "extends": "react-app"
