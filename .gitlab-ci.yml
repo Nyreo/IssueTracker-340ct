@@ -37,5 +37,5 @@ ui-test-frontEnd:
     stage: acceptance-tests
     script:
         - cd front-end/
-        - npm install --only=dev
+        - npm install
         - npm run acceptance
