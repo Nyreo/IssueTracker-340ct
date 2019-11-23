@@ -1,7 +1,11 @@
 #!/bin/sh
 
 set -e # using the options command to abort script at first error
-echo "running the 'pre-commit' script"
+echo "Running the 'pre-commit' script"
+echo -e "\tRunning back-end unit-tests"
 cd ./back-end
-npm run linter
-echo "Success! No linter errors detected"
+npm test
+echo -e "\tRunning front-end unit-tests"
+cd ../front-end
+npm test
+echo "Success! All unit-tests passed!"
