@@ -24,7 +24,7 @@ mkdir -p trace
 cd ../back-end
 node index.js &
 
-cd ../front-end
+cd ../front-end/
 npx serve -s build &
 # [ ! -d "node_modules" ] && echo "INSTALLING MODULES" && npm install
 node_modules/.bin/jest --runInBand --detectOpenHandles acceptance_tests

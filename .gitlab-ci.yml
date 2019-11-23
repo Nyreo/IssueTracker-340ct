@@ -5,6 +5,10 @@ stages:
   - unit-tests
   - acceptance-tests
 
+cache:
+  paths:
+  - node_modules/
+
 # lint-backEnd:
 #   stage: code-tests
 #   script:
@@ -39,5 +43,5 @@ ui-test-frontEnd:
         - cd back-end/
         - npm install
         - cd ../front-end/
-        - npm install
+        - npm install --only=dev
         - npm run acceptance
