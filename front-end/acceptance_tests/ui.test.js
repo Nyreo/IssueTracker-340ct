@@ -20,10 +20,15 @@ const toMatchImageSnapshot = configureToMatchImageSnapshot({
 expect.extend({ toMatchImageSnapshot })
 
 beforeAll( async() => {
-	browser = await puppeteer.launch({ headless: true, slowMo: delayMS, args: [`--window-size=${width},${height}`] })
+	browser = await puppeteer.launch({ headless: false, slowMo: delayMS, args: [`--window-size=${width},${height}`] })
 	page = await browser.newPage()
 	har = new PuppeteerHar(page)
 	await page.setViewport({ width, height })
+
+	await page.on('dialog', async dialog => {
+		console.log(dialog.message())
+		await dialog.dismiss()
+	})
 })
 
 afterAll( () => browser.close() )
@@ -232,7 +237,7 @@ describe('login', () => {
 		done()
 	}, 16000)
 
-	test('checking login screenshot', async done => {
+	test('checking page screenshot', async done => {
 		await page.goto(`${appUrl}/login`, {waitUntil : 'load'})
 
 		const image = await page.screenshot()
@@ -275,8 +280,9 @@ describe('login', () => {
 	
 		await page.waitForSelector(USER_INPUT)
 
-		await page.click(USER_INPUT, {clickCount: 3})
+		await page.click(USER_INPUT, {clickCount: 4})
 		await page.type(USER_INPUT, 'mitch137')
+		await page.waitFor(1000)
 
 		await page.click(SUBMIT_BTN)
 
@@ -329,4 +335,209 @@ describe('login', () => {
 
 		done()
 	}, 16000)
+})
+
+describe('report issue', () => {
+
+	test('checking page screenshot', async done => {
+		await page.goto(`${appUrl}/issues/report`, {waitUntil : 'load'})
+
+		await page.waitFor(1000)
+		const image = await page.screenshot()
+		expect(image).toMatchImageSnapshot()
+
+		done()
+	}, 16000)
+
+	test('reporting issue (initial details)', async done => {
+		// patch current location to avoid permission request
+		await page.evaluate(function() {
+			navigator.geolocation.getCurrentPosition = function (cb) {
+			  setTimeout(() => {
+				cb({
+				  'coords': {
+					accuracy: 21,
+					altitude: null,
+					altitudeAccuracy: null,
+					heading: null,
+					latitude: 52.405462,
+					longitude: -1.499591,
+					speed: null
+				  }
+				})
+			  }, 1000)
+			}
+		  });
+
+		const ISSUE_DESC = '#root > div > div.container.h-centered-margin > div > div > form > div > div:nth-child(2) > textarea'
+		const ISSUE_TYPE = '#root > div > div.container.h-centered-margin > div > div > form > div > div:nth-child(3) > select'
+
+		const NEXT = '#root > div > div.container.h-centered-margin > div > div > form > div > div:nth-child(4) > button'
+
+		await page.waitForSelector('h2')
+
+		expect(await page.evaluate( () => document.querySelector('h2').innerText))
+			.toBe('Issue Details')
+
+		await page.waitForSelector(NEXT)
+		await page.click(NEXT)
+
+		await page.waitForSelector('.error-box .info p')
+		expect( await page.evaluate( () => document.querySelector('.error-box .info p').innerText))
+		  .toBe('please fill in the required fields...')
+
+		await page.waitForSelector(ISSUE_DESC)
+		await page.type(ISSUE_DESC, 'This is a test issue report.')
+
+		await page.waitForSelector(ISSUE_TYPE)
+		await page.select(ISSUE_TYPE, 'Pothole')
+
+		await page.click(NEXT)
+
+		done()
+	}, 16000)
+
+	test('report issue (location selection)', async done => {
+
+		const MAP = '#root > div > div.container.h-centered-margin > div > div.map.h-centered-margin.fill.gap-left.shadow.padding-20.anim-all-400 > div > div > div > div > div > div > div:nth-child(1) > div:nth-child(3)'
+		const LAT_INPUT = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div.input-double > div:nth-child(1) > input[type=text]'
+		const LNG_INPUT = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div.input-double > div:nth-child(2) > input[type=text]'
+		const BACK = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div:nth-child(5) > button:nth-child(1)'
+		const NEXT = '#root > div > div.container.h-centered-margin > div > div > form > div > div:nth-child(4) > button'
+		const SUBMIT = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div:nth-child(5) > button.submit-button.w-fill.gap-top'
+		
+		await page.waitForSelector(MAP)
+
+		await page.click(MAP)
+		await page.waitFor(2000)
+
+		const image = await page.screenshot()
+		expect(image).toMatchImageSnapshot()
+
+		await page.waitForSelector('h2')
+
+		expect(await page.evaluate( () => document.querySelector('h2').innerText))
+			.toBe('Issue Location')
+
+		await page.waitForSelector(BACK)
+		await page.click(BACK)
+
+		await page.waitFor(1000)
+
+		await page.waitForSelector(NEXT)
+		await page.click(NEXT)
+
+		await page.waitFor(1000)
+
+		await page.waitForSelector(MAP)
+		await page.waitForSelector(SUBMIT)
+		await page.waitFor(1000)
+
+		await page.click(SUBMIT)
+
+		await page.waitForSelector('h1')
+		expect( await page.evaluate( () => document.querySelector('h1').innerText))
+			.toBe('Reported Issues')
+		
+		done()
+	}, 30000)
+})
+
+describe('issues', () => {
+
+	test('checking page screenshot', async done => {
+		const ISSUES_LIST = '#root > div > div.container.h-centered-margin > div > div > div:nth-child(3)'
+		await page.waitForSelector(ISSUES_LIST)
+
+		const image = await page.screenshot()
+		expect(image).toMatchImageSnapshot()
+
+		done()
+	})
+
+	test('checking initial displayed results', async done => { 
+	
+		await page.waitForSelector('#root > div > div.container.h-centered-margin > div > div > div:nth-child(3) > p > span.sub.abs-right')
+
+		expect( await page.evaluate( () => document.querySelector('#root > div > div.container.h-centered-margin > div > div > div:nth-child(3) > p > span.sub.abs-right').innerText))
+			.toBe('Displaying 1 Issues')
+
+		await page.waitForSelector('.issue-card .user em')
+
+		expect( await page.evaluate( () => document.querySelector('.issue-card .user em').innerText))
+			.toBe('Issue reported by: mitch137')
+
+		expect( await page.evaluate( () => getComputedStyle(document.querySelector('.issue-card .title')).backgroundColor))
+			.toBe('rgb(235, 96, 96)')
+
+		done()
+	}, 16000)
+
+	test('checking filter', async done => {
+
+		const FILTER = '#root > div > div.container.h-centered-margin > div > div > div.filter-bar.flex-50.gap-right'
+		
+		await page.waitForSelector(FILTER)
+
+		expect( await page.evaluate( () => {
+			const FILTER_ITEMS = '#root > div > div.container.h-centered-margin > div > div > div.filter-bar.flex-50.gap-right > div'
+			return document.querySelector(FILTER_ITEMS).childElementCount
+		})).toBe(2)
+
+		const STATUS_SELECT = '#root > div > div.container.h-centered-margin > div > div > div.filter-bar.flex-50.gap-right > div > div:nth-child(1) > select'
+		const PRIO_SELECT = '#root > div > div.container.h-centered-margin > div > div > div.filter-bar.flex-50.gap-right > div > div:nth-child(2) > select'
+		const RESET = '#root > div > div.container.h-centered-margin > div > div > div.filter-bar.flex-50.gap-right > p > span'
+
+		await page.select(STATUS_SELECT, 'allocated')
+		await page.waitFor(1000)
+
+		// check 0 returned results
+		expect( await page.evaluate( () => document.querySelectorAll('.issue-card').length))
+			.toBe(0)
+		expect( await page.evaluate( () => document.querySelector('#root > div > div.container.h-centered-margin > div > div > div:nth-child(3) > p > span.sub.abs-right').innerText))
+			.toBe('Displaying 0 Issues')
+
+		await page.waitForSelector(RESET)
+
+		await page.click(RESET)
+		await page.waitFor(1000)
+
+		expect( await page.evaluate( () => document.querySelectorAll('.issue-card').length))
+			.toBe(1)
+
+		await page.select(PRIO_SELECT, '2')
+		await page.waitFor(1000)
+
+		expect( await page.evaluate( () => document.querySelectorAll('.issue-card').length))
+			.toBe(0)
+
+		await page.select(PRIO_SELECT, '0')
+		await page.waitFor(1000)
+
+		expect( await page.evaluate( () => document.querySelectorAll('.issue-card').length))
+			.toBe(1)
+
+		done()
+	}, 16000)
+
+	test('interacting with issues', async done => {
+
+		await page.waitForSelector('.upvote, .downvote')
+
+		await page.click('.upvote')
+		await page.waitFor(1000)
+
+		expect( await page.evaluate( () => document.querySelector('.issue-card .title span').innerText))
+			.toBe('#1 Status: Reported - Votes: 1')
+		
+		await page.click('.downvote')
+		await page.waitFor(1000)
+
+		expect( await page.evaluate( () => document.querySelector('.issue-card .title span').innerText))
+			.toBe('#1 Status: Reported - Votes: -1')
+
+		done()
+	},16000)
+
+	
 })
