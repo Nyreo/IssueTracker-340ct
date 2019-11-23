@@ -674,15 +674,14 @@ textarea {
 }
 
 .page-circles  svg {
-  color : rgb(69, 69, 69);
-  opacity : 50%;
+  color : rgb(220, 220, 220);
   font-size : 12px;
   margin-right : 10px;
-  transition : opacity 200ms ease-in;
+  transition : color 200ms ease-in-out;
 }
 
 .page-circles svg.active {
-  opacity : 100%;
+  color : #6a6a6a;
 }
 
 .page-circles .arrow {

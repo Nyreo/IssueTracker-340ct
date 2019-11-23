@@ -9,11 +9,11 @@ function cleanUp()
 
 	# kill jobs
 	echo -e "\tKilling created jobs"
-	kill %1
-	jobs
+	kill $(jobs -p)
+	# jobs
 }
 
-trap cleanUp EXIT
+trap cleanUp EXIT 
 
 set -e
 mkdir -p screenshots
@@ -25,6 +25,7 @@ cd ../back-end
 node index.js &
 
 cd ../front-end
+npx serve -s build &
 # [ ! -d "node_modules" ] && echo "INSTALLING MODULES" && npm install
 node_modules/.bin/jest --runInBand --detectOpenHandles acceptance_tests
 

@@ -2,11 +2,11 @@ const puppeteer = require('puppeteer')
 const { configureToMatchImageSnapshot } = require('jest-image-snapshot')
 const PuppeteerHar = require('puppeteer-har')
 
-const width = 800
-const height = 600
-const delayMS = 50
+const width = 1000
+const height = 850
+const delayMS = 5
 
-const appUrl = 'http://localhost:3000'
+const appUrl = 'http://localhost:5000'
 
 let browser
 let page
@@ -83,30 +83,173 @@ afterAll( () => browser.close() )
 // 		await page.click(HOME_BUTTON)
 // 		expect( await page.title()).toBe('Home')
 
-// 		await page.click(REGISTER_BUTTON)
-// 		expect ( await page.title()).toBe('Register')
-
 // 		await page.click(LOGIN_BUTTON)
 // 		expect ( await page.title()).toBe('Login')
+
+// 		await page.click(REGISTER_BUTTON)
+// 		expect ( await page.title()).toBe('Register')
 		
 // 		done()
 // 	}, 16000)
 // })
 
-describe('login', () => {
-	test('checking login redirect', async done => {
-		
-		await page.goto(`${appUrl}/issues`, {waitUntil : 'load'})
-		
+describe('register', () => {
+
+	test('checking page screenshot', async done => {
+
+		await page.goto(`${appUrl}/register`, {waitUntil : 'load'})
+
 		const image = await page.screenshot()
 		expect(image).toMatchImageSnapshot()
 
-		const USER_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(1) > input[type=text]'
-		const PASS_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(2) > input[type=password]'
+		done()
+	}, 16000)
+
+	test('checking already have an account link', async done => {
+		await page.goto(`${appUrl}/register`, {waitUntil : 'load'})
+
+		const ACCOUNT_LINK = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > a'
+
+		await page.waitForSelector(ACCOUNT_LINK)
+		await page.click(ACCOUNT_LINK)
+
+		await page.waitForSelector('h1')
+		await page.waitFor(1000)
+
+		expect(await page.title())
+			.toBe('Login')
+
+		done()
+	}, 16000)
+
+	test('registering for an account', async done => {
+
+		await page.goto(`${appUrl}/register`, {waitUntil : 'load'})
+
+		// setup selectors
+		const FN_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(1) > div:nth-child(1) > input[type=text]'
+		const LN_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(1) > div:nth-child(2) > input[type=text]'
+		const EMAIL_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(2) > input[type=text]'
+		const USERNAME_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(3) > input[type=text]'
+		const PASS_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(4) > div:nth-child(1) > input[type=password]'
+		const PASS_CONFIRM_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(4) > div:nth-child(2) > input[type=password]'
+		const ADDRESS_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(5) > div:nth-child(1) > input[type=text]'
+		const PC_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(5) > div:nth-child(2) > input[type=text]'
+
+		const SUBMIT = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > button'
+
+		await page.click(SUBMIT)
+		await page.waitForSelector('.error-box .info p')
+
+		expect(await page.evaluate(() => document.querySelector('.error-box .info p').innerText))
+			.toEqual(`firstName must not be blank`)
+
+		await page.type(FN_INPUT, 'joe')
+		await page.type(LN_INPUT, 'mitchell')
+		await page.type(EMAIL_INPUT, 'test')
+		await page.type(USERNAME_INPUT, 'mitch137')
+		await page.type(PASS_INPUT, 'test')
+		await page.type(PASS_CONFIRM_INPUT, 'test_wrong')
+		await page.type(ADDRESS_INPUT, '123 Test Street')
+		await page.type(PC_INPUT, '123 456')
+
+		await page.click(SUBMIT)
+		await page.waitForSelector('.error-box .info p')
+
+		expect(await page.evaluate(() => document.querySelector('.error-box .info p').innerText))
+			.toEqual(`email must contain the @ symbol`)
+
+		await page.type(EMAIL_INPUT, '@')
+		await page.click(SUBMIT)
+		await page.waitForSelector('.error-box .info p')
+
+		expect(await page.evaluate(() => document.querySelector('.error-box .info p').innerText))
+			.toEqual(`email must contain atleast one . symbol`)
+
+		await page.click(EMAIL_INPUT, {clickCount : 3})
+		await page.type(EMAIL_INPUT, 'test.@')
+
+		await page.click(SUBMIT)
+		await page.waitForSelector('.error-box .info p')
+
+		expect(await page.evaluate(() => document.querySelector('.error-box .info p').innerText))
+			.toEqual(`email's @ symbol must come before the . symbol`)
+
+		await page.click(EMAIL_INPUT, {clickCount : 3})
+		await page.type(EMAIL_INPUT, 'test@test.com')
+
+		await page.click(SUBMIT)
+		await page.waitForSelector('.error-box .info p')
+
+		expect(await page.evaluate(() => document.querySelector('.error-box .info p').innerText))
+			.toEqual(`passwords must match`)
+
+		await page.click(PASS_CONFIRM_INPUT, {clickCount : 3})
+		await page.type(PASS_CONFIRM_INPUT, 'test')
+
+		await page.click(SUBMIT)
+
+		await page.waitForSelector('.welcome-message')
+
+		expect(await page.title()).toBe('Home')
+
+		expect( await page.evaluate( () => document.querySelector('.welcome-message').innerText))
+			.toBe('Welcome, mitch137')
 		
-		const SUBMIT_BTN = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > button'
+		done()
+	}, 30000)
+
+	test('logout', async done => {
+
+		await page.goto(`${appUrl}`, {waitUntil : 'load'})
+
+		const LOGOUT = '#root > div > div.nav.shadow > div.fl-right > button'
+
+		await page.waitForSelector('button')
+		await page.waitFor(1000)
+		await page.click(LOGOUT)
+
+		done()
+	})
+})
+
+describe('login', () => {
+	test('checking register account link', async done => {
+		await page.goto(`${appUrl}/login`, {waitUntil : 'load'})
+
 		const NO_ACCOUNT_LINK = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > a'
 
+		await page.waitForSelector(NO_ACCOUNT_LINK)
+
+		await page.click(NO_ACCOUNT_LINK)
+
+		await page.waitForSelector('h1')
+		await page.waitFor(1000)
+
+		expect(await page.title())
+			.toBe('Register')
+
+		done()
+	}, 16000)
+
+	test('checking login screenshot', async done => {
+		await page.goto(`${appUrl}/login`, {waitUntil : 'load'})
+
+		const image = await page.screenshot()
+		expect(image).toMatchImageSnapshot()
+
+		done()
+	})
+
+	test('checking login with invalid username and pass', async done => {
+
+		const USER_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(1) > input[type=text]'
+		const PASS_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(2) > input[type=password]'
+		const CLOSE = '#root > div > div.container.h-centered-margin > div > form > span > div > div.info > svg'
+
+		const SUBMIT_BTN = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > button'
+	
+		await page.waitForSelector(USER_INPUT)
 
 		await page.type(USER_INPUT, 'invalid')
 		await page.type(PASS_INPUT, 'invalid')
@@ -114,22 +257,75 @@ describe('login', () => {
 		await page.click(SUBMIT_BTN)
 
 		expect(await page.evaluate(() => document.querySelector('.error-box .info p').innerText))
-			.toEqual(`username "invalid" not found`)
+			.toBe(`username "invalid" not found`)
 
-		await page.click(USER_INPUT, { clickCount: 3})
-		await page.type(USER_INPUT, '123')
+		await page.waitForSelector(CLOSE)
+		await page.click(CLOSE)
+
+		done()
+	}, 16000)
+
+	test('checking login with invalid password for valid account', async done => {
+
+		const USER_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(1) > input[type=text]'
+		// const PASS_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(2) > input[type=password]'
+		const CLOSE = '#root > div > div.container.h-centered-margin > div > form > span > div > div.info > svg'
+
+		const SUBMIT_BTN = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > button'
+	
+		await page.waitForSelector(USER_INPUT)
+
+		await page.click(USER_INPUT, {clickCount: 3})
+		await page.type(USER_INPUT, 'mitch137')
 
 		await page.click(SUBMIT_BTN)
 
-		// expect(await page.evaluate(() => document.querySelector('.error-box .info p').innerText))
-		// 	.toEqual(`invalid password for account "123"`)
+		await page.waitForSelector('.error-box .info p')
 
-		// await page.click(PASS_INPUT, { clickCount : 3})
-		// await page.type(PASS_INPUT, '123')
+		expect(await page.evaluate(() => document.querySelector('.error-box .info p').innerText))
+			.toBe(`invalid password for account "mitch137"`)
 
-		// await page.click(SUBMIT_BTN)
-		
-		await page.waitFor(2000)
+		await page.waitForSelector(CLOSE)
+		await page.click(CLOSE)
+
+		done()
+	}, 16000)
+
+	test('checking login with valid username and password', async done => {
+
+		const PASS_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(2) > input[type=password]'
+		const SUBMIT_BTN = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > button'
+	
+		await page.waitForSelector(PASS_INPUT)
+
+		await page.click(PASS_INPUT, { clickCount : 3})
+		await page.type(PASS_INPUT, 'test')
+
+		await page.click(SUBMIT_BTN)
+
+		await page.waitForSelector('h1')
+		await page.waitFor(1000)
+
+		expect( await page.title())
+			.toBe('Home')
+
+		done()
+	}, 16000)
+
+	test('checking navbar has updated once logged in', async done => {
+		await page.waitForSelector('.nav button')
+
+		expect(await page.evaluate( () => document.querySelectorAll('.nav a, .nav button').length))
+			.toBe(5)
+
+		done()
+	}, 16000)
+
+	test('check login message', async done => {
+		await page.waitForSelector('em')
+
+		expect(await page.evaluate( () => document.querySelector('em').innerText))
+			.toBe('Welcome, mitch137')
 
 		done()
 	}, 16000)
