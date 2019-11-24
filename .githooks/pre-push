@@ -9,3 +9,17 @@ echo "\tRunning front-end unit-tests"
 cd ../front-end
 npm test
 echo "Success! All unit-tests passed!"
+
+# check if pushing to master
+BRANCH=`git rev-parse --abrev-ref HEAD`
+
+if [ "$BRANCH" = "master" ]; then
+	echo
+	echo -e "Pushing to master...\n\tPerforming additional quality checks"
+	echo -e "\tRunning UI acceptance tests"
+	npm run acceptance
+
+	exit 1
+fi
+
+exit 0
