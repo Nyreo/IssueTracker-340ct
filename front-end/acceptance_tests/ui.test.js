@@ -2,8 +2,8 @@ const puppeteer = require('puppeteer')
 const { configureToMatchImageSnapshot } = require('jest-image-snapshot')
 const PuppeteerHar = require('puppeteer-har')
 
-const width = 1000
-const height = 850
+const width = 1280
+const height = 720
 const delayMS = 5
 
 const appUrl = 'http://localhost:9000'
@@ -21,7 +21,7 @@ expect.extend({ toMatchImageSnapshot })
 
 beforeAll( async() => {
 	try {
-		browser = await puppeteer.launch({ headless: false, slowMo: delayMS, 
+		browser = await puppeteer.launch({ headless: true, slowMo: delayMS, 
 			args: [
 				`--window-size=${width},${height}`, 
 				'--no-sandbox',
@@ -60,20 +60,20 @@ describe('home_page', () => {
 		expect( await page.title() ).toBe('Home')
 
 		// check first header
-		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Introduction')
+		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('INTRODUCTION')
 
 		const BACK_PAGINATION = '#root > div > div.container.h-centered-margin > div > div > div.page-circles > svg.svg-inline--fa.fa-chevron-left.fa-w-10.arrow'
 		const FRONT_PAGINATION = '#root > div > div.container.h-centered-margin > div > div > div.page-circles > svg.svg-inline--fa.fa-chevron-right.fa-w-10.arrow'
 		
 		// clicking on front page option
 		await page.click(FRONT_PAGINATION)
-		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Found an Issue?')
+		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('FOUND AN ISSUE?')
 		// go back
 		await page.click(BACK_PAGINATION)
-		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Introduction')
+		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('INTRODUCTION')
 		// go back again
 		await page.click(BACK_PAGINATION)
-		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('Looking for local issues?')
+		expect( await page.evaluate( () => document.querySelector('h1').innerText) ).toBe('LOOKING FOR LOCAL ISSUES?')
 
 		// take a screenshot
 		const image = await page.screenshot()
@@ -333,7 +333,7 @@ describe('login', () => {
 		await page.waitForSelector('.nav button')
 
 		expect(await page.evaluate( () => document.querySelectorAll('.nav a, .nav button').length))
-			.toBe(5)
+			.toBe(4)
 
 		done()
 	}, 16000)

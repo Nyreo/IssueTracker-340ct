@@ -41,7 +41,7 @@ dc-backEnd:
   stage: staging
   script:
     - cd back-end/
-    - npm install --dev=only
+    - npm install
     - npm run dc
 
 # ui-test-frontEnd:
