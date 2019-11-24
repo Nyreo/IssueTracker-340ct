@@ -1,5 +1,6 @@
-/* standard imports */
 
+
+/* standard imports */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux'
@@ -13,6 +14,9 @@ import * as serviceWorker from './serviceWorker';
 /* custom imports */
 import rootReducer from './utils/rootReducer'
 import { setUser } from './actions/userActions'
+
+/* dotenv */
+require('dotenv').config({path: __dirname + '/.env'})
 
 // create redux store for the combined project reducers & 
 //make accessible to redux dev tool
