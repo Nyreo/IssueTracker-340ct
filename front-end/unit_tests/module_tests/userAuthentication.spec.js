@@ -18,7 +18,7 @@ describe('login', () => {
             'bearer testtoken'
         )
         expect(axios.post.mock.calls.length).toBe(1)
-        expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/user/login')
+        expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/user/login')
         expect(axios.post.mock.calls[0][1]).toEqual({
             user:'user',
             pass:'pass'
@@ -98,7 +98,7 @@ describe('sendEmail', () => {
         await expect(userAuth.sendEmail({}))
             .resolves.toEqual({status: 200})
         expect(axios.post.mock.calls.length).toBe(1)
-        expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/user/message')
+        expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/user/message')
         expect(axios.post.mock.calls[0][1]).toEqual({})
 
         done()
@@ -119,7 +119,7 @@ describe('sendEmail', () => {
                 message: 'email could not be found for that user'
             })
         expect(axios.post.mock.calls.length).toBe(1)
-        expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/user/message')
+        expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/user/message')
         expect(axios.post.mock.calls[0][1]).toEqual({})
 
         done()

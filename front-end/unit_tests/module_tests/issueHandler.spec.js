@@ -464,7 +464,7 @@ describe('voteForIssue', () => {
             await expect(IssueHandler.voteForIssue(1, 'username'))
                 .resolves.toEqual(1)
             expect(axios.post.mock.calls.length).toBe(1)
-            expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/issues/upvote')
+            expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/upvote')
             expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
 
         } catch (err) {
@@ -491,7 +491,7 @@ describe('voteForIssue', () => {
                     message: 'you cannot vote for an issue multiple times'
                 })
             expect(axios.post.mock.calls.length).toBe(1)
-            expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/issues/upvote')
+            expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/upvote')
             expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
 
         } catch (err) {
@@ -516,7 +516,7 @@ describe('voteAgainstIssue', () => {
             await expect(IssueHandler.voteAgainstIssue(1, 'username'))
                 .resolves.toEqual(1)
             expect(axios.post.mock.calls.length).toBe(1)
-            expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/issues/downvote')
+            expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/downvote')
             expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
 
         } catch (err) {
@@ -545,7 +545,7 @@ describe('voteAgainstIssue', () => {
                     message: 'you cannot vote for an issue multiple times'
                 })
             expect(axios.post.mock.calls.length).toBe(1)
-            expect(axios.post.mock.calls[0][0]).toBe('http://localhost:8080/issues/downvote')
+            expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/downvote')
             expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
 
         } catch (err) {
@@ -574,7 +574,7 @@ describe('fetchJobSheet', () => {
                 })
 
             expect(axios.get.mock.calls.length).toBe(1)
-            expect(axios.get.mock.calls[0][0]).toBe('http://localhost:8080/issues/joblist')
+            expect(axios.get.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/joblist')
             expect(axios.get.mock.calls[0][1]).toEqual({responseType: 'blob'})
 
             done()
@@ -601,7 +601,7 @@ describe('fetchJobSheet', () => {
                 })
 
             expect(axios.get.mock.calls.length).toBe(1)
-            expect(axios.get.mock.calls[0][0]).toBe('http://localhost:8080/issues/joblist')
+            expect(axios.get.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/joblist')
             expect(axios.get.mock.calls[0][1]).toEqual({responseType: 'blob'})
 
             done()

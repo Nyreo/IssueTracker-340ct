@@ -1,9 +1,11 @@
+
+
 // module responsible for handle issue retrieval and submission
 import axios from 'axios'
 
 let api_url = process.env.REACT_APP_API_URL || 'https://mitch137-test-api.herokuapp.com'
     api_url = `${api_url}/issues`
-    
+
 export const fetchAllIssues = () => {
 
     const api_endpoint = `${api_url}/fetch`
