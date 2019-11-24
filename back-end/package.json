@@ -26,6 +26,7 @@
   "dependencies": {
     "@koa/cors": "^2.2.3",
     "@mitch137/validation": "file:../validation",
+    "bcrypt": "^3.0.7",
     "bcrypt-promise": "^2.0.0",
     "dotenv": "^8.2.0",
     "jsonwebtoken": "^8.5.1",
