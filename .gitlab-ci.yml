@@ -11,40 +11,40 @@ cache:
   paths:
   - node_modules/
 
-# lint-backEnd:
-#   stage: code-tests
-#   script:
-#     - cd back-end/
-#     - npm install
-#     - npm run linter
+lint-backEnd:
+  stage: code-tests
+  script:
+    - cd back-end/
+    - npm install
+    - npm run linter
 
-# lint-frontEnd:
-#   stage: code-tests
-#   script:
-#     - cd front-end/
-#     - npm install
-#     - npm run linter
+lint-frontEnd:
+  stage: code-tests
+  script:
+    - cd front-end/
+    - npm install
+    - npm run linter
 
-# test-backEnd:
-#   stage: unit-tests
-#   script:
-#     - cd back-end/
-#     - npm install
-#     - npm test
+test-backEnd:
+  stage: unit-tests
+  script:
+    - cd back-end/
+    - npm install
+    - npm test
 
-# test-frontEnd:
-#   stage: unit-tests
-#   script:
-#     - cd front-end/
-#     - npm install
-#     - npm test
+test-frontEnd:
+  stage: unit-tests
+  script:
+    - cd front-end/
+    - npm install
+    - npm test
 
-# dc-backEnd:
-#   stage: staging
-#   script:
-#     - cd back-end/
-#     - npm install
-#     - npm run dc
+dc-backEnd:
+  stage: staging
+  script:
+    - cd back-end/
+    - npm install
+    - npm run dc
   
 deploy-backend:
   stage: deployment-back
@@ -55,7 +55,8 @@ deploy-backend:
     - apt-get install ruby-dev rubygems -y
     - gem install dpl
     - dpl --provider=heroku --app=mitch137-test-api --api-key=81eaf2cb-7d8a-42dc-89d8-b3eb55887702
-
+  only:
+    - master
 deploy-frontend:
   stage: deployment-front
   before_script:
@@ -65,7 +66,9 @@ deploy-frontend:
     - apt-get install ruby-dev rubygems -y
     - gem install dpl
     - dpl --provider=heroku --app=mitch137-test --api-key=81eaf2cb-7d8a-42dc-89d8-b3eb55887702
-
+  only:
+    - master
+    
 # ui-test-frontEnd:
 #   image: alekzonder/puppeteer:1.5.0-0
 #   stage: acceptance-tests
