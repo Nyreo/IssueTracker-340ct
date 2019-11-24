@@ -10,52 +10,50 @@ cache:
   paths:
   - node_modules/
 
-lint-backEnd:
-  stage: code-tests
-  script:
-    - cd back-end/
-    - npm install
-    - npm run linter
+# lint-backEnd:
+#   stage: code-tests
+#   script:
+#     - cd back-end/
+#     - npm install
+#     - npm run linter
 
-lint-frontEnd:
-  stage: code-tests
-  script:
-    - cd front-end/
-    - npm install
-    - npm run linter
+# lint-frontEnd:
+#   stage: code-tests
+#   script:
+#     - cd front-end/
+#     - npm install
+#     - npm run linter
 
-test-backEnd:
-  stage: unit-tests
-  script:
-    - cd back-end/
-    - npm install
-    - npm test
+# test-backEnd:
+#   stage: unit-tests
+#   script:
+#     - cd back-end/
+#     - npm install
+#     - npm test
 
-test-frontEnd:
-  stage: unit-tests
-  script:
-    - cd front-end/
-    - npm install
-    - npm test
+# test-frontEnd:
+#   stage: unit-tests
+#   script:
+#     - cd front-end/
+#     - npm install
+#     - npm test
 
-dc-backEnd:
-  stage: staging
-  script:
-    - cd back-end/
-    - npm install
-    - npm run dc
+# dc-backEnd:
+#   stage: staging
+#   script:
+#     - cd back-end/
+#     - npm install
+#     - npm run dc
 
 deploy-frontend:
   stage: deployment
   script:
-    - cd commands/
-    - ./deploy_frontend.sh
+    - ./commands/deploy_frontend.sh
 
 deploy-backend:
   stage: deployment
   script:
-    - cd commands/
-    - ./deploy_backend.sh
+    - ./commands/deploy_backend.sh
 
 # ui-test-frontEnd:
 #   image: alekzonder/puppeteer:1.5.0-0
