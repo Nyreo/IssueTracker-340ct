@@ -47,11 +47,15 @@ cache:
 
 deploy-frontend:
   stage: deployment
+  before_script:
+    - git remote add heroku-api https://git.heroku.com/mitch137-test.git
   script:
     - ./commands/deploy_frontend.sh
 
 deploy-backend:
   stage: deployment
+  before_script: 
+    - git remote add heroku-api https://git.heroku.com/mitch137-test-api.git
   script:
     - ./commands/deploy_backend.sh
 
