@@ -1,2 +1,2 @@
-api: ./commands/run_backend.sh
-web: ./commands/run_frontend.sh
+api: npm run backend
+web: npm run frontend

@@ -1,0 +1,16 @@
+{
+  "name": "340ct-cw",
+  "version": "1.0.0",
+  "description": "340ct-cw",
+  "main": "babel.config.js",
+  "scripts": {
+    "frontend": "./commands/run_frontend.sh",
+    "backend": "./commands/run_backend.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.coventry.ac.uk/340CT-1920SEPJAN/mitch137.git"
+  },
+  "author": "joe mitchell",
+  "license": "ISC"
+}
