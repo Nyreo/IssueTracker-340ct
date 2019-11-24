@@ -4,6 +4,7 @@ stages:
   - code-tests
   - unit-tests
   - staging
+  - deployment
 
 cache:
   paths:
@@ -43,6 +44,18 @@ dc-backEnd:
     - cd back-end/
     - npm install
     - npm run dc
+
+deploy-frontend:
+  stage: deployment
+  script:
+    - cd commands/
+    - ./deploy_frontend.sh
+
+deploy-backend:
+  stage: deployment
+  sciprt:
+    - cd commands/
+    - ./deploy_backend.sh
 
 # ui-test-frontEnd:
 #   image: alekzonder/puppeteer:1.5.0-0
