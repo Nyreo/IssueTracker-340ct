@@ -64,7 +64,7 @@ deploy-frontend:
     - apt-get update -yq
     - apt-get install ruby-dev rubygems -y
     - gem install dpl
-    - dpl --provider=heroku --app=mitch137-test-api --api-key=81eaf2cb-7d8a-42dc-89d8-b3eb55887702
+    - dpl --provider=heroku --app=mitch137-test --api-key=81eaf2cb-7d8a-42dc-89d8-b3eb55887702
 
 # ui-test-frontEnd:
 #   image: alekzonder/puppeteer:1.5.0-0
