@@ -82,6 +82,15 @@ button {
   border-bottom : 1px solid lightgray;
 }
 
+.home-cover {
+  min-height : 75vh;
+}
+
+.home-cover img {
+  width : 20%;
+  padding: 0 40px;
+}
+
 .close {
   position : absolute;
   top : 5px;
@@ -304,10 +313,42 @@ a {
   background-color : white;
   height : auto;
   padding-bottom : 2em;
+
+  z-index : 100;
 }
 
 .section:nth-of-type(1) {
   margin-top : 2em;
+}
+
+.section h1 {
+  font-size : 48px;
+  text-transform: uppercase;
+}
+
+.section p{
+  padding : 0 100px;
+
+  box-sizing: border-box;
+  /* text-align: left; */
+
+  position : relative;
+}
+
+/* .section p:before {
+  content : '';
+  position : absolute;
+  height : 60%;
+  left : 75px;
+  width : 5px;
+  background-color : rgb(143, 143, 143);
+} */
+
+.section .link {
+  text-decoration : none;
+  font-size : 14px;
+  font-weight : bold;
+  color : black;
 }
 
 /* section --- end */
@@ -669,7 +710,7 @@ textarea {
   /* border : 1px solid red; */
   height : 20px;
   left : 50%;
-  bottom : 0;
+  bottom : 25px;
   transform : translate(-50%)
 }
 

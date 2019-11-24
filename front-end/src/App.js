@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 /* Icon imports */
-import { faHome, faUser, faUserCog } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUserCog } from '@fortawesome/free-solid-svg-icons'
 
 /* Component Imports */
 import Home from './components/pages/home'
@@ -55,7 +55,7 @@ function App(props) {
                   userData.isAuth ? 
                   <>
                     <em className='welcome-message'>Welcome, {userData.user.username}</em>
-                    <Link className='link' to='/account'><FontAwesomeIcon icon={faUser}/>Account</Link>
+                    {/* <Link className='link' to='/account'><FontAwesomeIcon icon={faUser}/>Account</Link> */}
                     {
                       userData.user.isStaff ?
                       <>
@@ -99,9 +99,9 @@ function App(props) {
             userData.isAuth ?  <ReportIssuePage {...compProps} store={props.store} title={'Report Issue'}/> : <Redirect to="/login"/>
           } />
 
-          <Route exact path="/account" render={(compProps) => 
+          {/* <Route exact path="/account" render={(compProps) => 
             userData.isAuth ? <h1>{userData.user.username}'s Account</h1> : <Redirect to="/login"/>
-          } />
+          } /> */}
 
           
         </div>
