@@ -2,7 +2,7 @@
   "name": "340ct-cw",
   "version": "1.0.0",
   "description": "340ct-cw",
-  "main": "babel.config.js",
+  "main": "index.js",
   "scripts": {
     "frontend": "./commands/run_frontend.sh",
     "backend": "./commands/run_backend.sh"
