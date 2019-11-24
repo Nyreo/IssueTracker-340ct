@@ -25,7 +25,7 @@
   "license": "ISC",
   "dependencies": {
     "@koa/cors": "^2.2.3",
-    "@mitch137/validation": "file:../validation",
+    "@mitch137/validation": "^1.0.0",
     "bcrypt": "^3.0.7",
     "bcrypt-promise": "^2.0.0",
     "dotenv": "^8.2.0",
