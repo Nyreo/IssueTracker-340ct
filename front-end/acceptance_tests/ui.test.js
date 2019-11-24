@@ -6,7 +6,7 @@ const width = 1000
 const height = 850
 const delayMS = 5
 
-const appUrl = 'http://localhost:5000'
+const appUrl = 'http://localhost:9000'
 
 let browser
 let page
