@@ -53,7 +53,7 @@ deploy-frontend:
 
 deploy-backend:
   stage: deployment
-  sciprt:
+  script:
     - cd commands/
     - ./deploy_backend.sh
 
