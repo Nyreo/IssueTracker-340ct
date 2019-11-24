@@ -3,50 +3,57 @@ image: node:latest
 stages:
   - code-tests
   - unit-tests
-  - acceptance-tests
+  - staging
 
 cache:
   paths:
   - node_modules/
 
-# lint-backEnd:
-#   stage: code-tests
-#   script:
-#     - cd back-end/
-#     - npm install
-#     - npm run linter
-
-# lint-frontEnd:
-#   stage: code-tests
-#   script:
-#     - cd front-end/
-#     - npm install
-#     - npm run linter
-
-# test-backEnd:
-#   stage: unit-tests
-#   script:
-#     - cd back-end/
-#     - npm install
-#     - npm test
-
-# test-frontEnd:
-#   stage: unit-tests
-#   script:
-#     - cd front-end/
-#     - npm install
-#     - npm test
-
-ui-test-frontEnd:
-  image: alekzonder/puppeteer:1.5.0-0
-  stage: acceptance-tests
+lint-backEnd:
+  stage: code-tests
   script:
-      - cd back-end/
-      - npm install
-      - cd ../front-end/
-      - npm install
-      - npm run acceptance
-  artifacts:
-    paths:
-     - test/screenshots/*/*
-    expire_in: 3 days
+    - cd back-end/
+    - npm install
+    - npm run linter
+
+lint-frontEnd:
+  stage: code-tests
+  script:
+    - cd front-end/
+    - npm install
+    - npm run linter
+
+test-backEnd:
+  stage: unit-tests
+  script:
+    - cd back-end/
+    - npm install
+    - npm test
+
+test-frontEnd:
+  stage: unit-tests
+  script:
+    - cd front-end/
+    - npm install
+    - npm test
+
+dc-backEnd:
+  stage: staging
+  script:
+    - cd back-end/
+    - npm install --dev=only
+    - npm run dc
+
+# ui-test-frontEnd:
+#   image: alekzonder/puppeteer:1.5.0-0
+#   stage: acceptance-tests
+#   script:
+#       - cd back-end/
+#       - npm install
+#       - cd ../front-end/
+#       - npm install
+#       - npm run acceptance
+#   artifacts:
+#     paths:
+#      - test/screenshots/*/*
+#     expire_in: 3 days

@@ -20,7 +20,18 @@ const toMatchImageSnapshot = configureToMatchImageSnapshot({
 expect.extend({ toMatchImageSnapshot })
 
 beforeAll( async() => {
-	browser = await puppeteer.launch({ headless: false, slowMo: delayMS, args: [`--window-size=${width},${height}`, '--no-sandbox', '--disable-setuid-sandbox'] })
+	try {
+		browser = await puppeteer.launch({ headless: false, slowMo: delayMS, 
+			args: [
+				`--window-size=${width},${height}`, 
+				'--no-sandbox',
+				'--disable-setuid-sandbox']
+			})
+	} catch(err) {
+		console.log('Error launching browser')
+		throw err
+	}
+	
 	page = await browser.newPage()
 	har = new PuppeteerHar(page)
 	await page.setViewport({ width, height })
