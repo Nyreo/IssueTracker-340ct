@@ -4,7 +4,8 @@ stages:
   - code-tests
   - unit-tests
   - staging
-  - deployment
+  - deployment-back
+  - deployment-front
 
 cache:
   paths:
@@ -46,7 +47,7 @@ cache:
 #     - npm run dc
   
 deploy-backend:
-  stage: deployment
+  stage: deployment-back
   before_script:
     - cd back-end/
   script:
@@ -56,7 +57,7 @@ deploy-backend:
     - dpl --provider=heroku --app=mitch137-test-api --api-key=81eaf2cb-7d8a-42dc-89d8-b3eb55887702
 
 deploy-frontend:
-  stage: deployment
+  stage: deployment-front
   before_script:
     - cd front-end/
   script:
