@@ -3,8 +3,8 @@
 // standard imports
 import axios from 'axios'
 
-const api_url = 'http://localhost:8080/user'
-
+let api_url = process.env.REACT_APP_API_URL || 'https://mitch137-test-api.herokuapp.com'
+    api_url = `${api_url}/user`
 export const register = (userDetails) => {
 
     const api_endpoint = `${api_url}/register`

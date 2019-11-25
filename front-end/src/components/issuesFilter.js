@@ -32,7 +32,7 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
     }
 
     return (
-        <div className='filter-bar h-centered-margin flex-item-50'>
+        <div className='filter-bar flex-50 gap-right'>
             <p className='panel-header'><FontAwesomeIcon icon={faFilter} />Filter - <span className='link' onClick={() => resetFilter()}>Reset Filter</span></p>
             <div className='filter-container'>
                 <div className='item'>
@@ -55,9 +55,6 @@ const IssuesFilter = ({filterCallback, isAdmin}) => {
                         defaultValue={true}
                     />
                 </div>
-                {/* <div style={{width:'100%',marginTop:'1em'}}>
-                    <button className='submit-button' onClick={() => resetFilter()}>Reset</button>
-                </div> */}
             </div>
         </div>
     )

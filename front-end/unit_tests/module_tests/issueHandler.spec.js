@@ -1,5 +1,3 @@
-'use strict'
-
 import axios from 'axios'
 
 import IssueHandler from '../../src/modules/issueHandler'
@@ -452,5 +450,163 @@ describe('splitIssues', () => {
             expect(err).toEqual(Error('No issues available'))
             done()
         } 
+    })
+})
+
+describe('voteForIssue', () => {
+    test('voting for a valid and existing issue', async done => {
+        axios.post = jest.fn((endpoint, data) => Promise.resolve({
+            data : 1,
+            status: 200
+        }))
+
+        try {
+            await expect(IssueHandler.voteForIssue(1, 'username'))
+                .resolves.toEqual(1)
+            expect(axios.post.mock.calls.length).toBe(1)
+            expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/upvote')
+            expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
+
+        } catch (err) {
+            done.fail(err.message)
+        } finally {
+            done()
+        }
+    })
+
+    test('voting for an invalid issue', async done => {
+        axios.post = jest.fn((endpoint, data) => Promise.reject(
+            {
+                response : {
+                    status: 400,
+                    message: 'you cannot vote for an issue multiple times'
+                }
+            }
+        ))
+
+        try {
+            await expect(IssueHandler.voteForIssue(1, 'username'))
+                .rejects.toEqual({
+                    status: 400,
+                    message: 'you cannot vote for an issue multiple times'
+                })
+            expect(axios.post.mock.calls.length).toBe(1)
+            expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/upvote')
+            expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
+
+        } catch (err) {
+            done.fail(err.message)
+        } finally {
+            done()
+        }
+    })
+})
+
+describe('voteAgainstIssue', () => {
+
+    test('voting against a valid and existing issue', async done => {
+        expect.assertions(4)
+
+        axios.post = jest.fn((endpoint, data) => Promise.resolve({
+            data : 1,
+            status: 200
+        }))
+
+        try {
+            await expect(IssueHandler.voteAgainstIssue(1, 'username'))
+                .resolves.toEqual(1)
+            expect(axios.post.mock.calls.length).toBe(1)
+            expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/downvote')
+            expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
+
+        } catch (err) {
+            done.fail(err.message)
+        } finally {
+            done()
+        }
+    })
+
+    test('voting against an invalid issue', async done => {
+        expect.assertions(4)
+
+        axios.post = jest.fn((endpoint, data) => Promise.reject(
+            {
+                response : {
+                    status: 400,
+                    message: 'you cannot vote for an issue multiple times'
+                }
+            }
+        ))
+
+        try {
+            await expect(IssueHandler.voteAgainstIssue(1, 'username'))
+                .rejects.toEqual({
+                    status: 400,
+                    message: 'you cannot vote for an issue multiple times'
+                })
+            expect(axios.post.mock.calls.length).toBe(1)
+            expect(axios.post.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/downvote')
+            expect(axios.post.mock.calls[0][1]).toEqual({id: 1, username:'username'})
+
+        } catch (err) {
+            done.fail(err.message)
+        } finally {
+            done()
+        }
+    })
+})
+
+describe('fetchJobSheet', () => {
+
+    test('fetching an avaialble job sheet', async done => {
+        expect.assertions(4)
+        
+        axios.get = jest.fn((endpoint, options) => Promise.resolve({
+            data : {},
+            status: 200
+        }))
+
+        try {
+            await expect(IssueHandler.fetchJobSheet())
+                .resolves.toEqual({
+                    data : {},
+                    status: 200
+                })
+
+            expect(axios.get.mock.calls.length).toBe(1)
+            expect(axios.get.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/joblist')
+            expect(axios.get.mock.calls[0][1]).toEqual({responseType: 'blob'})
+
+            done()
+        } catch(err) {
+            done.fail(err)
+        }
+    })
+
+    test('fetching invalid job sheet', async done => {
+        expect.assertions(4)
+        
+        axios.get = jest.fn((endpoint, options) => Promise.reject({
+            response : {
+                status: 400,
+                message: 'invalid request'
+            }
+        }))
+
+        try {
+            await expect(IssueHandler.fetchJobSheet())
+                .rejects.toEqual({
+                    status: 400,
+                    message: 'invalid request'
+                })
+
+            expect(axios.get.mock.calls.length).toBe(1)
+            expect(axios.get.mock.calls[0][0]).toBe('https://mitch137-test-api.herokuapp.com/issues/joblist')
+            expect(axios.get.mock.calls[0][1]).toEqual({responseType: 'blob'})
+
+            done()
+        } catch(err) {
+            done.fail(err)
+        }
     })
 })

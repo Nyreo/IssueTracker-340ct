@@ -1,7 +1,10 @@
+
+
 // module responsible for handle issue retrieval and submission
 import axios from 'axios'
 
-const api_url = 'http://localhost:8080/issues'
+let api_url = process.env.REACT_APP_API_URL || 'https://mitch137-test-api.herokuapp.com'
+    api_url = `${api_url}/issues`
 
 export const fetchAllIssues = () => {
 
@@ -10,7 +13,7 @@ export const fetchAllIssues = () => {
     return axios
         .get(api_endpoint)
         .then(response => {
-            console.log(response.data)
+            // console.log(response.data)
             return response.data
         })
         .catch(err => {
@@ -63,6 +66,48 @@ export const updateIssueStatus = (id, status) => {
         })
 }
 
+export const voteForIssue = (id, username) => {
+    // vote for issue
+    const api_endpoint = `${api_url}/upvote`
+    const data = { id, username }
+    return axios
+        .post(api_endpoint, data)
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
+export const voteAgainstIssue = (id, username) => {
+    // vote for issue
+    const api_endpoint = `${api_url}/downvote`
+    const data = { id, username }
+    return axios
+        .post(api_endpoint, data)
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
+export const fetchJobSheet = () => {
+    // fetch the job sheet for all issues that have been allocated
+    const api_endpoint = `${api_url}/joblist`
+
+    return axios
+        .get(api_endpoint, {responseType: 'blob'})
+        .then(response => {
+            return response
+        })
+        .catch(err => {
+            throw err.response
+        })
+}
+
 export const filterIssues = (issues, filter) => {
     
     if(!issues.length) throw new Error('No issues available')
@@ -97,6 +142,9 @@ export default {
     reportIssue,
     updateIssuePriority,
     updateIssueStatus,
+    voteForIssue,
+    voteAgainstIssue,
+    fetchJobSheet,
     filterIssues,
     splitIssues
 }

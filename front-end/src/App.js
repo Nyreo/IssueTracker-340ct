@@ -8,17 +8,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 /* Icon imports */
-import { faHome, faUser, faUserCog } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUserCog } from '@fortawesome/free-solid-svg-icons'
 
 /* Component Imports */
-
-import LoginForm from './components/forms/loginForm'
-import RegisterForm from './components/forms/registerForm'
-import ReportIssueForm from './components/forms/reportIssueForm'
-
 import Home from './components/pages/home'
 import IssuesPage  from './components/pages/issues'
 import AdminPage from './components/pages/admin'
+import LoginPage from './components/pages/login'
+import RegisterPage from './components/pages/register'
+import ReportIssuePage from './components/pages/report'
 
 /* Custom imports */
 
@@ -57,7 +55,7 @@ function App(props) {
                   userData.isAuth ? 
                   <>
                     <em className='welcome-message'>Welcome, {userData.user.username}</em>
-                    <Link className='link' to='/account'><FontAwesomeIcon icon={faUser}/>Account</Link>
+                    {/* <Link className='link' to='/account'><FontAwesomeIcon icon={faUser}/>Account</Link> */}
                     {
                       userData.user.isStaff ?
                       <>
@@ -79,31 +77,31 @@ function App(props) {
           </div>
         <div className='container h-centered-margin' >
           
-          <Route exact path="/" render={() => <Home userData={userData}/>} />
+          <Route exact path="/" render={() => <Home userData={userData} title={'Home'}/>} />
           
           <Route exact path="/register" render={(compProps) => 
-            userData.isAuth ? <Redirect to="/" /> : <RegisterForm {...compProps} store={props.store} />
+            userData.isAuth ? <Redirect to="/" /> : <RegisterPage {...compProps} store={props.store} title={'Register'} />
           } />
           
           <Route exact path="/login" render={(compProps) => 
-            userData.isAuth ? <Redirect to="/"/> : <LoginForm {...compProps} store={props.store} />
+            userData.isAuth ? <Redirect to="/"/> : <LoginPage {...compProps} store={props.store} title={'Login'}/>
           } />
 
           <Route exact path="/issues" render={(compProps) => 
-            userData.isAuth ? <IssuesPage {...compProps} store={props.store} /> : <Redirect to="/login"/>
+            userData.isAuth ? <IssuesPage {...compProps} store={props.store} title={'Issues'}/> : <Redirect to="/login"/>
           } />
 
           <Route exact path="/admin" render={(compProps) => 
-            userData.user.isStaff ? <AdminPage {...compProps} store={props.store}/> : <Redirect to="/"/>
+            userData.user.isStaff ? <AdminPage {...compProps} store={props.store} title={'Admin'}/> : <Redirect to="/"/>
           } />
 
           <Route exact path="/issues/report" render={(compProps) => 
-            userData.isAuth ?  <ReportIssueForm {...compProps} store={props.store} /> : <Redirect to="/login"/>
+            userData.isAuth ?  <ReportIssuePage {...compProps} store={props.store} title={'Report Issue'}/> : <Redirect to="/login"/>
           } />
 
-          <Route exact path="/account" render={(compProps) => 
+          {/* <Route exact path="/account" render={(compProps) => 
             userData.isAuth ? <h1>{userData.user.username}'s Account</h1> : <Redirect to="/login"/>
-          } />
+          } /> */}
 
           
         </div>
