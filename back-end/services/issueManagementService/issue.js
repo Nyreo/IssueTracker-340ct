@@ -6,7 +6,7 @@ const validate = require('@mitch137/validation')
 
 const sqlite = require('sqlite-async')
 
-const requiredIssueKeys=['description', 'type', 'dateSubmitted', 'username']
+const requiredIssueKeys=['description', 'type', 'dateSubmitted', 'username', 'lat', 'lng']
 const exampleResponse = {
 	description: 'example',
 	type: 'example',
@@ -106,6 +106,7 @@ module.exports = class Issue {
 	 */
 	async fetchIssue(id) {
 		validate.checkUndefinedParams({id})
+		validate.validateNumber(id)
 
 		const sql = `SELECT *,
 						coalesce((
@@ -171,9 +172,10 @@ module.exports = class Issue {
 	async deleteIssue(id) {
 		try {
 			validate.checkUndefinedParams({id})
+			validate.validateNumber(id)
 			await this.checkIssueExists(id)
 			const sql = `DELETE from issues WHERE id=${id}`
-			this.db.run(sql)
+			await this.db.run(sql)
 		} catch(err) {
 			throw err
 		}
@@ -191,6 +193,8 @@ module.exports = class Issue {
 	async updateIssueStatus(id, status) {
 		try {
 			validate.checkUndefinedParams({id, status})
+			validate.validateNumber(id)
+
 			await this.checkIssueExists(id)
 			// get original status - if was resolved, remove data resolved
 			const issue = await this.fetchIssue(id)
@@ -216,7 +220,7 @@ module.exports = class Issue {
 	 */
 	async removeResolutionTime(id) {
 		const sql = `UPDATE issues SET dateResolved=${null} WHERE id=${id};`
-		this.db.run(sql)
+		await this.db.run(sql)
 	}
 
 	/**
@@ -230,6 +234,7 @@ module.exports = class Issue {
 	async setResolutionTime(id) {
 		try{
 			validate.checkUndefinedParams({id})
+			validate.validateNumber(id)
 			await this.checkIssueExists(id)
 
 			const now = Date.now()
@@ -252,6 +257,7 @@ module.exports = class Issue {
 	async updateIssuePriority(id, priority) {
 		try {
 			validate.checkUndefinedParams({id, priority})
+			validate.validateNumber(id)
 			await this.checkIssueExists(id)
 
 			if(isNaN(priority)) throw new Error('priority must be a positive number')
@@ -319,7 +325,8 @@ module.exports = class Issue {
 	 */
 	async voteIssue(id, username, value) {
 		try {
-			await validate.checkUndefinedParams({id, username, value})
+			validate.checkUndefinedParams({id, username, value})
+			validate.validateNumber(id)
 			await this.checkIssueExists(id)
 			await this.validateUserVote(id, username, value)
 			let sql = `INSERT INTO votes(issueID, username, value) 

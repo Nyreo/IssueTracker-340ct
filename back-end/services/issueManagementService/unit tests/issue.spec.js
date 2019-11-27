@@ -25,24 +25,104 @@ describe('reportIssue()', () => {
 		}
 	})
 
-	test('reporting issue with missing credentials', async done => {
-		expect.assertions(2)
-		// missing description
-		const issue1 = {...baseIssue}
-		delete issue1.description
+	test('reporting issue with missing description', async done => {
+		expect.assertions(1)
 
-		const issue2 = {...baseIssue}
-		delete issue2.type
+		const issue = {...baseIssue}
+		delete issue.description
 
 		const issues = await new Issues()
 
-		await expect(issues.reportIssue(issue1))
+		await expect(issues.reportIssue(issue))
 			.rejects.toEqual(Error('description missing'))
 
-		await expect(issues.reportIssue(issue2))
+		done()
+	})
+
+	test('reporting issue with missing type', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		delete issue.type
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
 			.rejects.toEqual(Error('type missing'))
 
 		done()
+	})
+
+	test('reporting issue with missing date submitted', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		delete issue.dateSubmitted
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('dateSubmitted missing'))
+
+		done()
+	})
+
+	test('reporting issue with missing username', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		delete issue.username
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('username missing'))
+
+		done()
+	})
+
+	test('reporting issue with missing latitude', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		delete issue.lat
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('lat missing'))
+
+		done()
+	})
+
+	test('reporting issue with missing longitude', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		delete issue.lng
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('lng missing'))
+
+		done()
+	})
+
+	test('reporting issue with missing streetname', async done => {
+
+		try {
+			const issue = {...baseIssue}
+			delete issue.streetName
+
+			const issues = await new Issues()
+
+			await issues.reportIssue(issue)
+		} catch(err) {
+			done.fail(err)
+		} finally{
+			done()
+		}
 	})
 
 	test('reporting issue with invalid date submitted (negative)', async done => {
@@ -74,6 +154,8 @@ describe('reportIssue()', () => {
 	})
 
 	test('reporting issue with invalid date type submitted (NaN)', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			const issue = {
@@ -91,6 +173,8 @@ describe('reportIssue()', () => {
 	})
 
 	test('reporting issue without streetName data', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			const issue1 = {...baseIssue}
@@ -159,6 +243,8 @@ describe('fetchIssue', () => {
 	})
 
 	test('id should not be blank', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 
@@ -171,11 +257,44 @@ describe('fetchIssue', () => {
 		}
 	})
 
+	test('id should be valid type (convertable)', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
+
+			const issue = await issues.fetchIssue('1')
+			expect(issue).not.toBe(undefined)
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('id should be valid type', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.fetchIssue('dsfsdf'))
+				.rejects.toEqual(Error('value is not a number'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
 })
 
 describe('fetchAllIssues()', () => {
 
 	test('fetching all issues', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			// report same issue twice
@@ -208,6 +327,8 @@ describe('fetchAllIssues()', () => {
 	})
 
 	test('fetching issues that do no exist', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			// fetch all issues
@@ -244,6 +365,8 @@ describe('fetchUserIssues()', () => {
 	})
 
 	test('fetching non-existing issues reported by valid user', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 
@@ -257,6 +380,8 @@ describe('fetchUserIssues()', () => {
 	})
 
 	test('fetching issues reported by undefined/blank user', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 
@@ -273,8 +398,8 @@ describe('fetchUserIssues()', () => {
 describe('deleteIssue()', () => {
 
 	test('delete existing issue', async done => {
-
 		expect.assertions(2)
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -294,6 +419,7 @@ describe('deleteIssue()', () => {
 		}
 	})
 	test('delete non-existing issue', async done => {
+		expect.assertions(1)
 
 		try {
 			const issues = await new Issues()
@@ -308,11 +434,41 @@ describe('deleteIssue()', () => {
 	})
 
 	test('id should not be blank', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 
 			await expect(issues.deleteIssue())
 				.rejects.toEqual(Error('id must not be blank'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('id should be a number (convertable)', async done => {
+		expect.assertions(0)
+
+		try {
+			const issues = await new Issues()
+			await issues.reportIssue(baseIssue)
+
+			await issues.deleteIssue('1')
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('id should be a number', async done => {
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.deleteIssue('sdfsdkf'))
+				.rejects.toEqual(Error('value is not a number'))
 		} catch (err) {
 			done.fail(err)
 		} finally {
@@ -390,7 +546,42 @@ describe('updateIssueStatus()', () => {
 		}
 	})
 
+	test('id must be number (convertable)', async done => {
+		expect.assertions(0)
+
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+			await issues.updateIssueStatus('1', 'allocated')
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('id must be number', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+			await expect(issues.updateIssueStatus('asdfadf', 'allocated'))
+				.rejects.toEqual(Error('value is not a number'))
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
 	test('status must not be blank', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 
@@ -405,6 +596,8 @@ describe('updateIssueStatus()', () => {
 	})
 
 	test('when status is changed back from resolved, dateResolved should be reset', async done => {
+		expect.assertions(2)
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -412,8 +605,10 @@ describe('updateIssueStatus()', () => {
 			await issues.updateIssueStatus(1, 'resolved')
 
 			const issue = await issues.fetchIssue(1)
-			expect(issue.status).toEqual('resolved')
-			expect(issue.dateResolved).not.toBe(null)
+			expect(issue.status)
+				.toEqual('resolved')
+			expect(issue.dateResolved)
+				.not.toBe(null)
 
 		} catch(err) {
 			done.fail(err)
@@ -518,10 +713,45 @@ describe('updateIssuePriority()', () => {
 			done()
 		}
 	})
+
+	test('id must be number (convertable)', async done => {
+		expect.assertions(0)
+
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+			await issues.updateIssuePriority('1', 1)
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('id must be number', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+			await expect(issues.updateIssuePriority('asdfadf', 1))
+				.rejects.toEqual(Error('value is not a number'))
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
 })
 
 describe('setResolutionTime', () => {
 	test('setting resolution time for valid issue', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -538,6 +768,8 @@ describe('setResolutionTime', () => {
 	})
 
 	test('setting resolution time for invalid issue id', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.setResolutionTime(1)
@@ -550,6 +782,8 @@ describe('setResolutionTime', () => {
 	})
 
 	test('setting resolution time for non-existing issue', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.setResolutionTime(1)
@@ -562,6 +796,8 @@ describe('setResolutionTime', () => {
 	})
 
 	test('id must not be empty', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.setResolutionTime()
@@ -572,10 +808,45 @@ describe('setResolutionTime', () => {
 			done()
 		}
 	})
+
+	test('id must be number (convertable)', async done => {
+		expect.assertions(0)
+
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+			await issues.setResolutionTime('1')
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('id must be number', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+			await expect(issues.setResolutionTime('asdfadf'))
+				.rejects.toEqual(Error('value is not a number'))
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
 })
 
 describe('voteIssue()', () => {
 	test('voting for existing issue', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -592,6 +863,8 @@ describe('voteIssue()', () => {
 	})
 
 	test('voting for non-existing issue', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 
@@ -605,6 +878,8 @@ describe('voteIssue()', () => {
 	})
 
 	test('voting for same issue twice', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -638,6 +913,8 @@ describe('voteIssue()', () => {
 	})
 
 	test('downvoting an existing issue', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -654,6 +931,8 @@ describe('voteIssue()', () => {
 	})
 
 	test('downvoting a non existing issue', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 
@@ -667,6 +946,8 @@ describe('voteIssue()', () => {
 	})
 
 	test('downvoting for same issue twice', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -682,6 +963,8 @@ describe('voteIssue()', () => {
 	})
 
 	test('downvoting an issue from multiple users', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -700,6 +983,8 @@ describe('voteIssue()', () => {
 	})
 
 	test('changing user vote', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.reportIssue(baseIssue)
@@ -718,6 +1003,8 @@ describe('voteIssue()', () => {
 	})
 
 	test('id must not be blank', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.voteIssue()
@@ -729,7 +1016,42 @@ describe('voteIssue()', () => {
 		}
 	})
 
+	test('id must be number (convertable)', async done => {
+		expect.assertions(0)
+
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+			await issues.voteIssue('1', 'test', 1)
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('id must be number', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+			await expect(issues.voteIssue('asdfadf', 'test', 1))
+				.rejects.toEqual(Error('value is not a number'))
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
 	test('username should not be blank', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.voteIssue(1)
@@ -742,6 +1064,8 @@ describe('voteIssue()', () => {
 	})
 
 	test('value should not be blank', async done => {
+		expect.assertions(1)
+
 		try {
 			const issues = await new Issues()
 			await issues.voteIssue(1, 'test')
