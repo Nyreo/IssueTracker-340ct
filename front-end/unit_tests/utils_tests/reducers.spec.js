@@ -32,6 +32,25 @@ describe('user reducer', () => {
 		done()
 	})
 
+	test('setUser when user already exists', async done => {
+
+		const store = createStore(
+			userReducer
+		)
+		
+		expect.assertions(1)
+
+		store.dispatch(setUser(userObj))
+		store.dispatch(setUser(userObj))
+
+		expect(store.getState()).toEqual({
+			isAuth:true,
+			user: userObj
+		})
+
+		done()
+	})
+
 	test('clearUser', async done => {
 
 		expect.assertions(1)
@@ -46,6 +65,23 @@ describe('user reducer', () => {
 		expect(store.getState()).toEqual({
 			isAuth : false,
     		user : {}
+		})
+
+		done()
+	})
+
+	test('clearUser (no user)', async done => {
+
+		expect.assertions(1)
+
+		const store = createStore(
+			userReducer
+		)
+		store.dispatch(clearUser())
+
+		expect(store.getState()).toEqual({
+			isAuth : false,
+			user : {}
 		})
 
 		done()
@@ -70,6 +106,23 @@ describe('message reducer', () => {
 		done()
 	})
 
+	test('setting an error message (when message already exists)', async done => {
+		expect.assertions(1)
+		
+		// create store
+		const store = createStore(
+			messageReducer
+		)
+		const errMessage = 'error test'
+
+		store.dispatch(setError('error test'))
+		store.dispatch(setError('error test'))
+
+		expect(store.getState().errMessage).toEqual(errMessage)
+
+		done()
+	})
+
 	test('clearing the error message', async done => {
 		// assert
 		expect.assertions(1)
@@ -81,6 +134,21 @@ describe('message reducer', () => {
 		// set error message
 		store.dispatch(setError('error message'))
 
+		// clear error message
+		store.dispatch(clearError())
+
+		expect(store.getState().errMessage).toEqual('')
+		done()
+	})
+
+	test('clearing the error message (when no message exists)', async done => {
+		// assert
+		expect.assertions(1)
+		
+		//create store
+		const store = createStore(
+			messageReducer
+		)
 		// clear error message
 		store.dispatch(clearError())
 
@@ -105,6 +173,24 @@ describe('message reducer', () => {
 		done()
 	})
 
+	test('setting the notification message (when already exists)', async done => {
+		// assert
+		expect.assertions(1)
+		
+		//create store
+		const store = createStore(
+			messageReducer
+		)
+		const notification = "notification message"
+
+		store.dispatch(setNotification(notification))
+		store.dispatch(setNotification(notification))
+
+		expect(store.getState().notification).toEqual(notification)
+
+		done()
+	})
+
 	test('clearing the notification message', async done => {
 		// assert
 		expect.assertions(1)
@@ -114,6 +200,22 @@ describe('message reducer', () => {
 			messageReducer
 		)
 		store.dispatch(setNotification('notification'))
+
+		store.dispatch(clearNotification())
+
+		expect(store.getState().notification).toEqual('')
+
+		done()
+	})
+
+	test('clearing the notification message (when doesnt exist)', async done => {
+		// assert
+		expect.assertions(1)
+		
+		//create store
+		const store = createStore(
+			messageReducer
+		)
 
 		store.dispatch(clearNotification())
 
@@ -133,6 +235,64 @@ describe('message reducer', () => {
 
 		store.dispatch(setError('error'))
 		store.dispatch(setNotification('notification'))
+
+		store.dispatch(clearAll())
+
+		expect(store.getState()).toEqual({
+			errMessage: '',
+			notification: ''
+		})
+		done()
+	})
+
+	test('clearing both messages (when notifcation doesnt exist)', async done => {
+		// assert
+		expect.assertions(1)
+		
+		//create store
+		const store = createStore(
+			messageReducer
+		)
+
+		store.dispatch(setError('error'))
+
+		store.dispatch(clearAll())
+
+		expect(store.getState()).toEqual({
+			errMessage: '',
+			notification: ''
+		})
+		done()
+	})
+
+	test('clearing both messages (when error doesnt exist)', async done => {
+		// assert
+		expect.assertions(1)
+		
+		//create store
+		const store = createStore(
+			messageReducer
+		)
+
+		store.dispatch(setNotification('notification'))
+
+		store.dispatch(clearAll())
+
+		expect(store.getState()).toEqual({
+			errMessage: '',
+			notification: ''
+		})
+		done()
+	})
+
+	test('clearing both messages (when both dont exist', async done => {
+		// assert
+		expect.assertions(1)
+		
+		//create store
+		const store = createStore(
+			messageReducer
+		)
 
 		store.dispatch(clearAll())
 

@@ -211,8 +211,6 @@ describe('login()', () => {
 		done()
 	})
 
-	test.todo('password should not contain any illegal characters')
-
 })
 
 describe('generateWebToken()', () => {
