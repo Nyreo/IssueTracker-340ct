@@ -626,20 +626,33 @@ describe('issues', () => {
 		done()
 	}, 16000)
 
-	test('interacting with issues', async done => {
+	test('voting for issue', async done => {
 		//tracing
-		await page.tracing.start({path: 'trace/issues_interaction.json',screenshots: true})
-		await har.start({ path: 'trace/issues_interaction_trace.har' })
+		await page.tracing.start({path: 'trace/issue_vote_for.json',screenshots: true})
+		await har.start({ path: 'trace/issue_vote_for_trace.har' })
 
-
-		await page.waitForSelector('.upvote, .downvote')
+		await page.waitForSelector('.upvote')
 
 		await page.click('.upvote')
 		await page.waitFor(1000)
 
 		expect( await page.evaluate( () => document.querySelector('.issue-card .title span').innerText))
 			.toBe('#1 Status: Reported - Votes: 1')
-		
+
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
+		done()
+	},16000)
+
+	test('voting against issue', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/issue_vote_against.json',screenshots: true})
+		await har.start({ path: 'trace/issue_vote_against_trace.har' })
+
+		await page.waitForSelector('.downvote')
+
 		await page.click('.downvote')
 		await page.waitFor(1000)
 
@@ -649,9 +662,29 @@ describe('issues', () => {
 		//stop tracing
 		await page.tracing.stop()
 		await har.stop()
-		
+
 		done()
-	},16000)
+	}, 16000)
+
+	test('voting for same issue twice', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/issue_vote_duplicate.json',screenshots: true})
+		await har.start({ path: 'trace/issue_vote_duplicate_trace.har' })
+
+		await page.waitForSelector('.downvote')
+
+		await page.click('.downvote')
+		await page.waitFor(1000)
+
+		expect( await page.evaluate( () => document.querySelector('.issue-card .title span').innerText))
+			.toBe('#1 Status: Reported - Votes: -1')
+
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
+		done()
+	}, 16000)
 
 	
 })
