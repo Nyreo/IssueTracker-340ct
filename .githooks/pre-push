@@ -11,9 +11,9 @@ npm test
 echo "Success! All unit-tests passed!"
 
 # check if pushing to master
-BRANCH=`git rev-parse --abrev-ref HEAD`
+current_branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
-if [ "$BRANCH" = "master" ]; then
+if [ $current_branch = "master" ] then
 	echo
 	echo -e "Pushing to master...\n\tPerforming additional quality checks"
 	echo -e "\tRunning UI acceptance tests"

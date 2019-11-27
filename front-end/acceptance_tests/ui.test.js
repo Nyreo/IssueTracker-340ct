@@ -87,6 +87,9 @@ describe('home_page', () => {
 
 describe('navbar', () => {
 	test('checking for working links', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/navbar_links_har.json',screenshots: true})
+		await har.start({ path: 'trace/navbar_links_trace.har' })
 		// check navbar
 		expect( await page.evaluate( () => {
 			return document.querySelectorAll('.nav div a').length
@@ -105,6 +108,10 @@ describe('navbar', () => {
 		await page.click(REGISTER_BUTTON)
 		expect ( await page.title()).toBe('Register')
 		
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 16000)
 })
@@ -112,7 +119,7 @@ describe('navbar', () => {
 describe('register', () => {
 
 	test('checking page screenshot', async done => {
-
+		
 		await page.goto(`${appUrl}/register`, {waitUntil : 'load'})
 
 		const image = await page.screenshot()
@@ -122,6 +129,10 @@ describe('register', () => {
 	}, 16000)
 
 	test('checking already have an account link', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/register_have_account_link.json',screenshots: true})
+		await har.start({ path: 'trace/register_have_account_link_trace.har' })
+
 		await page.goto(`${appUrl}/register`, {waitUntil : 'load'})
 
 		const ACCOUNT_LINK = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > a'
@@ -135,10 +146,17 @@ describe('register', () => {
 		expect(await page.title())
 			.toBe('Login')
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 16000)
 
 	test('registering for an account', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/registering_account.json',screenshots: true})
+		await har.start({ path: 'trace/registering_account_trace.har' })
 
 		await page.goto(`${appUrl}/register`, {waitUntil : 'load'})
 
@@ -212,10 +230,17 @@ describe('register', () => {
 		expect( await page.evaluate( () => document.querySelector('.welcome-message').innerText))
 			.toBe('Welcome, mitch137')
 		
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 30000)
 
 	test('logout', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/logout.json',screenshots: true})
+		await har.start({ path: 'trace/logout_trace.har' })
 
 		await page.goto(`${appUrl}`, {waitUntil : 'load'})
 
@@ -225,12 +250,20 @@ describe('register', () => {
 		await page.waitFor(1000)
 		await page.click(LOGOUT)
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	})
 })
 
 describe('login', () => {
 	test('checking register account link', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/login_no_account_link.json',screenshots: true})
+		await har.start({ path: 'trace/login_no_account_link_trace.har' })
+
 		await page.goto(`${appUrl}/login`, {waitUntil : 'load'})
 
 		const NO_ACCOUNT_LINK = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > a'
@@ -245,6 +278,10 @@ describe('login', () => {
 		expect(await page.title())
 			.toBe('Register')
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 16000)
 
@@ -258,6 +295,9 @@ describe('login', () => {
 	})
 
 	test('checking login with invalid username and pass', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/login_invalid_details_both.json',screenshots: true})
+		await har.start({ path: 'trace/login_invalid_details_both_trace.har' })
 
 		const USER_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(1) > input[type=text]'
 		const PASS_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(2) > input[type=password]'
@@ -278,10 +318,17 @@ describe('login', () => {
 		await page.waitForSelector(CLOSE)
 		await page.click(CLOSE)
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 16000)
 
 	test('checking login with invalid password for valid account', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/login_invalid_details_password.json',screenshots: true})
+		await har.start({ path: 'trace/login_invalid_details_password_trace.har' })
 
 		const USER_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(1) > input[type=text]'
 		// const PASS_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(2) > input[type=password]'
@@ -305,10 +352,17 @@ describe('login', () => {
 		await page.waitForSelector(CLOSE)
 		await page.click(CLOSE)
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 16000)
 
 	test('checking login with valid username and password', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/login_valid_details.json',screenshots: true})
+		await har.start({ path: 'trace/login_invalid_valid_details_trace.har' })
 
 		const PASS_INPUT = '#root > div > div.container.h-centered-margin > div > form > div.input-fields.h-centered-margin > div:nth-child(2) > input[type=password]'
 		const SUBMIT_BTN = '#root > div > div.container.h-centered-margin > div > form > div.form-footer > button'
@@ -326,14 +380,26 @@ describe('login', () => {
 		expect( await page.title())
 			.toBe('Home')
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 16000)
 
 	test('checking navbar has updated once logged in', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/login_navbar.json',screenshots: true})
+		await har.start({ path: 'trace/login_navbar_trace.har' })
+
 		await page.waitForSelector('.nav button')
 
 		expect(await page.evaluate( () => document.querySelectorAll('.nav a, .nav button').length))
 			.toBe(4)
+
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
 
 		done()
 	}, 16000)
@@ -361,6 +427,10 @@ describe('report issue', () => {
 	}, 16000)
 
 	test('reporting issue (initial details)', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/report_issues_initial.json',screenshots: true})
+		await har.start({ path: 'trace/report_issues_initial_trace.har' })
+
 		// patch current location to avoid permission request
 		await page.evaluate(function() {
 			navigator.geolocation.getCurrentPosition = function (cb) {
@@ -405,10 +475,17 @@ describe('report issue', () => {
 
 		await page.click(NEXT)
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 16000)
 
 	test('report issue (location selection)', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/report_issues_location.json',screenshots: true})
+		await har.start({ path: 'trace/report_issues_location_trace.har' })
 
 		const MAP = '#root > div > div.container.h-centered-margin > div > div.map.h-centered-margin.fill.gap-left.shadow.padding-20.anim-all-400 > div > div > div > div > div > div > div:nth-child(1) > div:nth-child(3)'
 		// const LAT_INPUT = '#root > div > div.container.h-centered-margin > div > div.report.flex-no-grow.anim-all-400 > form > div > div.input-double > div:nth-child(1) > input[type=text]'
@@ -450,6 +527,10 @@ describe('report issue', () => {
 		expect( await page.evaluate( () => document.querySelector('h1').innerText))
 			.toBe('Reported Issues')
 		
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 30000)
 })
@@ -467,7 +548,10 @@ describe('issues', () => {
 	})
 
 	test('checking initial displayed results', async done => { 
-	
+		//tracing
+		await page.tracing.start({path: 'trace/issues_display.json',screenshots: true})
+		await har.start({ path: 'trace/issues_display_trace.har' })
+
 		await page.waitForSelector('#root > div > div.container.h-centered-margin > div > div > div:nth-child(3) > p > span.sub.abs-right')
 
 		expect( await page.evaluate( () => document.querySelector('#root > div > div.container.h-centered-margin > div > div > div:nth-child(3) > p > span.sub.abs-right').innerText))
@@ -481,10 +565,17 @@ describe('issues', () => {
 		expect( await page.evaluate( () => getComputedStyle(document.querySelector('.issue-card .title')).backgroundColor))
 			.toBe('rgb(235, 96, 96)')
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 16000)
 
 	test('checking filter', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/issues_filter.json',screenshots: true})
+		await har.start({ path: 'trace/issues_filter_trace.har' })
 
 		const FILTER = '#root > div > div.container.h-centered-margin > div > div > div.filter-bar.flex-50.gap-right'
 		
@@ -528,10 +619,18 @@ describe('issues', () => {
 		expect( await page.evaluate( () => document.querySelectorAll('.issue-card').length))
 			.toBe(1)
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+
 		done()
 	}, 16000)
 
 	test('interacting with issues', async done => {
+		//tracing
+		await page.tracing.start({path: 'trace/issues_interaction.json',screenshots: true})
+		await har.start({ path: 'trace/issues_interaction_trace.har' })
+
 
 		await page.waitForSelector('.upvote, .downvote')
 
@@ -547,6 +646,10 @@ describe('issues', () => {
 		expect( await page.evaluate( () => document.querySelector('.issue-card .title span').innerText))
 			.toBe('#1 Status: Reported - Votes: -1')
 
+		//stop tracing
+		await page.tracing.stop()
+		await har.stop()
+		
 		done()
 	},16000)
 
