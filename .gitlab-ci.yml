@@ -3,6 +3,7 @@ image: node:latest
 stages:
   - code-tests
   - unit-tests
+  - acceptance-tests
   - staging
   - deployment-back
   - deployment-front
