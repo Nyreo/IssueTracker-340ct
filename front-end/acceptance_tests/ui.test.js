@@ -21,7 +21,7 @@ expect.extend({ toMatchImageSnapshot })
 
 beforeAll( async() => {
 	try {
-		browser = await puppeteer.launch({ headless: false, slowMo: delayMS, 
+		browser = await puppeteer.launch({ headless: true, slowMo: delayMS, 
 			args: [
 				`--window-size=${width},${height}`, 
 				'--no-sandbox',
