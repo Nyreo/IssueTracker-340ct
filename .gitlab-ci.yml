@@ -3,6 +3,7 @@ image: node:latest
 stages:
   - code-tests
   - unit-tests
+  - acceptance-tests
   - staging
   - deployment-back
   - deployment-front
@@ -69,16 +70,18 @@ deploy-frontend:
   only:
     - master
     
-# ui-test-frontEnd:
-#   image: alekzonder/puppeteer:1.5.0-0
-#   stage: acceptance-tests
-#   script:
-#       - cd back-end/
-#       - npm install
-#       - cd ../front-end/
-#       - npm install
-#       - npm run acceptance
-#   artifacts:
-#     paths:
-#      - test/screenshots/*/*
-#     expire_in: 3 days
+ui-test-frontEnd:
+  image: buildkite/puppeteer
+  stage: acceptance-tests
+  script:
+      - cd back-end/
+      - npm install
+      - cd ../front-end/
+      - npm install
+      - npm run acceptance
+  artifacts:
+    paths:
+     - test/screenshots/*/*
+    expire_in: 3 days
+  only:
+    - master
