@@ -4,7 +4,6 @@ stages:
   - code-tests
   - unit-tests
   - acceptance-tests
-  - staging
   - deployment-back
   - deployment-front
 
@@ -41,11 +40,33 @@ test-frontEnd:
     - npm test
 
 dc-backEnd:
-  stage: staging
+  stage: code-tests
   script:
     - cd back-end/
     - npm install
     - npm run dc
+dc-frontEnd:
+  stage: code-tests
+  script:
+    - cd front-end/
+    - npm install
+    - npm run dc
+
+ui-test-frontEnd:
+  image: buildkite/puppeteer
+  stage: acceptance-tests
+  script:
+      - cd back-end/
+      - npm install
+      - cd ../front-end/
+      - npm install
+      - npm run acceptance
+  artifacts:
+    paths:
+     - test/screenshots/*/*
+    expire_in: 3 days
+  only:
+    - master
   
 deploy-backend:
   stage: deployment-back
@@ -67,21 +88,5 @@ deploy-frontend:
     - apt-get install ruby-dev rubygems -y
     - gem install dpl
     - dpl --provider=heroku --app=mitch137-test --api-key=81eaf2cb-7d8a-42dc-89d8-b3eb55887702
-  only:
-    - master
-    
-ui-test-frontEnd:
-  image: buildkite/puppeteer
-  stage: acceptance-tests
-  script:
-      - cd back-end/
-      - npm install
-      - cd ../front-end/
-      - npm install
-      - npm run acceptance
-  artifacts:
-    paths:
-     - test/screenshots/*/*
-    expire_in: 3 days
   only:
     - master

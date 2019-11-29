@@ -1,21 +1,18 @@
 {
   "name": "front-end",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "private": true,
   "dependencies": {
-    "@babel/polyfill": "^7.6.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.7",
     "@material-ui/core": "^4.5.1",
     "@mitch137/validation": "^1.0.0",
-    "animate.css": "^3.7.2",
     "axios": "^0.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "file-saver": "^2.0.2",
     "google-map-react": "^1.1.5",
-    "js-file-download": "^0.4.8",
     "jsonwebtoken": "^8.5.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -32,7 +29,8 @@
     "eject": "react-scripts eject",
     "acceptance": "./test.sh",
     "profiler": "./node_modules/.bin/0x -o index.js",
-    "linter": "node_modules/.bin/eslint --ignore-path ./.eslintignore ."
+    "linter": "node_modules/.bin/eslint --ignore-path ./.eslintignore .",
+    "dc": "node_modules/.bin/depcheck . --ignores='eslint-*,babel-*'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -66,12 +64,10 @@
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
     "babel-jest": "^24.9.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
-    "dependency-check": "^4.1.0",
+    "depcheck": "^0.9.1",
     "jest": "^24.9.0",
     "jest-image-snapshot": "^2.11.1",
     "puppeteer": "^2.0.0",
-    "puppeteer-har": "^1.1.1",
-    "serve": "^11.2.0"
+    "puppeteer-har": "^1.1.1"
   }
 }
