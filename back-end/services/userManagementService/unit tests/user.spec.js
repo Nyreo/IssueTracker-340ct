@@ -204,10 +204,66 @@ describe('login()', () => {
 		done()
 	})
 
+	test('username should not be of type number', async done => {
+		expect.assertions(1)
+		await expect( globalAccount.login(123, 'password'))
+			.rejects.toEqual(Error('username has invalid data type'))
+		done()
+	})
+
+	test('username should not be of type float', async done => {
+		expect.assertions(1)
+		await expect( globalAccount.login(123.23, 'password'))
+			.rejects.toEqual(Error('username has invalid data type'))
+		done()
+	})
+
+	test('username should not be of type boolean', async done => {
+		expect.assertions(1)
+		await expect( globalAccount.login(true, 'password'))
+			.rejects.toEqual(Error('username has invalid data type'))
+		done()
+	})
+
+	test('username should not be of type date', async done => {
+		expect.assertions(1)
+		await expect( globalAccount.login(new Date(Date.now()), 'password'))
+			.rejects.toEqual(Error('username has invalid data type'))
+		done()
+	})
+
 	test('password should not be blank', async done => {
 		expect.assertions(1)
 		await expect( globalAccount.login('username', ''))
 			.rejects.toEqual(Error('password must not be blank'))
+		done()
+	})
+
+	test('password should not be of type number', async done => {
+		expect.assertions(1)
+		await expect( globalAccount.login('username', 123))
+			.rejects.toEqual(Error('password has invalid data type'))
+		done()
+	})
+
+	test('password should not be of type float', async done => {
+		expect.assertions(1)
+		await expect( globalAccount.login('username', 123.23))
+			.rejects.toEqual(Error('password has invalid data type'))
+		done()
+	})
+
+	test('password should not be of type boolean', async done => {
+		expect.assertions(1)
+		await expect( globalAccount.login('username', false))
+			.rejects.toEqual(Error('password has invalid data type'))
+		done()
+	})
+
+	test('password should not be of type date', async done => {
+		expect.assertions(1)
+		await expect( globalAccount.login('username', new Date(Date.now())))
+			.rejects.toEqual(Error('password has invalid data type'))
 		done()
 	})
 

@@ -23,12 +23,10 @@ const dbName = 'issues.db'
 router.get('/issues/joblist', async ctx => {
 
 	const issues = await new Issue(dbName)
-	const data = await issues.fetchAllIssues()
-	const allocatedJobs = data.filter(issue => issue.status === 'allocated')
+	const allocatedIssues = await issues.getAllocatedJobs()
 
-	await pdfManager.JobReport(allocatedJobs)
+	await pdfManager.JobReport(allocatedIssues)
 
-	// ctx.type = '.pdf'
 	ctx.set('Content-disposition', 'attachment; filename=joblist.pdf')
 
 	await send(ctx, './pdfs/output.pdf')

@@ -154,6 +154,7 @@ module.exports = class Issue {
 	 */
 	async fetchUserIssues(username) {
 		validate.checkUndefinedParams({username})
+		validate.checkCorrectDataTypes({username}, {username: 'username'})
 
 		const sql = `SELECT * FROM issues WHERE username="${username}"`
 		const records = await this.db.all(sql)
@@ -193,6 +194,7 @@ module.exports = class Issue {
 	async updateIssueStatus(id, status) {
 		try {
 			validate.checkUndefinedParams({id, status})
+			validate.checkCorrectDataTypes({status}, {status: 'status'})
 			validate.validateNumber(id)
 
 			await this.checkIssueExists(id)
@@ -201,7 +203,7 @@ module.exports = class Issue {
 			if(issue.status === 'resolved' && status !== 'resolved') await this.removeResolutionTime(id)
 
 			const sql = `UPDATE issues SET status="${status}" WHERE id=${id};`
-			this.db.run(sql)
+			await this.db.run(sql)
 
 			// check if issue has been set to resolved
 			if(status==='resolved') await this.setResolutionTime(id)
@@ -253,14 +255,14 @@ module.exports = class Issue {
 	 * @throws {Error} valdiation error
 	 * @async
 	*/
-	// eslint-disable-next-line complexity
+
 	async updateIssuePriority(id, priority) {
 		try {
 			validate.checkUndefinedParams({id, priority})
 			validate.validateNumber(id)
+			validate.checkCorrectDataTypes({priority}, {priority: 1})
 			await this.checkIssueExists(id)
 
-			if(isNaN(priority)) throw new Error('priority must be a positive number')
 			if(priority <= 0) throw new Error('priority cannot be negative or equal to 0')
 
 			const sql = `UPDATE issues SET priority=${priority} WHERE id=${id}`
@@ -342,5 +344,17 @@ module.exports = class Issue {
 		} catch(err) {
 			throw err
 		}
+	}
+
+	/**
+	 * The script to perform action of inserting user vote in database
+	 *
+	 * @name getAllocatedJobs Script
+	 * @returns {object[]} new votes for the issue
+	 * @async
+	 */
+	async getAllocatedJobs() {
+		const issues = await this.fetchAllIssues()
+		return issues.filter(issue => issue.status === 'allocated')
 	}
 }
