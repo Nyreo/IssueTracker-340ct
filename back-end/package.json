@@ -29,15 +29,16 @@
     "bcrypt": "^3.0.7",
     "bcrypt-promise": "^2.0.0",
     "dotenv": "^8.2.0",
+    "http-status-codes": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "koa-send": "^5.0.0",
+    "mock-fs": "^4.10.4",
     "nodemailer": "^6.3.1",
     "pdfkit": "^0.10.0",
-    "sqlite-async": "^1.0.11",
-    "http-status-codes": "^1.4.0"
+    "sqlite-async": "^1.0.11"
   },
   "devDependencies": {
     "depcheck": "^0.9.1",

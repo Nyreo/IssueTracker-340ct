@@ -1,6 +1,3 @@
-/* eslint-disable max-lines */
-/* eslint-disable complexity */
-
 'use strict'
 
 const validate = require('@mitch137/validation')
@@ -143,6 +140,11 @@ module.exports = class User {
 		}
 	}
 
+	checkBlankDetails(username, password) {
+		if(username === '') throw new Error('username must not be blank')
+		if(password === '') throw new Error('password must not be blank')
+	}
+
 	/**
 	 * Function to check the user's credentials when logging in to determine authorisation
 	 *
@@ -154,8 +156,8 @@ module.exports = class User {
 	async login(username, password) {
 		try {
 			// check for blank inptus
-			if(username === '') throw new Error('username must not be blank')
-			if(password === '') throw new Error('password must not be blank')
+			this.checkBlankDetails(username,password)
+			validate.checkCorrectDataTypes({username, password}, {username: 'username', password: 'password'})
 			// fetch record from database
 			let sql = `SELECT count(id) AS count FROM users WHERE username="${username}";`
 			const records = await this.db.get(sql)

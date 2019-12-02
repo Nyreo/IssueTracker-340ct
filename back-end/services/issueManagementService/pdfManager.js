@@ -1,7 +1,6 @@
 'use strict'
 
 const PDFDocument = require('pdfkit')
-// const blobStream = require('blob-stream')
 const fs = require('fs')
 
 module.exports = class PDFManager {

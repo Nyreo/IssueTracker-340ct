@@ -39,6 +39,48 @@ describe('reportIssue()', () => {
 		done()
 	})
 
+	test('reporting issue with description of type number', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.description = 123
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('description has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue with description of type float', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.description = 123.23
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('description has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue with description of type boolean', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.description = true
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('description has invalid data type'))
+
+		done()
+	})
+
 	test('reporting issue with missing type', async done => {
 		expect.assertions(1)
 
@@ -49,6 +91,48 @@ describe('reportIssue()', () => {
 
 		await expect(issues.reportIssue(issue))
 			.rejects.toEqual(Error('type missing'))
+
+		done()
+	})
+
+	test('reporting issue property type with wrong type (number)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.type = 123
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('type has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property type with wrong type (float)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.type = 123.23
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('type has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property type with wrong type (boolean)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.type = true
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('type has invalid data type'))
 
 		done()
 	})
@@ -67,6 +151,48 @@ describe('reportIssue()', () => {
 		done()
 	})
 
+	test('reporting issue property dateSubmitted with wrong type (string)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.dateSubmitted = 'this is a test'
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('dateSubmitted has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property dateSubmitted with wrong type (boolean)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.dateSubmitted = true
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('dateSubmitted has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property dateSubmitted with wrong type (string convertable)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.dateSubmitted = '123123123123'
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('dateSubmitted has invalid data type'))
+
+		done()
+	})
+
 	test('reporting issue with missing username', async done => {
 		expect.assertions(1)
 
@@ -77,6 +203,48 @@ describe('reportIssue()', () => {
 
 		await expect(issues.reportIssue(issue))
 			.rejects.toEqual(Error('username missing'))
+
+		done()
+	})
+
+	test('reporting issue property username with wrong type (number)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.username = 123
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('username has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property username with wrong type (float)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.username = 123.23
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('username has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property username with wrong type (boolean)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.username = true
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('username has invalid data type'))
 
 		done()
 	})
@@ -95,6 +263,48 @@ describe('reportIssue()', () => {
 		done()
 	})
 
+	test('reporting issue property lat with wrong type (string)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.lat = 'this is a test'
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('lat has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property lat with wrong type (string convertable)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.lat = '52.23'
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('lat has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property lat with wrong type (boolean)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.lat = true
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('lat has invalid data type'))
+
+		done()
+	})
+
 	test('reporting issue with missing longitude', async done => {
 		expect.assertions(1)
 
@@ -105,6 +315,48 @@ describe('reportIssue()', () => {
 
 		await expect(issues.reportIssue(issue))
 			.rejects.toEqual(Error('lng missing'))
+
+		done()
+	})
+
+	test('reporting issue property lng with wrong type (string)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.lng = 'this is a test'
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('lng has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property lng with wrong type (string convertable)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.lng = '52.23'
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('lng has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property lng with wrong type (boolean)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.lng = true
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('lng has invalid data type'))
 
 		done()
 	})
@@ -123,6 +375,34 @@ describe('reportIssue()', () => {
 		} finally{
 			done()
 		}
+	})
+
+	test('reporting issue property streetName with wrong type (number)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.streetName = 123
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('streetName has invalid data type'))
+
+		done()
+	})
+
+	test('reporting issue property streetName with wrong type (boolean)', async done => {
+		expect.assertions(1)
+
+		const issue = {...baseIssue}
+		issue.streetName = true
+
+		const issues = await new Issues()
+
+		await expect(issues.reportIssue(issue))
+			.rejects.toEqual(Error('streetName has invalid data type'))
+
+		done()
 	})
 
 	test('reporting issue with invalid date submitted (negative)', async done => {
@@ -393,6 +673,66 @@ describe('fetchUserIssues()', () => {
 			done()
 		}
 	})
+
+	test('fetching issues with username that is not correct type (number)', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.fetchUserIssues(123))
+				.rejects.toEqual(Error('username has invalid data type'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('fetching issues with username that is not correct type (float)', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.fetchUserIssues(123.23))
+				.rejects.toEqual(Error('username has invalid data type'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('fetching issues with username that is not correct type (boolean)', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.fetchUserIssues(true))
+				.rejects.toEqual(Error('username has invalid data type'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('fetching issues with username that is not correct type (date)', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.fetchUserIssues(new Date(Date.now())))
+				.rejects.toEqual(Error('username has invalid data type'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
 })
 
 describe('deleteIssue()', () => {
@@ -595,6 +935,70 @@ describe('updateIssueStatus()', () => {
 		}
 	})
 
+	test('status should not be type number', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.updateIssueStatus(1, 1))
+				.rejects.toEqual(Error('status has invalid data type'))
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('status should not be type float', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.updateIssueStatus(1, 1.23))
+				.rejects.toEqual(Error('status has invalid data type'))
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('status should not be type boolean', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.updateIssueStatus(1, true))
+				.rejects.toEqual(Error('status has invalid data type'))
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('status should not be type date', async done => {
+		expect.assertions(1)
+
+		try {
+			const issues = await new Issues()
+
+			await expect(issues.updateIssueStatus(1, new Date(Date.now())))
+				.rejects.toEqual(Error('status has invalid data type'))
+
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
 	test('when status is changed back from resolved, dateResolved should be reset', async done => {
 		expect.assertions(2)
 
@@ -677,7 +1081,7 @@ describe('updateIssuePriority()', () => {
 			await issues.reportIssue(baseIssue)
 
 			await expect(issues.updateIssuePriority(1, 'word'))
-				.rejects.toEqual(Error('priority must be a positive number'))
+				.rejects.toEqual(Error('priority has invalid data type'))
 		} catch(err) {
 			done.fail(err.message)
 		} finally {
@@ -693,6 +1097,51 @@ describe('updateIssuePriority()', () => {
 
 			await expect(issues.updateIssuePriority(1))
 				.rejects.toEqual(Error('priority must not be blank'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('priority must not be of type string', async done => {
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+
+			await expect(issues.updateIssuePriority(1, 'test'))
+				.rejects.toEqual(Error('priority has invalid data type'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('priority must not be of type boolean', async done => {
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+
+			await expect(issues.updateIssuePriority(1, true))
+				.rejects.toEqual(Error('priority has invalid data type'))
+		} catch (err) {
+			done.fail(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('priority must not be of type date', async done => {
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+
+			await expect(issues.updateIssuePriority(1, new Date(Date.now())))
+				.rejects.toEqual(Error('priority has invalid data type'))
 		} catch (err) {
 			done.fail(err)
 		} finally {
@@ -1073,6 +1522,37 @@ describe('voteIssue()', () => {
 			done.fail('error should have been thrown')
 		} catch (err) {
 			expect(err).toEqual(Error('value must not be blank'))
+			done()
+		}
+	})
+})
+
+describe('getAllocatedJobs()', () => {
+	test('fetching allocated jobs when they exist', async done => {
+		try {
+			const issues = await new Issues()
+
+			await issues.reportIssue(baseIssue)
+			await issues.updateIssueStatus(1, 'allocated')
+
+			const allocatedIssues = await issues.getAllocatedJobs()
+			expect(allocatedIssues.length).toBe(1)
+		} catch(err) {
+			done.fal(err)
+		} finally {
+			done()
+		}
+	})
+
+	test('fetching allocated jobs when they do not exist', async done => {
+		try {
+			const issues = await new Issues()
+
+			const allocatedIssues = await issues.getAllocatedJobs()
+			expect(allocatedIssues.length).toBe(0)
+		} catch(err) {
+			done.fal(err)
+		} finally {
 			done()
 		}
 	})
