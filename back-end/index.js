@@ -17,12 +17,13 @@ const issueRouter = require('./services/issueManagementService/issueRouter')
 
 const app = new Koa()
 
+/* ALLOWING CORS */
+app.use(cors())
+
 /* CONFIGURING MIDDLEWARE */
 app.keys = ['darkSecret']
 app.use(bodyParser())
 
-/* ALLOWING CORS */
-app.use(cors())
 
 /* SETTING UP ROUTES */
 app.use(userRouter.routes())
